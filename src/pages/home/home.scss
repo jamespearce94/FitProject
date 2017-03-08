@@ -1,0 +1,18 @@
+.progress, progress {
+  position: relative;
+  height: 25px;
+  text-align: center;
+  background-color: #007aff;
+
+  > {
+    .progress-type {
+      position: absolute;
+      left: 0;
+      font-weight: 800;
+      padding: 3px 30px 2px 10px;
+      color: black;
+      text-align: center;
+      width: 100%;
+    }
+  }
+}

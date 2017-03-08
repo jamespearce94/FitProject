@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-buttons start>
+            <button ion-button menuToggle icon-only>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Compete</ion-title>
+
+        <ion-buttons end>
+            <button ion-button menuToggle="right" icon-only (click)="presentModal()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+
+    <ion-card *ngFor="let challenge of challengeList">
+        <img src="{{challenge.image_url}}"/>
+        <ion-item>
+            <ion-icon item-left name="trophy"></ion-icon>
+            <h2>{{challenge.challenge_name}}</h2>
+            <p style="white-space: normal">{{challenge.description}}</p>
+        </ion-item>
+        <ion-item>
+            <ion-icon item-left name="flash"></ion-icon>
+            <h2>{{challenge.xp}} XP</h2>
+            <span item-right>{{challenge.completion}} {{challenge.type}}</span>
+        </ion-item>
+        <ion-item>
+            <ion-icon item-left name="contact"></ion-icon>
+            <h2>{{challenge.host}}</h2>
+        </ion-item>
+        <ion-item class="item item-block item-ios">
+            <button clear ion-button item-left color="secondary" (click)="acceptChallenge(challenge)"
+                    class="disable-hover item-button button button-ios button-clear button-clear-ios">
+                <span class="button-inner">Accept</span>
+                <div class="button-effect"></div>
+            </button>
+            <button clear ion-button item-right color="danger" (click)="rejectChallenge(challenge)"
+                    class="disable-hover item-button button button-ios button-clear button-clear-ios">
+                <span class="button-inner">Decline</span>
+                <div class="button-effect"></div>
+            </button>
+            <div class="button-effect"></div>
+        </ion-item>
+    </ion-card>
+
+</ion-content>

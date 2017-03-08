@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-buttons start>
+            <button ion-button menuToggle icon-only>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Compete</ion-title>
+
+        <ion-buttons end>
+            <button ion-button menuToggle="right" icon-only (click)="presentModal()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+    <ion-card *ngFor="let challenge of challengeList" (click)="viewChallenge(challenge)">
+        <img src="{{challenge.image_url}}"/>
+        <ion-item>
+            <ion-icon item-left name="trophy"></ion-icon>
+            <h2>{{challenge.challenge_name}}</h2>
+            <p style="white-space: normal">{{challenge.description}}</p>
+        </ion-item>
+        <ion-item>
+            <ion-icon item-left name="flash"></ion-icon>
+            <h2>{{challenge.xp}} XP</h2>
+        </ion-item>
+        <ion-item>
+            <span item-left>{{challenge.completion}} {{challenge.type}}</span>
+            <button ion-button icon-left clear item-right (click)="challengeAlert(challenge)"
+                    *ngIf="!challenge.active" color="danger">
+                <ion-icon name="clock"></ion-icon>
+                <span>Pending</span>
+            </button>
+        </ion-item>
+    </ion-card>
+
+    <ion-fab bottom right>
+        <button ion-fab color="primary" (click)="searchChallenges()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+
+</ion-content>

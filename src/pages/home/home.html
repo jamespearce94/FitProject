@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-buttons start>
+            <button ion-button menuToggle icon-only>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Welcome {{_userService.user.auth.displayName}}</ion-title>
+
+        <ion-buttons end>
+            <button ion-button menuToggle="right" icon-only (click)="presentModal()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list no-border no-lines>
+        <ion-card>
+            <ion-item padding>
+                <ion-icon name="trophy" color="golden" item-left></ion-icon>
+                <h2>Current Level : <b>{{level.level}}</b></h2>
+                <span item-right><b>{{level.current_experience}} XP</b></span>
+            </ion-item>
+            <ion-item>
+                <!--<progress-bar [progress]="progress"></progress-bar>-->
+
+                <div class="progress">
+                    <progress value="{{progress.current}}" max="{{progress.max_progress}}" style="width: 100%;">
+                    </progress>
+                    <span class="progress-type">{{progress.percentage}}%</span>
+                </div>
+            </ion-item>
+            <ion-item>
+                <ion-icon name="podium" item-left></ion-icon>
+                <h2>Completed Challenges: <b>10</b></h2>
+            </ion-item>
+            <ion-item>
+                <ion-icon name="ribbon"  item-left></ion-icon>
+                <h2>Experience Level: <b>{{level.experience_name}}</b></h2>
+            </ion-item>
+        </ion-card>
+        <ion-list-header>
+            Current Stats
+        </ion-list-header>
+
+        <ion-item padding>
+            <ion-icon name="bookmark" item-left></ion-icon>
+            Daily steps
+            <span item-right>{{stats.current_steps}}</span>
+        </ion-item>
+        <ion-item padding>
+            <ion-icon name="timer" item-left></ion-icon>
+            Last update
+            <span item-right>{{stats.last_update}}</span>
+        </ion-item>
+        <ion-item padding>
+            <ion-icon name="walk" item-left></ion-icon>
+            Lifetime Steps
+            <span item-right>{{stats.lifetime_steps}}</span>
+        </ion-item>
+        <ion-item padding>
+            <ion-icon name="car" item-left></ion-icon>
+            Lifetime Distance
+            <span item-right>{{stats.lifetime_walking_distance | number:'2.1-3'}} km</span>
+        </ion-item>
+
+    </ion-list>
+</ion-content>

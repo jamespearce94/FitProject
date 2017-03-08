@@ -1,0 +1,46 @@
+<ion-header>
+
+    <ion-navbar color="primary">
+        <ion-buttons start>
+            <button ion-button menuToggle icon-only>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Friends</ion-title>
+        <ion-buttons end>
+            <button ion-button menuToggle="right" icon-only (click)="presentModal()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-fab bottom right>
+        <button ion-fab color="primary" (click)="searchUsers()" ><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+    <ion-list>
+        <ion-item-sliding *ngFor="let friend of friends" no-padding>
+            <ion-item>
+                <ion-avatar item-left>
+                    <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
+                </ion-avatar>
+                <h2>{{friend.name}}</h2>
+                <p>Friends Progress</p>
+                <div *ngIf="friend.stats">
+                    <p>Steps: {{friend.stats.current_steps}}</p>
+                    <p>Updated: {{friend.stats.last_update}}</p>
+                </div>
+                <ion-spinner name="dots" *ngIf="!friend.stats"></ion-spinner>
+            </ion-item>
+            <ion-item-options>
+                <button ion-button color="danger" icon-left>
+                    <ion-icon name="trash"></ion-icon>
+                    Unfriend
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>

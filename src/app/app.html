@@ -1,0 +1,43 @@
+<ion-menu [content]="content">
+    <ion-header *ngIf="_userService._isLoggedIn">
+        <ion-card style="background-image: url(https://s2.postimg.org/y67z94rzd/material_graphite.jpg);
+                        width: 100%;" no-padding no-margin>
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <img src="https://s7.postimg.org/dyfu8s07f/image.png"/>
+                    </ion-col>
+                    <ion-col>
+
+                    </ion-col>
+                </ion-row>
+
+                <ion-row>
+                    <ion-col>
+                        <ion-card-content>
+                            <ion-card-title no-padding style="color: #fff;">
+                                {{_userService.user.auth.displayName}}
+                            </ion-card-title>
+                        </ion-card-content>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card>
+    </ion-header>
+
+    <ion-content>
+        <ion-list no-lines>
+            <ion-item *ngFor="let page of pages" (click)="setRoot(page.root)" padding menuClose>
+                <ion-icon name="{{page.icon}}" item-left></ion-icon>
+                {{page.title}}
+                <ion-icon name="arrow-forward" item-right></ion-icon>
+            </ion-item>
+            <ion-item (click)="logout()" padding menuClose>
+                <ion-icon name="log-out" color="danger" item-left></ion-icon>
+                Logout
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-menu>
+<ion-nav [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>

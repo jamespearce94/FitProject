@@ -11,4 +11,8 @@ hooks/
 platforms/
 plugins/
 www/
-.editorconfig
+$RECYCLE.BIN/
+
+.DS_Store
+Thumbs.db
+UserInterfaceState.xcuserstate

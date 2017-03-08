@@ -4,7 +4,6 @@ import {UserService} from "../../providers/user-service";
 import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
 import {HealthKitService} from "../../providers/healthkit-service";
-import {DateService} from "../../providers/date-service";
 import {LevelService} from "../../providers/level-service";
 
 @Component({
@@ -37,13 +36,14 @@ export class HomePage implements OnInit {
             });
 
         loader.present();
-
+        this._statsService.updateDate(this._userService.user.uid);
 
         this._statsService.getStats(this._userService.user.uid)
             .subscribe(userStats => {
                 this.stats = userStats;
+                let date = new Date();
 
-                this._healthKitService.getSteps()
+                this._healthKitService.getSteps(this.stats.last_update)
                     .then((result) => {
                         this._statsService.updateCurrentSteps(this._userService.user.uid, result[0].value)
                     })
@@ -51,7 +51,8 @@ export class HomePage implements OnInit {
                         console.log(err);
                     });
 
-                loader.dismiss();
+                loader.dismiss()
+                    .catch( err => console.warn("loader.dismiss()") );
             });
 
         this._levelService.getLevelData(this._userService.user.uid)

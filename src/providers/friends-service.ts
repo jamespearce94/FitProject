@@ -3,7 +3,6 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AngularFire, FirebaseListObservable} from "angularfire2";
 import {UserService} from "./user-service";
-import {DateService} from "./date-service";
 import {ToastController} from "ionic-angular";
 
 @Injectable()
@@ -12,7 +11,6 @@ export class FriendsService {
     constructor(public http: Http,
                 public af: AngularFire,
                 public _userService: UserService,
-                private _dateService: DateService,
                 public toastCtrl: ToastController) {
     }
 
@@ -29,15 +27,15 @@ export class FriendsService {
     addFriend(uid: string, friendName: string) {
         this.af.database.object('users/' + uid + '/friend_requests/' + this._userService.user.auth.uid)
             .set({
-                requestDate: this._dateService.getFormattedDate(),
+                requestDate: new Date(),
                 name: this._userService.user.auth.displayName
-            })
+            });
 
         this.af.database.object('/users/' + this._userService.user.auth.uid + '/pending_requests/' + uid)
             .set({
-                requestDate: this._dateService.getFormattedDate(),
+                requestDate: new Date(),
                 name: friendName
-            })
+            });
             let toast = this.toastCtrl.create({
                 message: 'Friend request was sent to ' + friendName,
                 duration: 3500,

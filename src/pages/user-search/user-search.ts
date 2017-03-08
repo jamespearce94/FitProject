@@ -48,8 +48,9 @@ export class UserSearchPage implements OnInit {
                             }) === undefined;
                         } );
 
-                        loader.dismiss();
+                        loader.dismiss()
+                            .catch( err => console.warn("loader.dismiss()") );
                     });
-            });
+            })
     }
 }

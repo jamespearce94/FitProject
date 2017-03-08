@@ -18,7 +18,6 @@ import {LeaderboardsPage} from "../pages/leaderboards/leaderboards";
 import {SettingsModal} from "../modals/settings/settings";
 import {FriendsTabsPage} from "../pages/friends/tabs/friends-tabs";
 import {HealthKitService} from "../providers/healthkit-service";
-import {DateService} from "../providers/date-service";
 import {UserSearchPage} from "../pages/user-search/user-search";
 import {FriendRequestsPage} from "../pages/friend-requests/friend-requests";
 import {UserNameFilter} from "../filters/user.name.filter";
@@ -94,7 +93,6 @@ const firebaseAuthConfig = {
         StatsService,
         FriendsService,
         HealthKitService,
-        DateService,
         UserNameFilter,
         LevelService,
         ChallengeIdFilter

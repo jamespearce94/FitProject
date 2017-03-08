@@ -10,13 +10,13 @@ export class HealthKitService {
     constructor(public http: Http, private af: AngularFire) {
     }
 
-    getSteps() : Promise<any> {
+    getSteps(last_update: Date) : Promise<any> {
         let endDate = new Date();
 
         endDate.setDate(endDate.getDate() - 1);
 
         let queryObj = {
-            'startDate': new Date(),
+            'startDate': last_update,
             'endDate': endDate,
             'dataType': 'steps',
             'bucket': 'day',

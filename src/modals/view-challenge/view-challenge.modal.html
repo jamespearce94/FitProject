@@ -50,7 +50,8 @@
       </ion-item>
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="flash"></ion-icon>
-        <h2>{{participant.progress}}</h2>
+        <h2>{{participant.percentage}}%</h2>
+        <progress value="{{participant.progress}}" max="{{challenge.completion}}"></progress>
       </ion-item>
     </ion-card>
 

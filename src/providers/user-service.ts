@@ -61,7 +61,8 @@ export class UserService {
                             lifetime_walking_distance: 0,
                             lifetime_steps: 0,
                             lifetime_cycling_distance: 0,
-                            name: signupModel.name
+                            name: signupModel.name,
+                            signup_date: new Date()
                         })
                     this.af.database.object('users/' + result.uid + '/leveldata')
                         .set({

@@ -84,17 +84,20 @@ export class ChallengeService {
                                     });
                                     activeChallenge.type = matchingChallenge.type;
                                     challenges.push(activeChallenge);
+                                    console.log(challenges);
                                 }
                             }
                         });
                         return challenges;
                     })
                     .subscribe(listOfChallenges => {
+                        console.log('subscribe');
                         listOfChallenges.forEach(userChallenge => {
                             this._healthkitService.getChallengeSteps(userChallenge.last_update)//ToDo replace with start time
                                 .then(steps => {
                                     console.log('getChallengeSteps', steps);
                                     userChallenge.participants.forEach((participant, index) => {
+                                        debugger;
                                         if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
                                             this.af.database.object('/active_challenges/' +
                                                 userChallenge.$key + '/participants/' + index)

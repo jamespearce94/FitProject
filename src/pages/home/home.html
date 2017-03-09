@@ -24,13 +24,9 @@
                 <span item-right><b>{{level.current_experience}} XP</b></span>
             </ion-item>
             <ion-item>
-                <!--<progress-bar [progress]="progress"></progress-bar>-->
-
-                <div class="progress">
+                <span class="progress-type">{{progress.percentage}}%</span>
                     <progress value="{{progress.current}}" max="{{progress.max_progress}}" style="width: 100%;">
                     </progress>
-                    <span class="progress-type">{{progress.percentage}}%</span>
-                </div>
             </ion-item>
             <ion-item>
                 <ion-icon name="podium" item-left></ion-icon>

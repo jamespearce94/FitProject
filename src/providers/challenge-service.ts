@@ -91,8 +91,9 @@ export class ChallengeService {
                     })
                     .subscribe(listOfChallenges => {
                         listOfChallenges.forEach(userChallenge => {
-                            this._healthkitService.getChallengeSteps(userChallenge.start_time)
+                            this._healthkitService.getChallengeSteps(userChallenge.last_update)//ToDo replace with start time
                                 .then(steps => {
+                                    console.log('getChallengeSteps', steps);
                                     userChallenge.participants.forEach((participant, index) => {
                                         if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
                                             this.af.database.object('/active_challenges/' +

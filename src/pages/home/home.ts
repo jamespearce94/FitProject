@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
 
                 this._healthKitService.getDaySteps()
                     .then((result) => {
-                    console.log(result);
+                    console.log('getDaySteps', result);
                         this._statsService.updateCurrentSteps(this._userService.user.uid, result);
                     })
                     .catch((err) => {

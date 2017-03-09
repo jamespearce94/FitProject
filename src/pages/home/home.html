@@ -53,7 +53,7 @@
         <ion-item padding>
             <ion-icon name="timer" item-left></ion-icon>
             Last update
-            <span item-right>{{stats.last_update}}</span>
+            <span item-right>{{stats.last_update | date:'dd/MM/yy HH:mm' }}</span>
         </ion-item>
         <ion-item padding>
             <ion-icon name="walk" item-left></ion-icon>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ViewController} from "ionic-angular";
 import {UserService} from "../../providers/user-service";
+import {ChallengeService} from "../../providers/challenge-service";
 
 @Component({
     selector: 'view-challenge-modal',

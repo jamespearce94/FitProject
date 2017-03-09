@@ -20,8 +20,7 @@ export class StatsService {
 
     updateCurrentSteps(uid: string,steps: number){
         this.af.database.object('users/' + uid + '/fitness_stats')
-            .update({current_steps: steps,
-            last_update: new Date()});
+            .update({current_steps: steps});
     }
     updateDate(uid: string){
         this.af.database.object('users/' + uid + '/fitness_stats')

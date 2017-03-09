@@ -3,13 +3,15 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {FirebaseListObservable, AngularFire} from "angularfire2";
 import {UserService} from "./user-service";
+import {HealthKitService} from "./healthkit-service";
 
 @Injectable()
 export class ChallengeService {
 
     constructor(public http: Http,
                 private af: AngularFire,
-                private _userService: UserService) {
+                private _userService: UserService,
+                private _healthkitService: HealthKitService) {
     }
 
     getChallengeList(): FirebaseListObservable<any> {
@@ -26,7 +28,7 @@ export class ChallengeService {
                 pending_participants: challenge.pending_participants
                     .filter(p => p !== this._userService.user.auth.uid),
                 active: challenge.pending_participants.length === 1,
-                start_time: challenge.pending_participants.length ? new Date().getTime() : null
+                start_time: challenge.pending_participants.length ? new Date() : null
             });
     }
 
@@ -57,6 +59,58 @@ export class ChallengeService {
                 "pending_participants": participants,
                 "participants": formattedParticipants
             });
+    }
+
+    updateChallengeStepProgress(uid: string) {
+        this.getChallengeList()
+            .subscribe(allChallenges => {
+                this.getActiveChallenges()
+                    .map(listOfChallenges => {
+                        let challenges = [];
+
+                        if (!listOfChallenges) {
+                            return [];
+                        }
+                        listOfChallenges.forEach(activeChallenge => {
+                            if (!activeChallenge.pending_participants || activeChallenge.pending_participants
+                                    .indexOf(uid) == -1) {
+                                let isPresent = activeChallenge.participants.filter(participant => {
+                                    return participant.id === this._userService.user.auth.uid;
+                                }).length;
+
+                                if (isPresent) {
+                                    let matchingChallenge = allChallenges.find(challenge => {
+                                        return challenge.$key === activeChallenge.id
+                                    });
+                                    activeChallenge.type = matchingChallenge.type;
+                                    challenges.push(activeChallenge);
+                                }
+                            }
+                        });
+                        return challenges;
+                    })
+                    .subscribe(listOfChallenges => {
+                        listOfChallenges.forEach(userChallenge => {
+                            this._healthkitService.getChallengeSteps(userChallenge.start_time)
+                                .then(steps => {
+                                    userChallenge.participants.forEach((participant, index) => {
+                                        if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
+                                            this.af.database.object('/active_challenges/' +
+                                                userChallenge.$key + '/participants/' + index)
+                                                .update({
+                                                    progress: steps
+                                                });
+                                        }
+                                    })
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        });
+
+                    });
+            });
+
     }
 
 }

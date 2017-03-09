@@ -5,6 +5,7 @@ import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
 import {HealthKitService} from "../../providers/healthkit-service";
 import {LevelService} from "../../providers/level-service";
+import {ChallengeService} from "../../providers/challenge-service";
 
 @Component({
     selector: 'page-home',
@@ -26,10 +27,12 @@ export class HomePage implements OnInit {
                 private loadingCtrl: LoadingController,
                 private modalCtrl: ModalController,
                 private _healthKitService: HealthKitService,
+                private _challengeService: ChallengeService,
                 private _levelService: LevelService) {
     }
 
     ngOnInit() {
+
         let loader = this.loadingCtrl
             .create({
                 content: "Retrieving Profile..."
@@ -41,11 +44,13 @@ export class HomePage implements OnInit {
         this._statsService.getStats(this._userService.user.uid)
             .subscribe(userStats => {
                 this.stats = userStats;
-                let date = new Date();
+                this._challengeService.updateChallengeStepProgress(this._userService.user.uid);
 
-                this._healthKitService.getSteps(this.stats.last_update)
+
+                this._healthKitService.getDaySteps()
                     .then((result) => {
-                        this._statsService.updateCurrentSteps(this._userService.user.uid, result[0].value)
+                    console.log(result);
+                        this._statsService.updateCurrentSteps(this._userService.user.uid, result);
                     })
                     .catch((err) => {
                         console.log(err);

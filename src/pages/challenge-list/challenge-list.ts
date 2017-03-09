@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams, AlertController} from 'ionic-angular';
+import {NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import {ChallengeService} from "../../providers/challenge-service";
 import {FriendsService} from "../../providers/friends-service";
 
@@ -22,7 +22,8 @@ export class ChallengeListPage implements OnInit {
                 public navParams: NavParams,
                 private _challengeService: ChallengeService,
                 private _friendService: FriendsService,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController,
+                private loadingCtrl : LoadingController) {
     }
 
     ionViewDidLoad() {
@@ -34,6 +35,11 @@ export class ChallengeListPage implements OnInit {
     }
 
     challengeAlert(challenge: any) {
+        let loader = this.loadingCtrl
+            .create({
+                content: "Retrieving Friends..."
+            });
+        loader.present();
         this._friendService.getFriends()
             .subscribe((friends) => {
                 let alert = this.alertCtrl.create();
@@ -45,7 +51,8 @@ export class ChallengeListPage implements OnInit {
                         value: friend.$key
                     });
                 });
-
+                loader.dismiss()
+                    .catch((err)=>{})
                 alert.addButton({
                     text: 'Challenge Friends',
                     handler: data => {

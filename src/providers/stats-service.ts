@@ -23,6 +23,11 @@ export class StatsService {
         this.af.database.object('users/' + uid + '/fitness_stats')
             .update({current_steps: steps});
     }
+    updateLifetimeSteps(uid: string,steps: number){
+        console.log('steps', steps);
+        this.af.database.object('users/' + uid + '/fitness_stats')
+            .update({lifetime_steps: steps});
+    }
     updateDate(uid: string){
         this.af.database.object('users/' + uid + '/fitness_stats')
             .update({last_update: new Date()});

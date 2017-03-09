@@ -6,6 +6,7 @@ import {SettingsModal} from "../../modals/settings/settings";
 import {HealthKitService} from "../../providers/healthkit-service";
 import {LevelService} from "../../providers/level-service";
 import {ChallengeService} from "../../providers/challenge-service";
+import {AngularFire} from "angularfire2";
 
 @Component({
     selector: 'page-home',
@@ -28,38 +29,33 @@ export class HomePage implements OnInit {
                 private modalCtrl: ModalController,
                 private _healthKitService: HealthKitService,
                 private _challengeService: ChallengeService,
-                private _levelService: LevelService) {
-    }
-
-    ngOnInit() {
-
+                private _levelService: LevelService,
+                private af : AngularFire) {
         let loader = this.loadingCtrl
             .create({
                 content: "Retrieving Profile..."
             });
-
         loader.present();
-        this._statsService.updateDate(this._userService.user.uid);
-
         this._statsService.getStats(this._userService.user.uid)
             .subscribe(userStats => {
                 this.stats = userStats;
-                this._challengeService.updateChallengeStepProgress(this._userService.user.uid);
-
-
-                this._healthKitService.getDaySteps()
-                    .then((result) => {
-                    console.log('getDaySteps', result);
-                        this._statsService.updateCurrentSteps(this._userService.user.uid, result);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-
                 loader.dismiss()
                     .catch( err => console.warn("loader.dismiss()") );
             });
 
+        this._healthKitService.getDaySteps()
+            .then((result) => {
+                console.log('getDaySteps', result);
+                this._statsService.updateCurrentSteps(this._userService.user.uid, result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        this.updateLifetimeSteps();
+        this._challengeService.updateChallengeStepProgress(this._userService.user.uid);
+    }
+
+    ngOnInit() {
         this._levelService.getLevelData(this._userService.user.uid)
             .subscribe(levelData => {
                 this.level = levelData;
@@ -86,5 +82,18 @@ export class HomePage implements OnInit {
 
     loadProgress() {
 
+    }
+    updateLifetimeSteps(){
+        this._statsService.getStats(this._userService.user.uid).take(1)
+            .subscribe(userStats => {
+                this._healthKitService.getLifetimeSteps(userStats.last_update)
+                    .then((result) => {
+                        console.log('getLifeSteps', result);
+                        this._statsService.updateLifetimeSteps(this._userService.user.uid, result);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            });
     }
 }

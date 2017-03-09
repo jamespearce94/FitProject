@@ -40,16 +40,19 @@ export class CompeteInvitePage implements OnInit {
                                     .indexOf(this._userService.user.auth.uid) !== -1) {
 
                                 let matchingChallenge = allChallenges.find(challenge => {
+
                                     return challenge.$key === activeChallenge.id
                                 });
-
-                                challenges.push(Object.assign(activeChallenge, matchingChallenge));
+                                if(matchingChallenge) {
+                                    matchingChallenge.key = activeChallenge.$key;
+                                    challenges.push(Object.assign(activeChallenge, matchingChallenge));
+                                }
                             }
                         });
 
                         return challenges;
                     })
-                    .subscribe(newList => this.challengeList = newList);
+                    .subscribe(newList => {this.challengeList = newList; console.log(this.challengeList)});
             });
     }
 

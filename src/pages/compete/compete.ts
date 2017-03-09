@@ -60,6 +60,7 @@ export class CompetePage implements OnInit {
                         return challenges;
                     })
                     .subscribe(listOfChallenges => {
+                        console.log(listOfChallenges);
                         this.challengeList = listOfChallenges
                     });
             });

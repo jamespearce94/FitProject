@@ -23,7 +23,7 @@ export class ChallengeService {
     }
 
     acceptChallenge(challenge): firebase.Promise<any> {
-        return this.af.database.object('/active_challenges/' + challenge.$key)
+        return this.af.database.object('/active_challenges/' + challenge.key)
             .update({
                 pending_participants: challenge.pending_participants
                     .filter(p => p !== this._userService.user.auth.uid),
@@ -62,9 +62,9 @@ export class ChallengeService {
     }
 
     updateChallengeStepProgress(uid: string) {
-        this.getChallengeList()
+        this.getChallengeList().take(1)
             .subscribe(allChallenges => {
-                this.getActiveChallenges()
+                this.getActiveChallenges().take(1)
                     .map(listOfChallenges => {
                         let challenges = [];
 
@@ -75,6 +75,7 @@ export class ChallengeService {
                             if (!activeChallenge.pending_participants || activeChallenge.pending_participants
                                     .indexOf(uid) == -1) {
                                 let isPresent = activeChallenge.participants.filter(participant => {
+                                    console.log('before filter');
                                     return participant.id === this._userService.user.auth.uid;
                                 }).length;
 
@@ -84,7 +85,6 @@ export class ChallengeService {
                                     });
                                     activeChallenge.type = matchingChallenge.type;
                                     challenges.push(activeChallenge);
-                                    console.log(challenges);
                                 }
                             }
                         });
@@ -97,14 +97,29 @@ export class ChallengeService {
                                 .then(steps => {
                                     console.log('getChallengeSteps', steps);
                                     userChallenge.participants.forEach((participant, index) => {
-                                        debugger;
-                                        if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
-                                            this.af.database.object('/active_challenges/' +
-                                                userChallenge.$key + '/participants/' + index)
-                                                .update({
-                                                    progress: steps
-                                                });
+                                        let complete = steps >= userChallenge.completion;
+                                        switch(complete)
+                                        {
+                                            case false:
+                                                if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
+                                                    this.af.database.object('/active_challenges/' +
+                                                        userChallenge.$key + '/participants/' + index)
+                                                        .update({
+                                                            progress: steps
+                                                        });
+                                                }
+                                                break;
+                                            case true :
+                                                if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
+                                                    this.af.database.object('/active_challenges/' +
+                                                        userChallenge.$key + '/participants/' + index)
+                                                        .update({
+                                                            progress: steps,
+                                                            complete: complete
+                                                        });
+                                                }
                                         }
+
                                     })
                                 })
                                 .catch((err) => {

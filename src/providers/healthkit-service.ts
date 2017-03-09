@@ -25,7 +25,8 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getChallengeSteps(last_update: Date) {
+    getChallengeSteps(): Promise<any> {
+        let last_update = new Date();
         let queryObj = {
             'startDate': last_update,
             'endDate': new Date(),

@@ -93,7 +93,7 @@ export class ChallengeService {
                     .subscribe(listOfChallenges => {
                         console.log('subscribe');
                         listOfChallenges.forEach(userChallenge => {
-                            this._healthkitService.getChallengeSteps(userChallenge.last_update)//ToDo replace with start time
+                            this._healthkitService.getChallengeSteps()//ToDo replace with start time
                                 .then(steps => {
                                     console.log('getChallengeSteps', steps);
                                     userChallenge.participants.forEach((participant, index) => {

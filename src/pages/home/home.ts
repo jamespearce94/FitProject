@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
             });
         this.updateLifetimeSteps();
         this._challengeService.updateChallengeStepProgress(this._userService.user.uid);
+        this._statsService.updateDate(this._userService.user.uid);
     }
 
     ngOnInit() {
@@ -86,7 +87,7 @@ export class HomePage implements OnInit {
     updateLifetimeSteps(){
         this._statsService.getStats(this._userService.user.uid).take(1)
             .subscribe(userStats => {
-                this._healthKitService.getLifetimeSteps(userStats.last_update)
+                this._healthKitService.getLifetimeSteps(new Date())
                     .then((result) => {
                         console.log('getLifeSteps', result);
                         this._statsService.updateLifetimeSteps(this._userService.user.uid, result);

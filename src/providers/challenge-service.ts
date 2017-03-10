@@ -15,11 +15,11 @@ export class ChallengeService {
     }
 
     getChallengeList(): FirebaseListObservable<any> {
-        return this.af.database.list('/challenge_list')
+        return this.af.database.list('/challenge_list');
     }
 
     getActiveChallenges(): FirebaseListObservable<any> {
-        return this.af.database.list('/active_challenges')
+        return this.af.database.list('/active_challenges');
     }
 
     acceptChallenge(challenge): firebase.Promise<any> {

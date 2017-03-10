@@ -57,13 +57,13 @@ export class UserService {
                             current_weight: 0,
                             goal_weight: signupModel.goal,
                             height: 0,
-                            last_update: 'N/A',
+                            last_update: new Date(),
                             lifetime_walking_distance: 0,
                             lifetime_steps: 0,
                             lifetime_cycling_distance: 0,
                             name: signupModel.name,
                             signup_date: new Date()
-                        })
+                        });
                     this.af.database.object('users/' + result.uid + '/leveldata')
                         .set({
                             current_experience: 0,

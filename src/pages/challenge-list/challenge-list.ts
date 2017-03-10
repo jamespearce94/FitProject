@@ -35,14 +35,12 @@ export class ChallengeListPage implements OnInit {
     }
 
     challengeAlert(challenge: any) {
-        let loader = this.loadingCtrl
-            .create({
-                content: "Retrieving Friends..."
-            });
-        loader.present();
         this._friendService.getFriends()
-            .subscribe((friends) => {
+            .first()
+            .toPromise()
+            .then((friends) => {
                 let alert = this.alertCtrl.create();
+
                 alert.setTitle('Invite friends to ' + challenge.challenge_name);
                 friends.forEach((friend) => {
                     alert.addInput({
@@ -51,8 +49,7 @@ export class ChallengeListPage implements OnInit {
                         value: friend.$key
                     });
                 });
-                loader.dismiss()
-                    .catch((err)=>{})
+
                 alert.addButton({
                     text: 'Challenge Friends',
                     handler: data => {
@@ -62,9 +59,7 @@ export class ChallengeListPage implements OnInit {
                 });
                 alert.addButton('Cancel');
                 alert.present();
-            })
-
-
+            });
     }
 
 }

@@ -21,7 +21,8 @@ export class AuthenticationPage implements OnInit, OnDestroy {
         email: null,
         password: null,
         name: null,
-        goal: null
+        goal: null,
+        signupDate: null
     };
 
     private error : String = null;
@@ -51,6 +52,8 @@ export class AuthenticationPage implements OnInit, OnDestroy {
     }
 
     signup() {
+        this.signupModel.signupDate = new Date();
+        this.signupModel.signupDate.setHours(0,0,0);
         this._userService.signup(this.signupModel);
     }
 

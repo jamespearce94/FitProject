@@ -12,7 +12,8 @@ export class HealthKitService {
 
     getDaySteps(): Promise<any> {
         let endDate = new Date();
-        endDate.setDate(endDate.getDate() - 1);
+        endDate.setHours(0);
+        endDate.setMinutes(0);
 
         let queryObj = {
             'startDate': endDate,
@@ -51,6 +52,8 @@ export class HealthKitService {
     }
 
     getSignupDate(signupDate: Date) {
+        signupDate.setHours(0);
+        signupDate.setMinutes(0);
         let queryObj = {
             'startDate': signupDate,
             'endDate': new Date(),
@@ -63,7 +66,7 @@ export class HealthKitService {
     }
 
     getLifetimeSteps(date: Date): Promise <any>{
-
+        date.setHours(0,0,0);
                 let queryObj = {
                     'startDate': new Date(date),
                     'endDate': new Date(),

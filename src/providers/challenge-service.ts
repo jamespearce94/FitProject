@@ -106,7 +106,7 @@ export class ChallengeService {
                         listOfChallenges.forEach(userChallenge => {
 
                             //IF challenge is active and of type STEPS
-                            if (userChallenge.active && userChallenge.type === ChallengeType.STEPS) {
+                            if (userChallenge.active && userChallenge.start_time && userChallenge.type === ChallengeType.STEPS) {
                                 let participant = userChallenge.participants.find(participant => participant.id === uid);
                                 let index = userChallenge.participants.findIndex(participant => participant.id === uid);
 
@@ -115,7 +115,7 @@ export class ChallengeService {
                                     return;
                                 }
 
-                                this._healthkitService.getChallengeSteps()//ToDo replace with start time
+                                this._healthkitService.getChallengeSteps(moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
                                     .then(steps => {
                                         console.log('getChallengeSteps', steps);
 

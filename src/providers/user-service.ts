@@ -5,6 +5,7 @@ import {
     AngularFire, AngularFireAuth, FirebaseAuthState, FirebaseListObservable,
     FirebaseObjectObservable
 } from "angularfire2";
+import * as moment from "moment";
 
 @Injectable()
 export class UserService {
@@ -57,12 +58,12 @@ export class UserService {
                             current_weight: 0,
                             goal_weight: signupModel.goal,
                             height: 0,
-                            last_update: new Date(),
+                            last_update: moment().unix().valueOf(),
                             lifetime_walking_distance: 0,
                             lifetime_steps: 0,
                             lifetime_cycling_distance: 0,
                             name: signupModel.name,
-                            signup_date: new Date()
+                            signup_date: new Date().getTime()
                         });
                     this.af.database.object('users/' + result.uid + '/leveldata')
                         .set({

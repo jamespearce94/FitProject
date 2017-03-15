@@ -25,12 +25,7 @@ export class CompetePage implements OnInit {
                 private modalCtrl: ModalController,
                 private _challengeService: ChallengeService,
                 private _userService: UserService) {
-    }
 
-    ionViewDidLoad() {
-    }
-
-    ngOnInit() {
         this._challengeService.getChallengeList()
             .subscribe(allChallenges => {
                 this._challengeService.getActiveChallenges()
@@ -52,8 +47,12 @@ export class CompetePage implements OnInit {
                                     let matchingChallenge = allChallenges.find(challenge => {
                                         return challenge.$key === activeChallenge.id
                                     });
+                                    // debugger;
+                                    // if (isPresent.progress < matchingChallenge.completion) {//WTF is this logic mate?
+                                        challenges.push(Object.assign(activeChallenge, matchingChallenge));
+                                    // }
 
-                                    challenges.push(Object.assign(activeChallenge, matchingChallenge));
+
                                 }
                             }
                         });
@@ -66,6 +65,13 @@ export class CompetePage implements OnInit {
             });
     }
 
+    ionViewDidLoad() {
+    }
+
+    ngOnInit() {
+
+    }
+
     presentModal() {
         let modal = this.modalCtrl.create(SettingsModal);
         modal.present();
@@ -73,9 +79,5 @@ export class CompetePage implements OnInit {
 
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
-    }
-
-    viewChallenge( challenge ) : void {
-        this.modalCtrl.create( ViewChallengeModal, challenge).present();
     }
 }

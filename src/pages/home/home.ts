@@ -7,6 +7,7 @@ import {HealthKitService} from "../../providers/healthkit-service";
 import {LevelService} from "../../providers/level-service";
 import {ChallengeService} from "../../providers/challenge-service";
 import {AngularFire} from "angularfire2";
+import * as moment from "moment";
 
 @Component({
     selector: 'page-home',
@@ -31,14 +32,18 @@ export class HomePage implements OnInit {
                 private _challengeService: ChallengeService,
                 private _levelService: LevelService,
                 private af : AngularFire) {
+
         let loader = this.loadingCtrl
             .create({
                 content: "Retrieving Profile..."
             });
         loader.present();
+
         this._statsService.getStats(this._userService.user.uid)
             .subscribe(userStats => {
                 this.stats = userStats;
+                console.debug(moment(userStats.signup_date)
+                    .format("dddd, MMMM Do YYYY, h:mm:ss a"));
                 loader.dismiss()
                     .catch( err => console.warn("loader.dismiss()") );
             });
@@ -51,6 +56,7 @@ export class HomePage implements OnInit {
             .catch((err) => {
                 console.log(err);
             });
+
         this.updateLifetimeSteps();
         this._challengeService.updateChallengeStepProgress(this._userService.user.uid);
         this._statsService.updateDate(this._userService.user.uid);

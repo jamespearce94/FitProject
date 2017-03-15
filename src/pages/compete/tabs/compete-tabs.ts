@@ -3,6 +3,7 @@ import {CompetePage} from "../compete";
 import {CompeteInvitePage} from "../invite/invite";
 import {ChallengeService} from "../../../providers/challenge-service";
 import {UserService} from "../../../providers/user-service";
+import {CompletedChallengesPage} from "../completed-challenges/completed-challenges";
 
 @Component({
     templateUrl: 'compete-tabs.html'
@@ -10,6 +11,7 @@ import {UserService} from "../../../providers/user-service";
 export class CompeteTabsPage implements OnInit {
 
     tab1Root: any = CompetePage;
+    tab2Root: any = CompletedChallengesPage;
     tab3Root: any = CompeteInvitePage;
 
     params = {

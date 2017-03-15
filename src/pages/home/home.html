@@ -5,7 +5,7 @@
                 <ion-icon name="menu"></ion-icon>
             </button>
         </ion-buttons>
-        <ion-title>Welcome {{_userService.user.auth.displayName}}</ion-title>
+        <ion-title>Welcome {{_userService.user ? _userService.user.auth.displayName : ''}}</ion-title>
 
         <ion-buttons end>
             <button ion-button menuToggle="right" icon-only (click)="presentModal()">

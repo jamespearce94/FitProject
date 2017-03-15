@@ -4,14 +4,21 @@ import 'rxjs/add/operator/map';
 import {FirebaseListObservable, AngularFire} from "angularfire2";
 import {UserService} from "./user-service";
 import {HealthKitService} from "./healthkit-service";
+import * as moment from "moment";
+import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal";
+import {ModalController} from "ionic-angular";
+import {LevelService} from "./level-service";
+import {ChallengeType} from "../Classes/ChallengeType";
 
 @Injectable()
 export class ChallengeService {
 
     constructor(public http: Http,
                 private af: AngularFire,
+                private modalCtrl: ModalController,
                 private _userService: UserService,
-                private _healthkitService: HealthKitService) {
+                private _healthkitService: HealthKitService,
+                private _levelService: LevelService) {
     }
 
     getChallengeList(): FirebaseListObservable<any> {
@@ -36,6 +43,10 @@ export class ChallengeService {
 
     }
 
+    viewChallenge(challenge): void {
+        this.modalCtrl.create(ViewChallengeModal, challenge).present();
+    }
+
     createChallenge(participants: Array<any>, challenge: any) {
         let formattedParticipants = participants
             .map(participant => {
@@ -53,7 +64,7 @@ export class ChallengeService {
         this.af.database.list('/active_challenges')
             .push({
                 "active": false,
-                "start_time": null,
+                "start_time": moment().unix().valueOf(),
                 "id": challenge.$key,
                 "host": this._userService.user.auth.displayName,
                 "pending_participants": participants,
@@ -93,43 +104,43 @@ export class ChallengeService {
                     .subscribe(listOfChallenges => {
                         console.log('subscribe');
                         listOfChallenges.forEach(userChallenge => {
-                            this._healthkitService.getChallengeSteps()//ToDo replace with start time
-                                .then(steps => {
-                                    console.log('getChallengeSteps', steps);
-                                    userChallenge.participants.forEach((participant, index) => {
-                                        let complete = steps >= userChallenge.completion;
-                                        switch(complete)
-                                        {
-                                            case false:
-                                                if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
-                                                    this.af.database.object('/active_challenges/' +
-                                                        userChallenge.$key + '/participants/' + index)
-                                                        .update({
-                                                            progress: steps
-                                                        });
-                                                }
-                                                break;
-                                            case true :
-                                                if (uid == participant.id && userChallenge.type == "Steps" && userChallenge.active) {
-                                                    this.af.database.object('/active_challenges/' +
-                                                        userChallenge.$key + '/participants/' + index)
-                                                        .update({
-                                                            progress: steps,
-                                                            complete: complete
-                                                        });
-                                                }
+
+                            //IF challenge is active and of type STEPS
+                            if (userChallenge.active && userChallenge.type === ChallengeType.STEPS) {
+                                let participant = userChallenge.participants.find(participant => participant.id === uid);
+                                let index = userChallenge.participants.findIndex(participant => participant.id === uid);
+
+                                //If the user has previously completed it then return;
+                                if (participant.complete) {
+                                    return;
+                                }
+
+                                this._healthkitService.getChallengeSteps()//ToDo replace with start time
+                                    .then(steps => {
+                                        console.log('getChallengeSteps', steps);
+
+                                        let isComplete = steps >= userChallenge.completion;
+
+                                        this.af.database.object('/active_challenges/' +
+                                            userChallenge.$key + '/participants/' + index)
+                                            .update({
+                                                progress: steps,
+                                                complete: isComplete
+                                            });
+
+                                        if (isComplete) {
+                                            this._levelService.getLevelData(uid).take(1)
+                                                .subscribe(levelData => {
+                                                    levelData.update({
+                                                        current_experience: levelData.current_experience += userChallenge.xp
+                                                    })
+                                                });
                                         }
-
-                                    })
-                                })
-                                .catch((err) => {
-                                    console.log(err);
-                                });
+                                    }).catch( err => console.log(err));
+                            }
                         });
+                    })
 
-                    });
             });
-
     }
-
 }

@@ -27,6 +27,7 @@ import {ChallengeListPage} from "../pages/challenge-list/challenge-list";
 import {ChallengeIdFilter} from "../filters/challenge.id.filter";
 import {CompeteInvitePage} from "../pages/compete/invite/invite";
 import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal";
+import {CompletedChallengesPage} from "../pages/compete/completed-challenges/completed-challenges";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -60,7 +61,8 @@ const firebaseAuthConfig = {
         ProgressBarComponent,
         ChallengeListPage,
         ChallengeIdFilter,
-        ViewChallengeModal
+        ViewChallengeModal,
+        CompletedChallengesPage
     ],
     imports: [
         IonicModule.forRoot(MyApp, {tabsPlacement: 'top'}),
@@ -84,7 +86,8 @@ const firebaseAuthConfig = {
         UserSearchPage,
         FriendRequestsPage,
         ChallengeListPage,
-        ViewChallengeModal
+        ViewChallengeModal,
+        CompletedChallengesPage
     ],
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},

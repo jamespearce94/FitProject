@@ -19,12 +19,7 @@ export class CompeteInvitePage implements OnInit {
                 private _userService: UserService) {
 
         this.challengeList = this.navParams.data.pending;
-    }
 
-    ionViewDidLoad() {
-    }
-
-    ngOnInit() {
         this._challengeService.getChallengeList()
             .subscribe(allChallenges => {
                 this._challengeService.getActiveChallenges()
@@ -52,8 +47,14 @@ export class CompeteInvitePage implements OnInit {
 
                         return challenges;
                     })
-                    .subscribe(newList => {this.challengeList = newList; console.log(this.challengeList)});
+                    .subscribe(newList => {this.challengeList = newList;});
             });
+    }
+
+    ionViewDidLoad() {
+    }
+
+    ngOnInit() {
     }
 
     presentModal() {

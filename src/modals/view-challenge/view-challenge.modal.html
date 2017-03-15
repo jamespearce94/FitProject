@@ -42,11 +42,15 @@
 
     <ion-spinner name="bubbles" *ngIf="loading"></ion-spinner>
 
-    <ion-card *ngFor="let participant of challenge.participants">
+    <ion-card *ngFor="let participant of challenge.participants || orderByChild">
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="trophy"></ion-icon>
-        <h2>{{participant.fitness_stats.name}}</h2>
+        <h2>{{participant.fitness_stats.name}} <i *ngIf="participant.percentage == 100 && !loading"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
         <p style="white-space: normal"></p>
+      </ion-item>
+      <ion-item *ngIf="participant.percentage == 100 && !loading">
+        <ion-icon item-left name="stopwatch"></ion-icon>
+        <h2>5 Days</h2>
       </ion-item>
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="flash"></ion-icon>

@@ -30,6 +30,6 @@ export class StatsService {
     }
     updateDate(uid: string){
         this.af.database.object('users/' + uid + '/fitness_stats')
-            .update({last_update: new Date()});
+            .update({last_update: new Date().getTime()});
     }
 }

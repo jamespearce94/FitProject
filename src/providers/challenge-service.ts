@@ -72,7 +72,7 @@ export class ChallengeService {
             });
     }
 
-    updateChallengeStepProgress(uid: string) {
+    updateChallengeProgress(uid: string) {
         this.getChallengeList().take(1)
             .subscribe(allChallenges => {
                 this.getActiveChallenges().take(1)
@@ -82,6 +82,7 @@ export class ChallengeService {
                         if (!listOfChallenges) {
                             return [];
                         }
+
                         listOfChallenges.forEach(activeChallenge => {
                             if (!activeChallenge.pending_participants || activeChallenge.pending_participants
                                     .indexOf(uid) == -1) {
@@ -106,7 +107,7 @@ export class ChallengeService {
                         listOfChallenges.forEach(userChallenge => {
 
                             //IF challenge is active and of type STEPS
-                            if (userChallenge.active && userChallenge.start_time && userChallenge.type === ChallengeType.STEPS) {
+                            if (userChallenge.active && userChallenge.start_time) {
                                 let participant = userChallenge.participants.find(participant => participant.id === uid);
                                 let index = userChallenge.participants.findIndex(participant => participant.id === uid);
 
@@ -115,87 +116,17 @@ export class ChallengeService {
                                     return;
                                 }
 
-                                this._healthkitService.getChallengeSteps(moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
-                                    .then(steps => {
-                                        console.log('getChallengeSteps', steps);
+                                this._healthkitService
+                                    .getChallengeMetrics(userChallenge.type, moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
+                                    .then(metricValue => {
+                                        console.log('getChallengeSteps', metricValue);
 
-                                        let isComplete = steps >= userChallenge.completion;
-
-                                        this.af.database.object('/active_challenges/' +
-                                            userChallenge.$key + '/participants/' + index)
-                                            .update({
-                                                progress: steps,
-                                                complete: isComplete
-                                            });
-
-                                        if (isComplete) {
-                                            this._levelService.getLevelData(uid).take(1)
-                                                .subscribe(levelData => {
-                                                    levelData.update({
-                                                        current_experience: levelData.current_experience += userChallenge.xp
-                                                    })
-                                                });
-                                        }
-                                    }).catch( err => console.log(err));
-                            }
-                        });
-                    })
-
-            });
-    }
-
-    updateChallengeCalorieProgress(uid: string) {
-        this.getChallengeList().take(1)
-            .subscribe(allChallenges => {
-                this.getActiveChallenges().take(1)
-                    .map(listOfChallenges => {
-                        let challenges = [];
-
-                        if (!listOfChallenges) {
-                            return [];
-                        }
-                        listOfChallenges.forEach(activeChallenge => {
-                            if (!activeChallenge.pending_participants || activeChallenge.pending_participants
-                                    .indexOf(uid) == -1) {
-                                let isPresent = activeChallenge.participants.filter(participant => {
-                                    return participant.id === this._userService.user.auth.uid;
-                                }).length;
-
-                                if (isPresent) {
-                                    let matchingChallenge = allChallenges.find(challenge => {
-                                        return challenge.$key === activeChallenge.id
-                                    });
-                                    activeChallenge.type = matchingChallenge.type;
-                                    challenges.push(activeChallenge);
-                                }
-                            }
-                        });
-                        return challenges;
-                    })
-                    .subscribe(listOfChallenges => {
-                        console.log('subscribe');
-                        listOfChallenges.forEach(userChallenge => {
-
-                            //IF challenge is active and of type Calories
-                            if (userChallenge.active && userChallenge.start_time && userChallenge.type === ChallengeType.CALORIES) {
-                                let participant = userChallenge.participants.find(participant => participant.id === uid);
-                                let index = userChallenge.participants.findIndex(participant => participant.id === uid);
-
-                                //If the user has previously completed it then return;
-                                if (participant.complete) {
-                                    return;
-                                }
-
-                                this._healthkitService.getChallengeCalories(moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
-                                    .then(calories => {
-                                        console.log('getChallengeCalories', calories);
-
-                                        let isComplete = calories >= userChallenge.completion;
+                                        let isComplete = metricValue >= userChallenge.completion;
 
                                         this.af.database.object('/active_challenges/' +
                                             userChallenge.$key + '/participants/' + index)
                                             .update({
-                                                progress: calories,
+                                                progress: metricValue,
                                                 complete: isComplete
                                             });
 

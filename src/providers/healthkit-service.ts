@@ -3,6 +3,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Health} from "ionic-native";
 import {AngularFire} from "angularfire2";
+import {ChallengeType} from "../Classes/ChallengeType";
 
 @Injectable()
 export class HealthKitService {
@@ -26,25 +27,31 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getChallengeSteps(challengeStart: Date): Promise<any> {
+    /**
+     *
+     * @param metricType
+     * @param startDate
+     * @return {Promise<any>}
+     */
+    getChallengeMetrics(metricType: any, startDate: Date): Promise<any> {
         let queryObj = {
-            'startDate': challengeStart,
+            'startDate': startDate,
             'endDate': new Date(),
-            'dataType': 'steps',
+            'dataType': '',
             'bucket': 'day',
         };
 
-        return Health.queryAggregated(queryObj)
-            .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
-    }
+        switch (metricType) {
+            case ChallengeType.STEPS:{
+                queryObj.dataType = 'steps';
+                break;
+            }
+            case ChallengeType.CALORIES:{
+                queryObj.dataType = 'calories.active';
+                break;
+            }
+        }
 
-    getChallengeCalories(challengeStart: Date): Promise<any> {
-        let queryObj = {
-            'startDate': challengeStart,
-            'endDate': new Date(),
-            'dataType': 'calories.active',
-            'bucket': 'day',
-        };
         return Health.queryAggregated(queryObj)
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
@@ -63,17 +70,17 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getLifetimeSteps(date: Date): Promise <any>{
-        date.setHours(0,0,0);
-                let queryObj = {
-                    'startDate': new Date(date),
-                    'endDate': new Date(),
-                    'dataType': 'steps',
-                    'bucket': 'day',
-                };
+    getLifetimeSteps(date: Date): Promise <any> {
+        date.setHours(0, 0, 0);
+        let queryObj = {
+            'startDate': new Date(date),
+            'endDate': new Date(),
+            'dataType': 'steps',
+            'bucket': 'day',
+        };
 
-                return Health.queryAggregated(queryObj)
-                    .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
+        return Health.queryAggregated(queryObj)
+            .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
 
 
     }

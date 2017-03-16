@@ -24,9 +24,10 @@ export class ChallengeService {
                 private _userService: UserService,
                 private _healthkitService: HealthKitService) {
 
-        this.getChallengeList().take(1)
+        this.getChallengeList()
             .subscribe(allChallenges => {
-                this.getActiveChallenges().take(1)
+                this.challenges =[];
+                this.getActiveChallenges()
                     .map(listOfChallenges => {
                         let challenges = [];
 
@@ -55,7 +56,7 @@ export class ChallengeService {
                     })
                     .subscribe(list => {
                         list.forEach(challenge => {
-                            // console.log(challenge);
+                            console.log('updating challenge list');
                             switch (challenge.type) {
                                 case ChallengeType.STEPS: {
                                     this.challenges.push(new StepsChallenge(challenge,
@@ -93,7 +94,7 @@ export class ChallengeService {
                 pending_participants: challenge.pending_participants
                     .filter(p => p !== this._userService.user.auth.uid),
                 active: challenge.pending_participants.length === 1,
-                start_time: challenge.pending_participants.length ? new Date() : null
+                start_time: challenge.pending_participants.length ? moment().unix().valueOf() : null
             });
     }
 

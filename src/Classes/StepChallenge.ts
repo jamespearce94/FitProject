@@ -40,4 +40,10 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                 };
             });
     }
+    getChallengeXP(): number{
+        return this.xp;
+    }
+    getActiveStatus(): boolean{
+        return this.active;
+    }
 }

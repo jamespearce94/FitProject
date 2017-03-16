@@ -132,11 +132,25 @@ export class ChallengeService {
 
 
     updateChallengeProgress() {
-        this.challenges.forEach(challenge => {
+        this.challenges.forEach((challenge => {
+            if (challenge.getActiveStatus()) {
             challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
-                .then(result => this.af.database.object(result.url).update(result.data))
-                .catch( err => console.log(err));
-        });
+                .then(result => {
+                    console.log(result.data);
+                    this.af.database.object(result.url).update(result.data);
+                    if (result.addXP) {
+                        this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
+                            .update({
+                                current_experience: challenge.getChallengeXP(),
+                                complete_date: moment().unix().valueOf()
+                            });
+                    }
+                })
+                .catch(err => console.log(err));
+            }
+        }));
+    }
+}
         //
         //
         // this.getChallengeList().take(1)
@@ -210,5 +224,5 @@ export class ChallengeService {
         //             })
         //
         //     });
-    }
-}
+
+

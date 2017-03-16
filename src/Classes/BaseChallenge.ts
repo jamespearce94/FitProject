@@ -33,4 +33,8 @@ export class BaseChallenge {
         this.key = challengeObj.key;
         this.active = challengeObj.active;
     }
+
+    getChallengeXP(): number {
+        return this.xp;
+    }
 }

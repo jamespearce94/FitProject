@@ -30,11 +30,18 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
 
                 return {
                     url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                    addXP : isComplete && !this.isComplete,
                     data: {
                         progress: metricValue,
                         complete: isComplete
                     }
                 };
             });
+    }
+    getChallengeXP(): number{
+        return this.xp;
+    }
+    getActiveStatus(): boolean {
+        return this.active;
     }
 }

@@ -1,7 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import {UserService} from "../../providers/user-service";
+import * as moment from "moment";
 import {HomePage} from "../home/home";
+import {NavController} from "ionic-angular";
+import {UserService} from "../../providers/user-service";
+import {OnInit, OnDestroy, Component} from "@angular/core";
 
 @Component({
     selector: 'page-authentication',
@@ -52,8 +53,7 @@ export class AuthenticationPage implements OnInit, OnDestroy {
     }
 
     signup() {
-        this.signupModel.signupDate = new Date();
-        this.signupModel.signupDate.setHours(0,0,0);
+        this.signupModel.signupDate = moment().unix().valueOf();
         this._userService.signup(this.signupModel);
     }
 

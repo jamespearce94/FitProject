@@ -22,9 +22,16 @@ export class ViewChallengeModal implements OnInit {
         this._userService.getUserList()
             .subscribe( users => {
                 this.challenge.participants.forEach( participant => {
-                    let user = users.find( user => user.$key === participant.id );
-                    participant.percentage = Math.round((participant.progress / this.challenge.completion)*100);
+                    if( participant.progress )
+                    {
+                        participant.percentage = Math.round((participant.progress / this.challenge.completion)*100);
+                    }else {
+                        participant.percentage = 0;
+                    }
+
                     participant.percentage = participant.percentage <= 100 ? participant.percentage : 100;
+
+                    let user = users.find( user => user.$key === participant.id );
                     Object.assign(participant, user);
                 });
                 this.loading = false;

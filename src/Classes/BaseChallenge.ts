@@ -1,0 +1,36 @@
+import {ChallengeType} from "./ChallengeType";
+import * as moment from "moment";
+
+
+export class BaseChallenge {
+
+    protected type : ChallengeType;
+    protected name : string;
+    protected id : string;
+    protected completion : number;
+    protected description :  string;
+    protected image_url : string;
+    protected xp : number;
+    protected participants : Array<any> = [];
+    protected start_time : Date;
+    protected host : string;
+    protected key : string;
+    protected active : boolean;
+    protected uid : any;
+
+    constructor(challengeObj, type, uid) {
+        this.uid = uid;
+        this.id = challengeObj.id;
+        this.name = challengeObj.challenge_name;
+        this.type = type;
+        this.completion = challengeObj.completion;
+        this.description = challengeObj.description;
+        this.image_url = challengeObj.image_url;
+        this.xp = challengeObj.xp;
+        this.participants = challengeObj.participants;
+        this.start_time =  moment.utc(challengeObj.start_time).toDate();
+        this.host = challengeObj.host;
+        this.key = challengeObj.key;
+        this.active = challengeObj.active;
+    }
+}

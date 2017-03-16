@@ -25,7 +25,7 @@
 
 
 <ion-content no-padding>
-  <ion-card *ngFor="let challenge of completedChallenges" (click)="_challengeService.viewChallenge(challenge)">
+  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.viewChallenge(challenge)">
     <img src="{{challenge.image_url}}"/>
     <ion-item>
       <ion-icon item-left name="trophy"></ion-icon>

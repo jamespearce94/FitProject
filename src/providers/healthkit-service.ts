@@ -73,7 +73,7 @@ export class HealthKitService {
     getLifetimeSteps(date: Date): Promise <any> {
         date.setHours(0, 0, 0);
         let queryObj = {
-            'startDate': new Date(date),
+            'startDate': date,
             'endDate': new Date(),
             'dataType': 'steps',
             'bucket': 'day',

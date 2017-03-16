@@ -9,16 +9,74 @@ import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal"
 import {ModalController} from "ionic-angular";
 import {LevelService} from "./level-service";
 import {ChallengeType} from "../Classes/ChallengeType";
+import {IChallenge} from "../Classes/IChallenge";
+import {StepsChallenge} from "../Classes/StepChallenge";
+import {CaloriesChallenge} from "../Classes/CaloriesChallenge";
 
 @Injectable()
 export class ChallengeService {
+
+    public challenges: Array<IChallenge> = [];
 
     constructor(public http: Http,
                 private af: AngularFire,
                 private modalCtrl: ModalController,
                 private _userService: UserService,
-                private _healthkitService: HealthKitService,
-                private _levelService: LevelService) {
+                private _healthkitService: HealthKitService) {
+
+        this.getChallengeList().take(1)
+            .subscribe(allChallenges => {
+                this.getActiveChallenges().take(1)
+                    .map(listOfChallenges => {
+                        let challenges = [];
+
+                        if (!listOfChallenges) {
+                            return [];
+                        }
+
+                        listOfChallenges.forEach(activeChallenge => {
+                            if (!activeChallenge.pending_participants || activeChallenge.pending_participants
+                                    .indexOf(this._userService.user.uid) == -1) {
+                                let isPresent = activeChallenge.participants.filter(participant => {
+                                    return participant.id === this._userService.user.auth.uid;
+                                }).length;
+
+                                if (isPresent) {
+                                    let matchingChallenge = allChallenges.find(challenge => {
+                                        return challenge.$key === activeChallenge.id
+                                    });
+                                    activeChallenge.key = activeChallenge.$key;
+                                    Object.assign(activeChallenge, matchingChallenge);
+                                    challenges.push(activeChallenge);
+                                }
+                            }
+                        });
+                        return challenges;
+                    })
+                    .subscribe(list => {
+                        list.forEach(challenge => {
+                            // console.log(challenge);
+                            switch (challenge.type) {
+                                case ChallengeType.STEPS: {
+                                    this.challenges.push(new StepsChallenge(challenge,
+                                        ChallengeType.STEPS, this._userService.user.uid));
+                                    break;
+                                }
+                                case ChallengeType.CALORIES: {
+                                    this.challenges.push(new CaloriesChallenge(challenge,
+                                        ChallengeType.CALORIES, this._userService.user.uid));
+                                    break;
+                                }
+                                default: {
+                                    // this.challenges.push(new CaloriesChallenge(Object.assign(challenge, {type: 'Steps'})));
+                                    // break;
+                                }
+                            }
+                        });
+
+                        this.updateChallengeProgress();
+                    });
+            });
     }
 
     getChallengeList(): FirebaseListObservable<any> {
@@ -72,77 +130,85 @@ export class ChallengeService {
             });
     }
 
-    updateChallengeProgress(uid: string) {
-        this.getChallengeList().take(1)
-            .subscribe(allChallenges => {
-                this.getActiveChallenges().take(1)
-                    .map(listOfChallenges => {
-                        let challenges = [];
 
-                        if (!listOfChallenges) {
-                            return [];
-                        }
-
-                        listOfChallenges.forEach(activeChallenge => {
-                            if (!activeChallenge.pending_participants || activeChallenge.pending_participants
-                                    .indexOf(uid) == -1) {
-                                let isPresent = activeChallenge.participants.filter(participant => {
-                                    console.log('before filter');
-                                    return participant.id === this._userService.user.auth.uid;
-                                }).length;
-
-                                if (isPresent) {
-                                    let matchingChallenge = allChallenges.find(challenge => {
-                                        return challenge.$key === activeChallenge.id
-                                    });
-                                    activeChallenge.type = matchingChallenge.type;
-                                    challenges.push(activeChallenge);
-                                }
-                            }
-                        });
-                        return challenges;
-                    })
-                    .subscribe(listOfChallenges => {
-                        console.log('subscribe');
-                        listOfChallenges.forEach(userChallenge => {
-
-                            //IF challenge is active and of type STEPS
-                            if (userChallenge.active && userChallenge.start_time) {
-                                let participant = userChallenge.participants.find(participant => participant.id === uid);
-                                let index = userChallenge.participants.findIndex(participant => participant.id === uid);
-
-                                //If the user has previously completed it then return;
-                                if (participant.complete) {
-                                    return;
-                                }
-
-                                this._healthkitService
-                                    .getChallengeMetrics(userChallenge.type, moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
-                                    .then(metricValue => {
-                                        console.log('getChallengeSteps', metricValue);
-
-                                        let isComplete = metricValue >= userChallenge.completion;
-
-                                        this.af.database.object('/active_challenges/' +
-                                            userChallenge.$key + '/participants/' + index)
-                                            .update({
-                                                progress: metricValue,
-                                                complete: isComplete
-                                            });
-
-                                        if (isComplete) {
-                                            this._levelService.getLevelData(uid).take(1)
-                                                .subscribe(levelData => {
-                                                    levelData.update({
-                                                        current_experience: levelData.current_experience += userChallenge.xp
-                                                    })
-                                                });
-                                        }
-                                    }).catch( err => console.log(err));
-                            }
-                        });
-                    })
-
-            });
+    updateChallengeProgress() {
+        this.challenges.forEach(challenge => {
+            challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
+                .then(result => this.af.database.object(result.url).update(result.data))
+                .catch( err => console.log(err));
+        });
+        //
+        //
+        // this.getChallengeList().take(1)
+        //     .subscribe(allChallenges => {
+        //         this.getActiveChallenges().take(1)
+        //             .map(listOfChallenges => {
+        //                 let challenges = [];
+        //
+        //                 if (!listOfChallenges) {
+        //                     return [];
+        //                 }
+        //
+        //                 listOfChallenges.forEach(activeChallenge => {
+        //                     if (!activeChallenge.pending_participants || activeChallenge.pending_participants
+        //                             .indexOf(uid) == -1) {
+        //                         let isPresent = activeChallenge.participants.filter(participant => {
+        //                             console.log('before filter');
+        //                             return participant.id === this._userService.user.auth.uid;
+        //                         }).length;
+        //
+        //                         if (isPresent) {
+        //                             let matchingChallenge = allChallenges.find(challenge => {
+        //                                 return challenge.$key === activeChallenge.id
+        //                             });
+        //                             activeChallenge.type = matchingChallenge.type;
+        //                             challenges.push(activeChallenge);
+        //                         }
+        //                     }
+        //                 });
+        //                 return challenges;
+        //             })
+        //             .subscribe(listOfChallenges => {
+        //                 console.log('subscribe');
+        //                 listOfChallenges.forEach(userChallenge => {
+        //
+        //                     //IF challenge is active and of type STEPS
+        //                     if (userChallenge.active && userChallenge.start_time) {
+        //                         let participant = userChallenge.participants.find(participant => participant.id === uid);
+        //                         let index = userChallenge.participants.findIndex(participant => participant.id === uid);
+        //
+        //                         //If the user has previously completed it then return;
+        //                         if (participant.complete) {
+        //                             return;
+        //                         }
+        //
+        //                         this._healthkitService
+        //                             .getChallengeMetrics(userChallenge.type, moment.utc(userChallenge.start_time).toDate())//ToDo replace with start time
+        //                             .then(metricValue => {
+        //                                 console.log('getChallengeSteps', metricValue);
+        //
+        //                                 let isComplete = metricValue >= userChallenge.completion;
+        //
+        //                                 this.af.database.object('/active_challenges/' +
+        //                                     userChallenge.$key + '/participants/' + index)
+        //                                     .update({
+        //                                         progress: metricValue,
+        //                                         complete: isComplete
+        //                                     });
+        //
+        //                                 if (isComplete) {
+        //                                     this._levelService.getLevelData(uid).take(1)
+        //                                         .subscribe(levelData => {
+        //                                             levelData.update({
+        //                                                 current_experience: levelData.current_experience += userChallenge.xp
+        //                                             })
+        //                                         });
+        //                                 }
+        //                             }).catch( err => console.log(err));
+        //                     }
+        //                 });
+        //             })
+        //
+        //     });
     }
 }

@@ -45,10 +45,10 @@
     <ion-card *ngFor="let participant of challenge.participants || orderByChild">
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="trophy"></ion-icon>
-        <h2>{{participant.fitness_stats.name}} <i *ngIf="participant.percentage == 100 && !loading"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
+        <h2>{{participant.fitness_stats.name}} <i *ngIf="challenge.isComplete"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
         <p style="white-space: normal"></p>
       </ion-item>
-      <ion-item *ngIf="participant.percentage == 100 && !loading">
+      <ion-item *ngIf="challenge.isComplete">
         <ion-icon item-left name="stopwatch"></ion-icon>
         <h2>5 Days</h2>
       </ion-item>

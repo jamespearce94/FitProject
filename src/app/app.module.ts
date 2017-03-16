@@ -28,6 +28,7 @@ import {ChallengeIdFilter} from "../filters/challenge.id.filter";
 import {CompeteInvitePage} from "../pages/compete/invite/invite";
 import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal";
 import {CompletedChallengesPage} from "../pages/compete/completed-challenges/completed-challenges";
+import {CurrentFilter} from "../filters/current.challenge.filter";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -61,6 +62,7 @@ const firebaseAuthConfig = {
         ProgressBarComponent,
         ChallengeListPage,
         ChallengeIdFilter,
+        CurrentFilter,
         ViewChallengeModal,
         CompletedChallengesPage
     ],
@@ -98,7 +100,8 @@ const firebaseAuthConfig = {
         HealthKitService,
         UserNameFilter,
         LevelService,
-        ChallengeIdFilter
+        ChallengeIdFilter,
+        CurrentFilter
     ]
 })
 export class AppModule {

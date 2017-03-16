@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
             });
 
         this.updateLifetimeSteps();
-        this._challengeService.updateChallengeProgress(this._userService.user.uid);
+        // this._challengeService.updateChallengeProgress(this._userService.user.uid);
         this._statsService.updateDate(this._userService.user.uid);
     }
 

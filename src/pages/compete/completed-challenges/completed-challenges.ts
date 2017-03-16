@@ -14,7 +14,6 @@ import {ChallengeService} from "../../../providers/challenge-service";
     templateUrl: 'completed-challenges.html'
 })
 export class CompletedChallengesPage implements OnInit {
-    completedChallenges = [];
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
@@ -23,42 +22,7 @@ export class CompletedChallengesPage implements OnInit {
     }
 
     ngOnInit() {
-        this._challengeService.getChallengeList()
-            .subscribe(allChallenges => {
 
-                this._challengeService.getActiveChallenges()
-                    .map(listOfChallenges => {
-                        let challenges = [];
-
-                        if (!listOfChallenges) {
-                            return [];
-                        }
-
-                        listOfChallenges.forEach(activeChallenge => {
-                            if (!activeChallenge.pending_participants || activeChallenge.pending_participants
-                                    .indexOf(this._userService.user.auth.uid) == -1) {
-                                let userFound = activeChallenge.participants.find(participant => {
-                                    return participant.id === this._userService.user.auth.uid;
-                                });
-
-                                if (userFound) {
-                                    let matchingChallenge = allChallenges.find(challenge => {
-                                        return challenge.$key === activeChallenge.id
-                                    });
-
-                                    if (userFound.progress >= matchingChallenge.completion) {
-                                        challenges.push(Object.assign(activeChallenge, matchingChallenge));
-                                    }
-                                }
-                            }
-                        });
-
-                        return challenges;
-                    })
-                    .subscribe(listOfChallenges => {
-                        this.completedChallenges = listOfChallenges
-                    });
-            });
     }
 
     ionViewDidLoad() {

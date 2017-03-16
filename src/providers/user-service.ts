@@ -63,7 +63,7 @@ export class UserService {
                             lifetime_steps: 0,
                             lifetime_cycling_distance: 0,
                             name: signupModel.name,
-                            signup_date: new Date().getTime()
+                            signup_date: moment().unix().valueOf()
                         });
                     this.af.database.object('users/' + result.uid + '/leveldata')
                         .set({

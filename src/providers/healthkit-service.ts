@@ -26,10 +26,9 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getChallengeSteps(): Promise<any> {
-        let last_update = new Date();
+    getChallengeSteps(challengeStart: Date): Promise<any> {
         let queryObj = {
-            'startDate': last_update,
+            'startDate': challengeStart,
             'endDate': new Date(),
             'dataType': 'steps',
             'bucket': 'day',
@@ -39,12 +38,11 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getChallengeCalories(): Promise<any> {
-        let last_update = new Date();
+    getChallengeCalories(challengeStart: Date): Promise<any> {
         let queryObj = {
-            'startDate': last_update,
+            'startDate': challengeStart,
             'endDate': new Date(),
-            'dataType': 'calories',
+            'dataType': 'calories.active',
             'bucket': 'day',
         };
         return Health.queryAggregated(queryObj)

@@ -36,7 +36,7 @@ export class MyApp {
             {
                 Health.isAvailable()
                     .then( (isAvailable) => {
-                        let permissions = ['steps'];
+                        let permissions = ['steps','calories','calories.active'];
 
                         Health.requestAuthorization( permissions )
                             .then( () => {

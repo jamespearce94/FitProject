@@ -29,12 +29,17 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                 let user = this.participants.find(user =>{return user.id == uid});
                 if(user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
+                    let addXp = isComplete && !this.isComplete;
+
+                    //mark as complete straight away so the UI changes before the db catch up
+                    // this.isComplete = isComplete;
                     let userIndex = this.participants.findIndex(participant => {
                         return participant.id === uid
                     });
 
                     return {
                         url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                        addXP: addXp,
                         data: {
                             progress: metricValue,
                             complete: isComplete,
@@ -48,9 +53,11 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                 }
             }).catch(err => console.log(err));
     }
+
     getChallengeXP(): number{
         return this.xp;
     }
+
     getActiveStatus(): boolean{
         return this.active;
     }

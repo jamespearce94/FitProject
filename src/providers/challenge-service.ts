@@ -53,7 +53,7 @@ export class ChallengeService {
                         return challenges;
                     })
                     .subscribe(list => {
-                        this.challenges =[];
+                        this.challenges = [];
                         list.forEach(challenge => {
                             switch (challenge.type) {
                                 case ChallengeType.STEPS: {
@@ -72,12 +72,13 @@ export class ChallengeService {
                                 }
                             }
                         });
-                try {
-                    this.updateChallengeProgress();
-                }
-                catch(err){
-                    console.log(err);
-                }
+
+                        try {
+                            this.updateChallengeProgress();
+                        }
+                        catch (err) {
+                            console.log(err);
+                        }
 
 
                     });
@@ -117,7 +118,7 @@ export class ChallengeService {
                     "id": participant,
                     "progress": 0,
                     "complete_time": null,
-                    "last_update" : null
+                    "last_update": null
                 }
             });
         this.af.database.list('/active_challenges')
@@ -135,17 +136,17 @@ export class ChallengeService {
     updateChallengeProgress() {
         this.challenges.forEach((challenge => {
             if (challenge.getActiveStatus()) {
-            challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
-                .then(result => {
-                    this.af.database.object(result.url).update(result.data);
-                    if (result.addXP) {
-                        this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
-                            .update({
-                                current_experience: challenge.getChallengeXP()
-                            });
-                    }
-                })
-                .catch(err => console.log(err));
+                challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
+                    .then(result => {
+                        this.af.database.object(result.url).update(result.data);
+                        if (result.addXP) {
+                            this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
+                                .update({
+                                    current_experience: challenge.getChallengeXP()
+                                });
+                        }
+                    })
+                    .catch(err => console.log(err));
             }
         }));
     }

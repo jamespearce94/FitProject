@@ -35,7 +35,7 @@ export class HealthKitService {
      */
     getChallengeMetrics(metricType: any, startDate: number): Promise<any> {
         let queryObj = {
-            'startDate': new Date(startDate),
+            'startDate': new Date(startDate * 1000),
             'endDate': new Date(),
             'dataType': '',
             'bucket': 'day',

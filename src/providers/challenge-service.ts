@@ -72,8 +72,14 @@ export class ChallengeService {
                                 }
                             }
                         });
+                try {
+                    this.updateChallengeProgress();
+                }
+                catch(err){
+                    console.log(err);
+                }
 
-                        this.updateChallengeProgress();
+
                     });
             });
     }
@@ -131,7 +137,6 @@ export class ChallengeService {
             if (challenge.getActiveStatus()) {
             challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
                 .then(result => {
-                    console.log(result.data);
                     this.af.database.object(result.url).update(result.data);
                     if (result.addXP) {
                         this.af.database.object('users/' + this._userService.user.uid + '/leveldata')

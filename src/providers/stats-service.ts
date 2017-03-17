@@ -27,7 +27,6 @@ export class StatsService {
             .take(1)
             .subscribe(userStats => {
                 this.stats = userStats;
-                console.log(this.stats);
                 loader.dismiss()
                     .catch(err => console.warn("loader.dismiss()"));
             })
@@ -45,7 +44,10 @@ export class StatsService {
     updateCurrentSteps(uid: string, steps: number) {
         console.log('steps', steps);
         this.af.database.object('users/' + uid + '/fitness_stats')
-            .update({current_steps: steps});
+            .update({
+                current_steps: steps,
+                last_update: moment().unix()
+            });
     }
 
     updateLifetimeSteps(uid: string, steps: number) {

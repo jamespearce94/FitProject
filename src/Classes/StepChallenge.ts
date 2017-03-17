@@ -26,21 +26,27 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
     updateChallengeProgress(_healthKitService: HealthKitService, uid: any): Promise<any> {
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
+                let user = this.participants.find(user =>{return user.id == uid});
+                if(user.progress != metricValue) {
+                    let isComplete = this.checkIfComplete(metricValue);
+                    let userIndex = this.participants.findIndex(participant => {
+                        return participant.id === uid
+                    });
 
-                let isComplete = this.checkIfComplete(metricValue);
-                let userIndex = this.participants.findIndex(participant => {
-                    return participant.id === uid
-                });
-
-                return {
-                    url: '/active_challenges/' + this.key + '/participants/' + userIndex,
-                    data: {
-                        progress: metricValue,
-                        complete: isComplete,
-                        omplete_date: isComplete ? moment().unix() : null
-                    }
-                };
-            });
+                    return {
+                        url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                        data: {
+                            progress: metricValue,
+                            complete: isComplete,
+                            last_update: moment().unix(),
+                            complete_date: isComplete ? moment().unix() : null
+                        }
+                    };
+                }
+                else{
+                    Promise.reject("Progress not changed");
+                }
+            }).catch(err => console.log(err));
     }
     getChallengeXP(): number{
         return this.xp;

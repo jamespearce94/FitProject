@@ -58,6 +58,8 @@ export class ChallengeListPage implements OnInit {
                         this.selectedParticipants = data;
                         this.selectedParticipants.push(this._userService.user.uid);
                         this._challengeService.createChallenge(this.selectedParticipants, challenge);
+                        this.navCtrl.pop();
+
                     }
                 });
                 alert.addButton('Cancel');

@@ -26,7 +26,6 @@ export class ChallengeService {
 
         this.getChallengeList()
             .subscribe(allChallenges => {
-                this.challenges =[];
                 this.getActiveChallenges()
                     .map(listOfChallenges => {
                         let challenges = [];
@@ -55,6 +54,7 @@ export class ChallengeService {
                         return challenges;
                     })
                     .subscribe(list => {
+                        this.challenges =[];
                         list.forEach(challenge => {
                             console.log('updating challenge list');
                             switch (challenge.type) {
@@ -115,14 +115,14 @@ export class ChallengeService {
                     "complete_time": null
                 }
             });
-
+        debugger;
         this.af.database.list('/active_challenges')
             .push({
                 "active": false,
                 "start_time": moment().unix(),
                 "id": challenge.$key,
                 "host": this._userService.user.auth.displayName,
-                "pending_participants": participants,
+                "pending_participants": participants.filter(participant => participant != this._userService.user.uid),
                 "participants": formattedParticipants
             });
     }

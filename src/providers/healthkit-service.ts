@@ -8,7 +8,7 @@ import {ChallengeType} from "../Classes/ChallengeType";
 @Injectable()
 export class HealthKitService {
 
-    constructor(public http: Http, private af: AngularFire) {
+    constructor(public http: Http) {
     }
 
     getDaySteps(): Promise<any> {

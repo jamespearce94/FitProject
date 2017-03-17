@@ -3,12 +3,6 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AngularFire, FirebaseObjectObservable, FirebaseListObservable} from "angularfire2";
 
-/*
-  Generated class for the LevelService provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class LevelService {
 

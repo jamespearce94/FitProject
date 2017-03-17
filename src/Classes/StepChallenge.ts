@@ -2,6 +2,7 @@ import {ChallengeType} from "./ChallengeType";
 import {IChallenge} from "./IChallenge";
 import {BaseChallenge} from "./BaseChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
+import * as moment from "moment";
 
 export class StepsChallenge extends BaseChallenge implements IChallenge {
     public isComplete : boolean = false;
@@ -35,7 +36,8 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                     url: '/active_challenges/' + this.key + '/participants/' + userIndex,
                     data: {
                         progress: metricValue,
-                        complete: isComplete
+                        complete: isComplete,
+                        omplete_date: isComplete ? moment().unix() : null
                     }
                 };
             });

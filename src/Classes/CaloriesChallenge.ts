@@ -2,6 +2,7 @@ import {BaseChallenge} from "./BaseChallenge";
 import {ChallengeType} from "./ChallengeType";
 import {IChallenge} from "./IChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
+import * as moment from "moment";
 
 export class CaloriesChallenge extends BaseChallenge implements IChallenge {
     public isComplete : boolean = false;
@@ -33,7 +34,8 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
                     addXP : isComplete && !this.isComplete,
                     data: {
                         progress: metricValue,
-                        complete: isComplete
+                        complete: isComplete,
+                        complete_date: isComplete ? moment().unix() : null
                     }
                 };
             });

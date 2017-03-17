@@ -48,14 +48,18 @@
         <h2>{{participant.fitness_stats.name}} <i *ngIf="challenge.isComplete"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
         <p style="white-space: normal"></p>
       </ion-item>
-      <ion-item *ngIf="challenge.isComplete">
-        <ion-icon item-left name="stopwatch"></ion-icon>
-        <h2>5 Days</h2>
-      </ion-item>
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="flash"></ion-icon>
         <h2>{{participant.percentage}}%</h2>
         <progress value="{{participant.progress}}" max="{{challenge.completion}}"></progress>
+      </ion-item>
+      <ion-item *ngIf="participant.complete && participant.complete_date">
+        <ion-icon item-left name="stopwatch"></ion-icon>
+        <h2>Completed {{participant.complete_date | HumanizeDate}} ago</h2>
+      </ion-item>
+      <ion-item>
+        <ion-icon item-left name="clock"></ion-icon>
+        <h2>{{participant.last_update | HumanizeDate}}</h2>
       </ion-item>
     </ion-card>
 

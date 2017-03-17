@@ -31,7 +31,7 @@
                 <p>Friends Progress</p>
                 <div *ngIf="friend.stats">
                     <p>Steps: {{friend.stats.current_steps}}</p>
-                    <p>Updated: {{friend.stats.last_update | date:'dd/MM/yy HH:mm' }}</p>
+                    <p>Last updated: {{friend.stats.last_update | HumanizeDate }} ago</p>
                 </div>
                 <ion-spinner name="dots" *ngIf="!friend.stats"></ion-spinner>
             </ion-item>

@@ -1,13 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, LoadingController, ModalController} from 'ionic-angular';
+import {NavController, ModalController} from 'ionic-angular';
 import {UserService} from "../../providers/user-service";
 import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
-import {HealthKitService} from "../../providers/healthkit-service";
 import {LevelService} from "../../providers/level-service";
-import {ChallengeService} from "../../providers/challenge-service";
-import {AngularFire} from "angularfire2";
-import * as moment from 'moment';
 
 @Component({
     selector: 'page-home',
@@ -26,38 +22,9 @@ export class HomePage implements OnInit {
     constructor(private navCtrl: NavController,
                 private _userService: UserService,
                 private _statsService: StatsService,
-                private loadingCtrl: LoadingController,
                 private modalCtrl: ModalController,
-                private _healthKitService: HealthKitService,
-                private _challengeService: ChallengeService,
-                private _levelService: LevelService,
-                private af : AngularFire) {
+                private _levelService: LevelService) {
 
-        // let loader = this.loadingCtrl
-        //     .create({
-        //         content: "Retrieving Profile..."
-        //     });
-        // loader.present();
-        //
-        // console.log(this.stats);
-        // this._statsService.getStats(this._userService.user.uid)
-        //     .first()
-        //     .toPromise()
-        //     .then(userStats => {
-        //         this.stats = userStats;
-        //         let diff = moment(this.stats.last_update).diff(moment().unix(), 'minutes');
-        //         this.stats.last_update = moment.duration(diff, 'minutes').humanize();
-        //         loader.dismiss()
-        //             .catch( err => console.warn("loader.dismiss()") );
-        //     });
-        //
-        // console.log('second');
-
-        //
-        // console.log('third');
-        // this.updateLifetimeSteps();
-        // // this._challengeService.updateChallengeProgress(this._userService.user.uid);
-        // this._statsService.updateDate(this._userService.user.uid);
     }
 
     ngOnInit() {
@@ -93,18 +60,4 @@ export class HomePage implements OnInit {
             refresher.complete();
         }, 2000);
     }
-
-    // updateLifetimeSteps(){
-    //     this._statsService.getStats(this._userService.user.uid).take(1)
-    //         .subscribe(userStats => {
-    //             this._healthKitService.getLifetimeSteps(new Date())
-    //                 .then((result) => {
-    //                     console.log('getLifeSteps', result);
-    //                     this._statsService.updateLifetimeSteps(this._userService.user.uid, result);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err);
-    //                 });
-    //         });
-    // }
 }

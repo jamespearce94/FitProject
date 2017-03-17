@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import {ChallengeService} from "../../providers/challenge-service";
 import {FriendsService} from "../../providers/friends-service";
+import {UserService} from "../../providers/user-service";
 
 /*
  Generated class for the ChallengeList page.
@@ -16,12 +17,13 @@ import {FriendsService} from "../../providers/friends-service";
 export class ChallengeListPage implements OnInit {
 
     private challenges: Array<any> = [];
-    private selectedFriends: any = [];
+    private selectedParticipants: any = [];
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private _challengeService: ChallengeService,
                 private _friendService: FriendsService,
+                private _userService: UserService,
                 public alertCtrl: AlertController,
                 private loadingCtrl : LoadingController) {
     }
@@ -53,8 +55,9 @@ export class ChallengeListPage implements OnInit {
                 alert.addButton({
                     text: 'Challenge Friends',
                     handler: data => {
-                        this.selectedFriends = data;
-                        this._challengeService.createChallenge(this.selectedFriends, challenge);
+                        this.selectedParticipants = data;
+                        this.selectedParticipants.push(this._userService.user.uid);
+                        this._challengeService.createChallenge(this.selectedParticipants, challenge);
                     }
                 });
                 alert.addButton('Cancel');

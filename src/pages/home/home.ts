@@ -7,7 +7,7 @@ import {HealthKitService} from "../../providers/healthkit-service";
 import {LevelService} from "../../providers/level-service";
 import {ChallengeService} from "../../providers/challenge-service";
 import {AngularFire} from "angularfire2";
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Component({
     selector: 'page-home',
@@ -33,33 +33,31 @@ export class HomePage implements OnInit {
                 private _levelService: LevelService,
                 private af : AngularFire) {
 
-        let loader = this.loadingCtrl
-            .create({
-                content: "Retrieving Profile..."
-            });
-        loader.present();
+        // let loader = this.loadingCtrl
+        //     .create({
+        //         content: "Retrieving Profile..."
+        //     });
+        // loader.present();
+        //
+        // console.log(this.stats);
+        // this._statsService.getStats(this._userService.user.uid)
+        //     .first()
+        //     .toPromise()
+        //     .then(userStats => {
+        //         this.stats = userStats;
+        //         let diff = moment(this.stats.last_update).diff(moment().unix(), 'minutes');
+        //         this.stats.last_update = moment.duration(diff, 'minutes').humanize();
+        //         loader.dismiss()
+        //             .catch( err => console.warn("loader.dismiss()") );
+        //     });
+        //
+        // console.log('second');
 
-        this._statsService.getStats(this._userService.user.uid)
-            .subscribe(userStats => {
-                this.stats = userStats;
-                console.debug(moment(userStats.signup_date)
-                    .format("dddd, MMMM Do YYYY, h:mm:ss a"));
-                loader.dismiss()
-                    .catch( err => console.warn("loader.dismiss()") );
-            });
-
-        this._healthKitService.getDaySteps()
-            .then((result) => {
-                console.log('getDaySteps', result);
-                this._statsService.updateCurrentSteps(this._userService.user.uid, result);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-        this.updateLifetimeSteps();
-        // this._challengeService.updateChallengeProgress(this._userService.user.uid);
-        this._statsService.updateDate(this._userService.user.uid);
+        //
+        // console.log('third');
+        // this.updateLifetimeSteps();
+        // // this._challengeService.updateChallengeProgress(this._userService.user.uid);
+        // this._statsService.updateDate(this._userService.user.uid);
     }
 
     ngOnInit() {
@@ -87,20 +85,26 @@ export class HomePage implements OnInit {
         modal.present();
     }
 
-    loadProgress() {
+    doRefresh(refresher) {
+        console.log('Begin async operation', refresher);
+        this._statsService.getHealthKitSteps();
+        setTimeout(() => {
+            console.log('Async operation has ended');
+            refresher.complete();
+        }, 2000);
+    }
 
-    }
-    updateLifetimeSteps(){
-        this._statsService.getStats(this._userService.user.uid).take(1)
-            .subscribe(userStats => {
-                this._healthKitService.getLifetimeSteps(new Date())
-                    .then((result) => {
-                        console.log('getLifeSteps', result);
-                        this._statsService.updateLifetimeSteps(this._userService.user.uid, result);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            });
-    }
+    // updateLifetimeSteps(){
+    //     this._statsService.getStats(this._userService.user.uid).take(1)
+    //         .subscribe(userStats => {
+    //             this._healthKitService.getLifetimeSteps(new Date())
+    //                 .then((result) => {
+    //                     console.log('getLifeSteps', result);
+    //                     this._statsService.updateLifetimeSteps(this._userService.user.uid, result);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err);
+    //                 });
+    //         });
+    // }
 }

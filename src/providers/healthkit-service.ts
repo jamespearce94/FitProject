@@ -33,9 +33,9 @@ export class HealthKitService {
      * @param startDate
      * @return {Promise<any>}
      */
-    getChallengeMetrics(metricType: any, startDate: Date): Promise<any> {
+    getChallengeMetrics(metricType: any, startDate: number): Promise<any> {
         let queryObj = {
-            'startDate': startDate,
+            'startDate': new Date(startDate),
             'endDate': new Date(),
             'dataType': '',
             'bucket': 'day',

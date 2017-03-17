@@ -29,6 +29,7 @@ import {CompeteInvitePage} from "../pages/compete/invite/invite";
 import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal";
 import {CompletedChallengesPage} from "../pages/compete/completed-challenges/completed-challenges";
 import {CurrentFilter} from "../filters/current.challenge.filter";
+import {HumanizeDateFilter} from "../filters/humanize.date.filter";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -62,6 +63,7 @@ const firebaseAuthConfig = {
         ProgressBarComponent,
         ChallengeListPage,
         ChallengeIdFilter,
+        HumanizeDateFilter,
         CurrentFilter,
         ViewChallengeModal,
         CompletedChallengesPage
@@ -101,7 +103,8 @@ const firebaseAuthConfig = {
         UserNameFilter,
         LevelService,
         ChallengeIdFilter,
-        CurrentFilter
+        CurrentFilter,
+        HumanizeDateFilter
     ]
 })
 export class AppModule {

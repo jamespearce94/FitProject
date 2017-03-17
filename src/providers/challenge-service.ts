@@ -94,7 +94,7 @@ export class ChallengeService {
                 pending_participants: challenge.pending_participants
                     .filter(p => p !== this._userService.user.auth.uid),
                 active: challenge.pending_participants.length === 1,
-                start_time: challenge.pending_participants.length ? moment().unix().valueOf() : null
+                start_time: challenge.pending_participants.length ? moment().unix() : null
             });
     }
 
@@ -114,16 +114,12 @@ export class ChallengeService {
                     "progress": 0,
                     "complete_time": null
                 }
-            }).concat([{
-                "id": this._userService.user.auth.uid,
-                "progress": 0,
-                "complete_time": null
-            }]);
+            });
 
         this.af.database.list('/active_challenges')
             .push({
                 "active": false,
-                "start_time": moment().unix().valueOf(),
+                "start_time": moment().unix(),
                 "id": challenge.$key,
                 "host": this._userService.user.auth.displayName,
                 "pending_participants": participants,
@@ -143,7 +139,7 @@ export class ChallengeService {
                         this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
                             .update({
                                 current_experience: challenge.getChallengeXP(),
-                                complete_date: moment().unix().valueOf()
+                                complete_date: moment().unix()
                             });
                     }
                 })

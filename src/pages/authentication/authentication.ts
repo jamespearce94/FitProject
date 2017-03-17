@@ -53,7 +53,7 @@ export class AuthenticationPage implements OnInit, OnDestroy {
     }
 
     signup() {
-        this.signupModel.signupDate = moment().unix().valueOf();
+        this.signupModel.signupDate = moment().unix();
         this._userService.signup(this.signupModel);
     }
 

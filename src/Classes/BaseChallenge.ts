@@ -1,5 +1,4 @@
 import {ChallengeType} from "./ChallengeType";
-import * as moment from "moment";
 
 
 export class BaseChallenge {
@@ -12,7 +11,7 @@ export class BaseChallenge {
     protected image_url : string;
     protected xp : number;
     protected participants : Array<any> = [];
-    protected start_time : Date;
+    protected start_time : number;
     protected host : string;
     protected key : string;
     protected active : boolean;
@@ -28,7 +27,7 @@ export class BaseChallenge {
         this.image_url = challengeObj.image_url;
         this.xp = challengeObj.xp;
         this.participants = challengeObj.participants;
-        this.start_time =  moment.utc(challengeObj.start_time).toDate();
+        this.start_time =  challengeObj.start_time;
         this.host = challengeObj.host;
         this.key = challengeObj.key;
         this.active = challengeObj.active;

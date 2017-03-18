@@ -72,7 +72,7 @@ export class ChallengeService {
                                 }
                             }
                         });
-
+                        console.log('pushed challenges ' + this.challenges.toString());
                         try {
                             this.updateChallengeProgress();
                         }

@@ -7,8 +7,10 @@ import * as moment from "moment";
 export class CaloriesChallenge extends BaseChallenge implements IChallenge {
     public isComplete : boolean = false;
 
-    constructor(chalengeObj : any, type: ChallengeType, uid) {
-        super(chalengeObj, type, uid);
+    constructor(challengeObj: any, type: ChallengeType, uid : any) {
+        super(challengeObj, type, uid);
+
+        this.setCompleteState();
     }
 
     setCompleteState() : void {
@@ -27,13 +29,17 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
                 let user = this.participants.find(user =>{return user.id == uid});
                 if(user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
+                    let addXp = isComplete && !this.isComplete;
+
+                    //mark as complete straight away so the UI changes before the db catch up
+                    this.isComplete = isComplete;
                     let userIndex = this.participants.findIndex(participant => {
                         return participant.id === uid
                     });
 
                     return {
                         url: '/active_challenges/' + this.key + '/participants/' + userIndex,
-                        addXP: isComplete && !this.isComplete,
+                        addXP: addXp,
                         data: {
                             progress: metricValue,
                             complete: isComplete,
@@ -43,14 +49,16 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
                     };
                 }
                 else{
-                    Promise.reject("Progress not changed");
+                    Promise.reject('Progress not changed');
                 }
             }).catch(err => console.log(err));
     }
+
     getChallengeXP(): number{
         return this.xp;
     }
-    getActiveStatus(): boolean {
+
+    getActiveStatus(): boolean{
         return this.active;
     }
 }

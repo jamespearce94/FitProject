@@ -32,7 +32,7 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                     let addXp = isComplete && !this.isComplete;
 
                     //mark as complete straight away so the UI changes before the db catch up
-                    // this.isComplete = isComplete;
+                    this.isComplete = isComplete;
                     let userIndex = this.participants.findIndex(participant => {
                         return participant.id === uid
                     });
@@ -49,7 +49,7 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
                     };
                 }
                 else{
-                    Promise.reject("Progress not changed");
+                    Promise.reject('Progress not changed');
                 }
             }).catch(err => console.log(err));
     }

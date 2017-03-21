@@ -9,7 +9,7 @@ import {LevelService} from "../../providers/level-service";
     selector: 'page-home',
     templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
     public stats: any = {};
     public level: any = {};
@@ -25,26 +25,7 @@ export class HomePage implements OnInit {
                 private modalCtrl: ModalController,
                 private _levelService: LevelService) {
 
-    }
 
-    ngOnInit() {
-        this._levelService.getLevelData(this._userService.user.uid)
-            .subscribe(levelData => {
-                this.level = levelData;
-                this._levelService.GetLevels()
-                    .subscribe((levels) => {
-                        levels.forEach((level) => {
-                            if (level.level == this.level.level) {
-                                this.progress.max_progress = level.exp_required;
-                                this.progress.current = this.level.current_experience;
-                                this.progress.percentage = this.level.current_experience ?
-                                    ( this.level.current_experience / level.exp_required ) * 100 : 0;
-
-                                this.progress.percentage = parseFloat(Number(this.progress.percentage).toFixed(2));
-                            }
-                        })
-                    })
-            })
     }
 
     presentModal() {

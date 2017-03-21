@@ -23,12 +23,12 @@
         <ion-card>
             <ion-item padding>
                 <ion-icon name="trophy" color="golden" item-left></ion-icon>
-                <h2>Current Level : <b>{{level.level}}</b></h2>
-                <span item-right><b>{{level.current_experience}} XP</b></span>
+                <h2>Current Level : <b>{{_levelService.level.level}}</b></h2>
+                <span item-right><b>{{_levelService.level.current_experience}} XP</b></span>
             </ion-item>
             <ion-item>
-                <span class="progress-type">{{progress.percentage}}%</span>
-                    <progress value="{{progress.current}}" max="{{progress.max_progress}}" style="width: 100%;">
+                <span class="progress-type">{{_levelService.progress.percentage}}%</span>
+                    <progress value="{{_levelService.progress.current}}" max="{{_levelService.progress.max_progress}}" style="width: 100%;">
                     </progress>
             </ion-item>
             <ion-item>
@@ -37,7 +37,7 @@
             </ion-item>
             <ion-item>
                 <ion-icon name="ribbon"  item-left></ion-icon>
-                <h2>Experience Level: <b>{{level.experience_name}}</b></h2>
+                <h2>Experience Level: <b>{{_levelService.level.experience_name}}</b></h2>
             </ion-item>
         </ion-card>
         <ion-list-header>

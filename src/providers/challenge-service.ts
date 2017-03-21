@@ -11,6 +11,7 @@ import {ChallengeType} from "../Classes/ChallengeType";
 import {IChallenge} from "../Classes/IChallenge";
 import {StepsChallenge} from "../Classes/StepChallenge";
 import {CaloriesChallenge} from "../Classes/CaloriesChallenge";
+import {LevelService} from "./level-service";
 
 @Injectable()
 export class ChallengeService {
@@ -21,7 +22,8 @@ export class ChallengeService {
                 private af: AngularFire,
                 private modalCtrl: ModalController,
                 private _userService: UserService,
-                private _healthkitService: HealthKitService) {
+                private _healthkitService: HealthKitService,
+                private _levelService: LevelService) {
 
         this.getChallengeList()
             .subscribe(allChallenges => {
@@ -140,10 +142,7 @@ export class ChallengeService {
                     .then(result => {
                         this.af.database.object(result.url).update(result.data);
                         if (result.addXP) {
-                            this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
-                                .update({
-                                    current_experience: challenge.getChallengeXP()
-                                });
+                            this._levelService.addXP(challenge);
                         }
                     })
                     .catch(err => console.log(err));

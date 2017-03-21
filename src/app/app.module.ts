@@ -30,6 +30,7 @@ import {ViewChallengeModal} from "../modals/view-challenge/view-challenge.modal"
 import {CompletedChallengesPage} from "../pages/compete/completed-challenges/completed-challenges";
 import {CurrentFilter} from "../filters/current.challenge.filter";
 import {HumanizeDateFilter} from "../filters/humanize.date.filter";
+import {LevelUpModal} from "../modals/level-up.modal/level-up.modal";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -66,7 +67,8 @@ const firebaseAuthConfig = {
         HumanizeDateFilter,
         CurrentFilter,
         ViewChallengeModal,
-        CompletedChallengesPage
+        CompletedChallengesPage,
+        LevelUpModal
     ],
     imports: [
         IonicModule.forRoot(MyApp, {tabsPlacement: 'top'}),
@@ -91,7 +93,8 @@ const firebaseAuthConfig = {
         FriendRequestsPage,
         ChallengeListPage,
         ViewChallengeModal,
-        CompletedChallengesPage
+        CompletedChallengesPage,
+        LevelUpModal
     ],
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},

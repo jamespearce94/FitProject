@@ -11,6 +11,8 @@ export class LevelService {
 
     public level: any = {};
 
+    public definedLevels: any = [];
+
     public progress: any = {
         max_progress: 100,
         current: 0,
@@ -26,6 +28,8 @@ export class LevelService {
                 this.level = levelData;
                 this.GetLevels()
                     .subscribe((levels) => {
+                    this.definedLevels = levels;
+                        this.updateLevelIfRequired();
                         levels.forEach((level) => {
                             if (level.level == this.level.level) {
                                 this.progress.max_progress = level.exp_required;
@@ -49,15 +53,11 @@ export class LevelService {
     }
 
     addXP(challenge): void {
-        this.level.current_experience += challenge.getChallengeXP();
-
         this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
             .update({
                 current_experience: this.level.current_experience + challenge.getChallengeXP()
             })
-            .then(() => {
-                this.updateLevelIfRequired();
-            });
+
     }
 
     levelUpModel(level): void {
@@ -65,11 +65,7 @@ export class LevelService {
     }
 
     updateLevelIfRequired(): void {
-        this.GetLevels()
-            .take(1)
-            .toPromise()
-            .then(definedLevels => {
-                let currentLevel = definedLevels
+                let currentLevel = this.definedLevels
                     .find(level => this.level.current_experience >= level.exp_min
                     && this.level.current_experience <= level.exp_required);
 
@@ -81,7 +77,7 @@ export class LevelService {
                     this.levelUpModel(currentLevel);
                 }
 
-            })
+
     }
 
 }

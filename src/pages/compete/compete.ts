@@ -4,7 +4,7 @@ import {SettingsModal} from "../../modals/settings/settings";
 import {ChallengeService} from "../../providers/challenge-service";
 import {ChallengeListPage} from "../challenge-list/challenge-list";
 import {UserService} from "../../providers/user-service";
-import {ViewChallengeModal} from "../../modals/view-challenge/view-challenge.modal";
+
 
 /*
  Generated class for the Compete page.
@@ -41,4 +41,6 @@ export class CompetePage implements OnInit {
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
     }
+
+
 }

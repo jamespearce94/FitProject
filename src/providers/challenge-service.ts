@@ -12,6 +12,7 @@ import {IChallenge} from "../Classes/IChallenge";
 import {StepsChallenge} from "../Classes/StepChallenge";
 import {CaloriesChallenge} from "../Classes/CaloriesChallenge";
 import {LevelService} from "./level-service";
+import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
 
 @Injectable()
 export class ChallengeService {
@@ -113,6 +114,11 @@ export class ChallengeService {
         this.modalCtrl.create(ViewChallengeModal, challenge).present();
     }
 
+    completeChallengesPopup(challenge): void {
+        this.modalCtrl.create(ChallengeCompleteModal, challenge).present();
+
+    }
+
     createChallenge(participants: Array<any>, challenge: any) {
         let formattedParticipants = participants
             .map(participant => {
@@ -143,6 +149,7 @@ export class ChallengeService {
                         this.af.database.object(result.url).update(result.data);
                         if (result.addXP) {
                             this._levelService.addXP(challenge);
+                            this.completeChallengesPopup(challenge);
                         }
                     })
                     .catch(err => console.log(err));

@@ -17,7 +17,7 @@
 
 <ion-content no-padding>
     <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:false)" (click)="_challengeService.viewChallenge(challenge)">
-        <img src="{{challenge.image_url}}"/>
+        <img src="img/challenges/{{challenge.image_url}}"/>
         <ion-item>
             <ion-icon item-left name="trophy"></ion-icon>
             <h2>{{challenge.name}}</h2>
@@ -28,6 +28,7 @@
             <h2>{{challenge.xp}} XP</h2>
         </ion-item>
         <ion-item>
+            <ion-icon item-left name="walk"></ion-icon>
             <span item-left>{{challenge.completion}} {{challenge.type}}</span>
             <button ion-button icon-left clear item-right
                     *ngIf="!challenge.active" color="danger">

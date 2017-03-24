@@ -23,12 +23,12 @@
     </ion-fab>
     <ion-list>
         <ion-item-sliding *ngFor="let friend of friends" no-padding>
-            <ion-item>
+            <ion-item *ngIf="friend.levelData">
                 <ion-avatar item-left>
                     <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
                 </ion-avatar>
-                <h2>{{friend.name}}</h2>
-                <p>Friends Progress</p>
+                <h2>{{friend.name}} - Level {{friend.levelData.level}}</h2>
+                <p>{{friend.levelData.experience_name}}</p>
                 <div *ngIf="friend.stats">
                     <p>Steps: {{friend.stats.current_steps}}</p>
                     <p>Last updated: {{friend.stats.last_update | HumanizeDate }} ago</p>

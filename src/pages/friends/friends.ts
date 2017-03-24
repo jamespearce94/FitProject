@@ -4,6 +4,7 @@ import {FriendsService} from "../../providers/friends-service";
 import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
 import {UserSearchPage} from "../user-search/user-search";
+import {LevelService} from "../../providers/level-service";
 
 @Component({
     selector: 'page-friends',
@@ -15,6 +16,7 @@ export class FriendsPage implements OnInit {
 
     constructor(private _friendService: FriendsService,
                 private _statsService: StatsService,
+                private  _levelService: LevelService,
                 private loadingCtrl: LoadingController,
                 private modalCtrl : ModalController,
                 private navCtrl : NavController) {
@@ -37,11 +39,17 @@ export class FriendsPage implements OnInit {
 
                 friends.forEach((friend) => {
                     this._statsService.getStats(friend.$key)
+                        .take(1)
                         .subscribe((friendStats) => {
-                            let myFriend = this.friends.find(friend => friend.$key === friendStats.uid);
+                            this._levelService.getLevelData(friend.$key)
+                                .take(1)
+                                .subscribe((levelStats) => {
+                                    let myFriend = this.friends.find(friend => friend.$key === friendStats.uid);
+                                    myFriend.levelData = levelStats;
+                                    myFriend.stats = friendStats;
+                                });
+                        })
 
-                            myFriend.stats = friendStats;
-                        });
                 });
 
                 this.friends = friends;

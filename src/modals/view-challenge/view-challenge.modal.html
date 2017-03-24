@@ -15,7 +15,7 @@
 <ion-content class="outer-content">
 
   <ion-card>
-    <img src="{{challenge.image_url}}"/>
+    <img src="img/challenges/{{challenge.image_url}}"/>
     <ion-item>
       <ion-icon item-left name="trophy"></ion-icon>
       <h2>{{challenge.challenge_name}}</h2>
@@ -26,6 +26,7 @@
       <h2>{{challenge.xp}} XP</h2>
     </ion-item>
     <ion-item>
+      <ion-icon item-left name="walk"></ion-icon>
       <span item-left>{{challenge.completion}} {{challenge.type}}</span>
       <button ion-button icon-left clear item-right
               *ngIf="!challenge.active" color="danger">
@@ -44,12 +45,14 @@
 
     <ion-card *ngFor="let participant of challenge.participants || orderByChild">
       <ion-item *ngIf="!loading">
-        <ion-icon item-left name="trophy"></ion-icon>
-        <h2>{{participant.fitness_stats.name}} <i *ngIf="challenge.isComplete"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
+        <ion-avatar item-left>
+          <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
+        </ion-avatar>
+        <h2>{{participant.fitness_stats.name}} <i *ngIf="participant.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
         <p style="white-space: normal"></p>
       </ion-item>
       <ion-item *ngIf="!loading">
-        <ion-icon item-left name="flash"></ion-icon>
+        <ion-icon item-left name="trophy"></ion-icon>
         <h2>{{participant.percentage}}%</h2>
         <progress value="{{participant.progress}}" max="{{challenge.completion}}"></progress>
       </ion-item>

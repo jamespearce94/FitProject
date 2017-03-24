@@ -4,6 +4,7 @@ import {UserService} from "../../providers/user-service";
 import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
 import {LevelService} from "../../providers/level-service";
+import {EventService} from "../../providers/event.service";
 
 @Component({
     selector: 'page-home',
@@ -23,7 +24,8 @@ export class HomePage {
                 private _userService: UserService,
                 private _statsService: StatsService,
                 private modalCtrl: ModalController,
-                private _levelService: LevelService) {
+                private _levelService: LevelService,
+                private _eventService: EventService) {
 
 
     }
@@ -36,6 +38,7 @@ export class HomePage {
     doRefresh(refresher) {
         this._statsService.getHealthKitSteps();
         this._statsService.getHealthKitLifeDistance();
+        this._eventService.announceActiveChallenges();
         setTimeout(() => {
             refresher.complete();
         }, 1000);

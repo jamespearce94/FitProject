@@ -13,18 +13,21 @@ import {StepsChallenge} from "../Classes/StepChallenge";
 import {CaloriesChallenge} from "../Classes/CaloriesChallenge";
 import {LevelService} from "./level-service";
 import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
+import {EventService} from "./event.service";
 
 @Injectable()
 export class ChallengeService {
 
     public challenges: Array<IChallenge> = [];
+    private firstLoad = true;
 
     constructor(public http: Http,
                 private af: AngularFire,
                 private modalCtrl: ModalController,
                 private _userService: UserService,
                 private _healthkitService: HealthKitService,
-                private _levelService: LevelService) {
+                private _levelService: LevelService,
+                private _eventService: EventService) {
 
         this.getChallengeList()
             .take(1)
@@ -58,34 +61,28 @@ export class ChallengeService {
                         return challenges;
                     })
                     .subscribe(list => {
-                        this.challenges = [];
-                        list.forEach(challenge => {
+                        list.forEach((challenge, index) => {
                             switch (challenge.type) {
                                 case ChallengeType.STEPS: {
-                                    this.challenges.push(new StepsChallenge(challenge,
+                                    this.challenges.splice(index, 1, new StepsChallenge(challenge,
                                         ChallengeType.STEPS, this._userService.user.uid));
                                     break;
                                 }
                                 case ChallengeType.CALORIES: {
-                                    this.challenges.push(new CaloriesChallenge(challenge,
+                                    this.challenges.splice(index, 1, new CaloriesChallenge(challenge,
                                         ChallengeType.CALORIES, this._userService.user.uid));
                                     break;
                                 }
                                 default: {
-                                    // this.challenges.push(new CaloriesChallenge(Object.assign(challenge, {type: 'Steps'})));
-                                    // break;
+
                                 }
                             }
                         });
-                        console.log('pushed challenges ' + this.challenges.toString());
-                        try {
-                            this.updateChallengeProgress();
-                        }
-                        catch (err) {
-                            console.log(err);
-                        }
 
-
+                        if( this.firstLoad ){
+                            _eventService.announceActiveChallenges();
+                            this.firstLoad = false;
+                        }
                     });
             });
     }
@@ -142,12 +139,12 @@ export class ChallengeService {
             });
     }
 
-
     updateChallengeProgress() {
         this.challenges.forEach((challenge => {
             if (challenge.getActiveStatus()) {
                 challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
                     .then(result => {
+                        console.log(result);
                         this.af.database.object(result.url).update(result.data);
                         if (result.addXP) {
                             this._levelService.addXP(challenge);

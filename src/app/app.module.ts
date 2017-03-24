@@ -32,6 +32,7 @@ import {CurrentFilter} from "../filters/current.challenge.filter";
 import {HumanizeDateFilter} from "../filters/humanize.date.filter";
 import {LevelUpModal} from "../modals/level-up.modal/level-up.modal";
 import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
+import {EventService} from "../providers/event.service";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -106,6 +107,7 @@ const firebaseAuthConfig = {
         StatsService,
         FriendsService,
         HealthKitService,
+        EventService,
         UserNameFilter,
         LevelService,
         ChallengeIdFilter,

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ViewController} from "ionic-angular";
 import {UserService} from "../../providers/user-service";
-import {ChallengeService} from "../../providers/challenge-service";
 import * as moment from "moment";
 
 @Component({
@@ -21,6 +20,7 @@ export class ChallengeCompleteModal implements OnInit {
     }
 
     ngOnInit() {
+        //ToDo fix shite code
         this._userService.getUserList()
             .subscribe(users => {
                 this.challenge.participants.forEach(participant => {
@@ -37,10 +37,10 @@ export class ChallengeCompleteModal implements OnInit {
                     let user = users.find(user => user.$key === participant.id);
                     Object.assign(participant, user);
                 });
-                this.currentUser = this.challenge.participants.find(participant => participant.id === this._userService.user.uid);
-
-                this.currentUser.complete_date = moment.duration(moment(this.currentUser.complete_date).diff(moment(this.challenge.start_time))).humanize();
-                console.log(this.currentUser);
+                this.currentUser =
+                    this.challenge.participants.find(participant => participant.id === this._userService.user.uid);
+                this.currentUser.complete_date =
+                    moment.duration(moment(this.currentUser.complete_date).diff(moment(this.challenge.start_time))).humanize();
 
                 this.loading = false;
             });

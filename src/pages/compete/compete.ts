@@ -1,17 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams, ModalController} from 'ionic-angular';
+import {NavController, ModalController} from 'ionic-angular';
 import {SettingsModal} from "../../modals/settings/settings";
 import {ChallengeService} from "../../providers/challenge-service";
 import {ChallengeListPage} from "../challenge-list/challenge-list";
-import {UserService} from "../../providers/user-service";
+import {EventService} from "../../providers/event.service";
 
-
-/*
- Generated class for the Compete page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
     selector: 'page-compete',
     templateUrl: 'compete.html'
@@ -19,18 +12,21 @@ import {UserService} from "../../providers/user-service";
 export class CompetePage implements OnInit {
 
     constructor(public navCtrl: NavController,
-                public navParams: NavParams,
                 private modalCtrl: ModalController,
                 private _challengeService: ChallengeService,
-                private _userService: UserService) {
+                private _eventService: EventService) {
 
-    }
-
-    ionViewDidLoad() {
+        this._eventService.activeChallengesReadyAnnounced
+            .subscribe(() => {
+                try {
+                    this._challengeService.updateChallengeProgress();
+                } catch (err) {
+                    console.error(err);
+                }
+            });
     }
 
     ngOnInit() {
-
     }
 
     presentModal() {
@@ -41,6 +37,4 @@ export class CompetePage implements OnInit {
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
     }
-
-
 }

@@ -34,10 +34,9 @@ export class HomePage {
     }
 
     doRefresh(refresher) {
-        console.log('Begin async operation', refresher);
         this._statsService.getHealthKitSteps();
+        this._statsService.getHealthKitLifeDistance();
         setTimeout(() => {
-            console.log('Async operation has ended');
             refresher.complete();
         }, 1000);
     }

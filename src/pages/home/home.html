@@ -37,7 +37,7 @@
             </ion-item>
             <ion-item>
                 <ion-icon name="ribbon"  item-left></ion-icon>
-                <h2>Experience Level: <b>{{_levelService.level.experience_name}}</b></h2>
+                <h2>Rank: <b>{{_levelService.level.experience_name}}</b></h2>
             </ion-item>
         </ion-card>
         <ion-list-header>
@@ -55,14 +55,9 @@
             <span item-right>{{_statsService.stats.last_update | HumanizeDate }} ago</span>
         </ion-item>
         <ion-item padding>
-            <ion-icon name="walk" item-left></ion-icon>
-            Lifetime Steps
-            <span item-right>{{_statsService.stats.lifetime_steps}}</span>
-        </ion-item>
-        <ion-item padding>
             <ion-icon name="car" item-left></ion-icon>
             Lifetime Distance
-            <span item-right>{{_statsService.stats.lifetime_walking_distance | number:'2.1-3'}} km</span>
+            <span item-right>{{_statsService.stats.lifetime_walking_distance | number:'2.1-2'}} km</span>
         </ion-item>
         </div>
 

@@ -72,7 +72,8 @@ export class LevelService {
                 if (this.level.level != currentLevel.level) {
                     this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
                         .update({
-                            level: currentLevel.level
+                            level: currentLevel.level,
+                            experience_name: currentLevel.experience_name
                         });
                     this.levelUpModel(currentLevel);
                 }

@@ -1,4 +1,5 @@
 export enum ChallengeType {
     STEPS = <any>"Steps",
-    CALORIES = <any>"Calories"
+    CALORIES = <any>"Calories",
+    DISTANCE = <any>"Distance"
 }

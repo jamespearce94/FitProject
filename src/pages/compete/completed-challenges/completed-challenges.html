@@ -25,11 +25,11 @@
 
 
 <ion-content no-padding>
-  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.viewChallenge(challenge)">
+  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.completeChallengesPopup(challenge)">
     <img src="{{challenge.image_url}}"/>
     <ion-item>
       <ion-icon item-left name="trophy"></ion-icon>
-      <h2>{{challenge.challenge_name}}</h2>
+      <h2>{{challenge.name}}</h2>
       <p style="white-space: normal">{{challenge.description}}</p>
     </ion-item>
     <ion-item>

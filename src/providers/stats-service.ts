@@ -27,6 +27,7 @@ export class StatsService {
             .take(1)
             .subscribe(userStats => {
                 this.stats = userStats;
+                this.getHealthKitLifeDistance();
                 loader.dismiss()
                     .catch(err => console.warn("loader.dismiss()"));
             })
@@ -51,10 +52,10 @@ export class StatsService {
             });
     }
 
-    updateLifetimeSteps(uid: string, steps: number) {
+    updateLifetimeDistance(uid: string, steps: number) {
         console.log('steps', steps);
         this.af.database.object('users/' + uid + '/fitness_stats')
-            .update({lifetime_steps: steps});
+            .update({lifetime_walking_distance: steps});
     }
 
     updateDate(uid: string) {
@@ -63,10 +64,21 @@ export class StatsService {
     }
 
     getHealthKitSteps(){
-        console.log("Updating HealthKit");
         this._healthKitService.getDaySteps()
             .then((result) => {
                 this.updateCurrentSteps(this._userService.user.uid, result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    getHealthKitLifeDistance(){
+        this._healthKitService.getLifetimeDistance(this.stats.signup_date)
+            .then((result) => {
+                if(result/1000 != this.stats.lifetime_walking_distance) {
+                    this.updateLifetimeDistance(this._userService.user.uid, result / 1000);
+                    this.stats.lifetime_walking_distance = result/1000;
+                }
             })
             .catch((err) => {
                 console.log(err);

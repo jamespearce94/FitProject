@@ -27,7 +27,9 @@ export class ChallengeService {
                 private _levelService: LevelService) {
 
         this.getChallengeList()
-            .subscribe(allChallenges => {
+            .take(1)
+            .subscribe
+            (allChallenges => {
                 this.getActiveChallenges()
                     .map(listOfChallenges => {
                         let challenges = [];

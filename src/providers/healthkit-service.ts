@@ -70,12 +70,11 @@ export class HealthKitService {
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
     }
 
-    getLifetimeSteps(date: Date): Promise <any> {
-        date.setHours(0, 0, 0);
+    getLifetimeDistance(startDate : number): Promise <any> {
         let queryObj = {
-            'startDate': date,
+            'startDate': new Date(startDate * 1000),
             'endDate': new Date(),
-            'dataType': 'steps',
+            'dataType': 'distance',
             'bucket': 'day',
         };
 

@@ -38,7 +38,7 @@
     </ion-item>
     <ion-item>
       <ion-icon item-left name="walk"></ion-icon>
-      <span item-left>{{challenge.completion}} {{challenge.type}}</span>
+      <span item-left>{{challenge.completion.required}} {{challenge.type}}</span>
       <button ion-button icon-left clear item-right
               *ngIf="!challenge.active" color="danger">
         <ion-icon name="clock"></ion-icon>

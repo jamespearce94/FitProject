@@ -11,6 +11,7 @@ import {ChallengeType} from "../Classes/ChallengeType";
 import {IChallenge} from "../Classes/IChallenge";
 import {StepsChallenge} from "../Classes/StepChallenge";
 import {CaloriesChallenge} from "../Classes/CaloriesChallenge";
+import {DistanceChallenge} from "../Classes/DistanceChallenge";
 import {LevelService} from "./level-service";
 import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
 import {EventService} from "./event.service";
@@ -71,6 +72,11 @@ export class ChallengeService {
                                 case ChallengeType.CALORIES: {
                                     this.challenges.splice(index, 1, new CaloriesChallenge(challenge,
                                         ChallengeType.CALORIES, this._userService.user.uid));
+                                    break;
+                                }
+                                case ChallengeType.DISTANCE: {
+                                    this.challenges.splice(index, 1, new DistanceChallenge(challenge,
+                                        ChallengeType.DISTANCE, this._userService.user.uid));
                                     break;
                                 }
                                 default: {
@@ -144,7 +150,6 @@ export class ChallengeService {
             if (challenge.getActiveStatus()) {
                 challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
                     .then(result => {
-                        console.log(result);
                         this.af.database.object(result.url).update(result.data);
                         if (result.addXP) {
                             this._levelService.addXP(challenge);

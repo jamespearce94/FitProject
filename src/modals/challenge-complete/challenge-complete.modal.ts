@@ -10,13 +10,11 @@ import * as moment from "moment";
 export class ChallengeCompleteModal implements OnInit {
 
     challenge = null;
-    currentUser: any = {};
     loading = true;
 
     constructor(private viewCtrl: ViewController,
                 private _userService: UserService) {
         this.challenge = this.viewCtrl.data;
-        this.currentUser = _userService.user;
     }
 
     ngOnInit() {
@@ -34,13 +32,10 @@ export class ChallengeCompleteModal implements OnInit {
                     if (participant.complete_date) {
                         participant.complete_date = moment.duration(moment(participant.complete_date).diff(moment(this.challenge.start_time))).humanize();
                     }
+                    console.log(participant.complete_date);
                     let user = users.find(user => user.$key === participant.id);
                     Object.assign(participant, user);
                 });
-                this.currentUser =
-                    this.challenge.participants.find(participant => participant.id === this._userService.user.uid);
-                this.currentUser.complete_date =
-                    moment.duration(moment(this.currentUser.complete_date).diff(moment(this.challenge.start_time))).humanize();
 
                 this.loading = false;
             });

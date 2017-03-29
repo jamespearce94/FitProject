@@ -20,7 +20,7 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
     }
 
     checkIfComplete( progress : any ) : boolean {
-        return progress >= this.completion;
+        return progress >= this.completion.required;
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, uid: any): Promise<any> {

@@ -4,7 +4,7 @@ import {BaseChallenge} from "./BaseChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
 
-export class StepsChallenge extends BaseChallenge implements IChallenge {
+export class DistanceChallenge extends BaseChallenge implements IChallenge {
     public isComplete : boolean = false;
 
     constructor(challengeObj: any, type: ChallengeType, uid : any) {
@@ -31,10 +31,14 @@ export class StepsChallenge extends BaseChallenge implements IChallenge {
         if( this.isComplete ){
             return Promise.reject('Challenge Complete');
         }
+        if(moment().unix() >= this.start_time + this.completion.time)
+        {
+            return Promise.reject('Challenge Failed');
+        }
 
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
-                console.debug('got data bruva', metricValue);
+                console.log('got data bruva', metricValue);
                 let user = this.participants.find(user =>{return user.id == uid});
                 if(user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);

@@ -6,7 +6,7 @@ export class BaseChallenge {
     protected type : ChallengeType;
     protected name : string;
     protected id : string;
-    protected completion : number;
+    protected completion : any;
     protected description :  string;
     protected image_url : string;
     protected xp : number;

@@ -26,7 +26,8 @@
             <h2>{{challenge.xp}} XP</h2>
         </ion-item>
         <ion-item>
-            <span item-left>{{challenge.completion}} {{challenge.type}}</span>
+            <span *ngIf="challenge.type != 'Distance'" item-left>{{challenge.completion.required}} {{challenge.type}}</span>
+            <span *ngIf="challenge.type == 'Distance'" item-left>{{challenge.completion.required}} Miles</span>
             <button ion-button icon-left clear item-right (click)="challengeAlert(challenge)">
                 <ion-icon  name="game-controller-a"></ion-icon> Start
             </button>

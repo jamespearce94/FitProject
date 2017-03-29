@@ -27,7 +27,7 @@
     </ion-item>
     <ion-item>
       <ion-icon item-left name="walk"></ion-icon>
-      <span item-left>{{challenge.completion}} {{challenge.type}}</span>
+      <span item-left>{{challenge.completion.required}} {{challenge.type}}</span>
       <button ion-button icon-left clear item-right
               *ngIf="!challenge.active" color="danger">
         <ion-icon name="clock"></ion-icon>
@@ -54,7 +54,7 @@
       <ion-item *ngIf="!loading">
         <ion-icon item-left name="trophy"></ion-icon>
         <h2>{{participant.percentage}}%</h2>
-        <progress value="{{participant.progress}}" max="{{challenge.completion}}"></progress>
+        <progress value="{{participant.progress}}" max="{{challenge.completion.required}}"></progress>
       </ion-item>
       <ion-item *ngIf="participant.complete">
         <ion-icon item-left name="stopwatch"></ion-icon>

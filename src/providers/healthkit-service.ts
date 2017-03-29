@@ -48,6 +48,10 @@ export class HealthKitService {
                 queryObj.dataType = 'calories.active';
                 break;
             }
+            case ChallengeType.DISTANCE: {
+                queryObj.dataType = 'distance';
+                break;
+            }
         }
 
         return Health.queryAggregated(queryObj)

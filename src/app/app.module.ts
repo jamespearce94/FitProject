@@ -33,6 +33,8 @@ import {HumanizeDateFilter} from "../filters/humanize.date.filter";
 import {LevelUpModal} from "../modals/level-up.modal/level-up.modal";
 import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
 import {EventService} from "../providers/event.service";
+import {NotificationService} from "../providers/notification-service";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -112,7 +114,9 @@ const firebaseAuthConfig = {
         LevelService,
         ChallengeIdFilter,
         CurrentFilter,
-        HumanizeDateFilter
+        HumanizeDateFilter,
+        NotificationService,
+        LocalNotifications
     ]
 })
 export class AppModule {

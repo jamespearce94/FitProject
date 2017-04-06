@@ -3,8 +3,9 @@ import {IChallenge} from "./IChallenge";
 import {BaseChallenge} from "./BaseChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
+import {NotificationService} from "../providers/notification-service";
 
-export class DistanceChallenge extends BaseChallenge implements IChallenge {
+export class DistanceChallenge extends BaseChallenge {
     public isComplete : boolean = false;
 
     constructor(challengeObj: any, type: ChallengeType, uid : any) {
@@ -21,10 +22,11 @@ export class DistanceChallenge extends BaseChallenge implements IChallenge {
     }
 
     checkIfComplete( progress : any ) : boolean {
+        console.log('progress ' + progress);
         return progress >= this.completion.required;
     }
 
-    updateChallengeProgress(_healthKitService: HealthKitService, uid: any): Promise<any> {
+    updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
 
         console.debug('updateChallengeProgress');
 
@@ -39,13 +41,22 @@ export class DistanceChallenge extends BaseChallenge implements IChallenge {
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
                 console.log('got data bruva', metricValue);
+                let sent;
                 let user = this.participants.find(user =>{return user.id == uid});
+                metricValue = metricValue / 1000;
                 if(user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
                     let addXp = isComplete && !this.isComplete;
-
+                        console.log(isComplete);
                     //mark as complete straight away so the UI changes before the db catch up
                     this.isComplete = isComplete;
+                    if (!isComplete){
+                        if(!user.notification) {
+                            sent = true;
+                            let message = this.getName() + ' is almost over';
+                            _notificationsService.sendNotification(this.completion.time , message, this.getStartTime());
+                        }
+                    }
 
                     let userIndex = this.participants.findIndex(participant => {
                         return participant.id === uid
@@ -58,7 +69,8 @@ export class DistanceChallenge extends BaseChallenge implements IChallenge {
                             progress: metricValue,
                             complete: isComplete,
                             last_update: moment().unix(),
-                            complete_date: isComplete ? moment().unix() : null
+                            complete_date: isComplete ? moment().unix() : null,
+                            notification: sent
                         }
                     });
                 }
@@ -68,11 +80,8 @@ export class DistanceChallenge extends BaseChallenge implements IChallenge {
             }).catch(err => Promise.reject(err));
     }
 
-    getChallengeXP(): number{
-        return this.xp;
+    getLeader(participants: any){
+
     }
 
-    getActiveStatus(): boolean{
-        return this.active;
-    }
 }

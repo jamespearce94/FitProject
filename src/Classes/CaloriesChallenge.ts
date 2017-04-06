@@ -4,7 +4,7 @@ import {IChallenge} from "./IChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
 
-export class CaloriesChallenge extends BaseChallenge implements IChallenge {
+export class CaloriesChallenge extends BaseChallenge {
     public isComplete : boolean = false;
 
     constructor(challengeObj: any, type: ChallengeType, uid : any) {
@@ -54,11 +54,4 @@ export class CaloriesChallenge extends BaseChallenge implements IChallenge {
             }).catch(err => console.log(err));
     }
 
-    getChallengeXP(): number{
-        return this.xp;
-    }
-
-    getActiveStatus(): boolean{
-        return this.active;
-    }
 }

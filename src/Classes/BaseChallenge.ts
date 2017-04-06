@@ -1,7 +1,9 @@
 import {ChallengeType} from "./ChallengeType";
+import {HealthKitService} from "../providers/healthkit-service";
+import {NotificationService} from "../providers/notification-service";
 
 
-export class BaseChallenge {
+export abstract class BaseChallenge {
 
     protected type : ChallengeType;
     protected name : string;
@@ -33,7 +35,23 @@ export class BaseChallenge {
         this.active = challengeObj.active;
     }
 
+    abstract updateChallengeProgress( _healthKitService : HealthKitService, _notificationsService : NotificationService, uid : any ) : Promise<any>;
+    abstract setCompleteState() : void;
+    abstract checkIfComplete( progress : any ) : boolean;
+
     getChallengeXP(): number {
         return this.xp;
+    }
+    getActiveStatus(): boolean {
+        return this.active;
+    }
+    getCompletion(): any {
+        return this.completion;
+    }
+    getName(): string {
+        return this.name;
+    }
+    getStartTime(): number{
+        return this.start_time;
     }
 }

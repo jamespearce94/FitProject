@@ -15,11 +15,13 @@ import {DistanceChallenge} from "../Classes/DistanceChallenge";
 import {LevelService} from "./level-service";
 import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-complete.modal";
 import {EventService} from "./event.service";
+import {BaseChallenge} from "../Classes/BaseChallenge";
+import {NotificationService} from "./notification-service";
 
 @Injectable()
 export class ChallengeService {
 
-    public challenges: Array<IChallenge> = [];
+    public challenges: Array<BaseChallenge> = [];
     private firstLoad = true;
 
     constructor(public http: Http,
@@ -28,7 +30,8 @@ export class ChallengeService {
                 private _userService: UserService,
                 private _healthkitService: HealthKitService,
                 private _levelService: LevelService,
-                private _eventService: EventService) {
+                private _eventService: EventService,
+                private _notificationsService : NotificationService) {
 
         this.getChallengeList()
             .take(1)
@@ -131,7 +134,8 @@ export class ChallengeService {
                     "id": participant,
                     "progress": 0,
                     "complete_time": null,
-                    "last_update": null
+                    "last_update": null,
+                    "notification": false
                 }
             });
         this.af.database.list('/active_challenges')
@@ -148,7 +152,7 @@ export class ChallengeService {
     updateChallengeProgress() {
         this.challenges.forEach((challenge => {
             if (challenge.getActiveStatus()) {
-                challenge.updateChallengeProgress(this._healthkitService, this._userService.user.uid)
+                challenge.updateChallengeProgress(this._healthkitService, this._notificationsService, this._userService.user.uid)
                     .then(result => {
                         this.af.database.object(result.url).update(result.data);
                         if (result.addXP) {

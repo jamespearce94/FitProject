@@ -5,6 +5,7 @@ import {StatsService} from "../../providers/stats-service";
 import {SettingsModal} from "../../modals/settings/settings";
 import {LevelService} from "../../providers/level-service";
 import {EventService} from "../../providers/event.service";
+import {NotificationService} from "../../providers/notification-service";
 
 @Component({
     selector: 'page-home',
@@ -25,7 +26,8 @@ export class HomePage {
                 private _statsService: StatsService,
                 private modalCtrl: ModalController,
                 private _levelService: LevelService,
-                private _eventService: EventService) {
+                private _eventService: EventService,
+                private _notifcationsService: NotificationService) {
 
 
     }

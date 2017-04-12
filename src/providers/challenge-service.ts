@@ -17,6 +17,7 @@ import {ChallengeCompleteModal} from "../modals/challenge-complete/challenge-com
 import {EventService} from "./event.service";
 import {BaseChallenge} from "../Classes/BaseChallenge";
 import {NotificationService} from "./notification-service";
+import {ChallengeFailedModal} from "../modals/challenge-failed/challenge-failed.modal";
 
 @Injectable()
 export class ChallengeService {
@@ -126,6 +127,10 @@ export class ChallengeService {
         this.modalCtrl.create(ChallengeCompleteModal, challenge).present();
 
     }
+    failedChallengesPopup(challenge): void {
+        this.modalCtrl.create(ChallengeFailedModal, challenge).present();
+
+    }
 
     createChallenge(participants: Array<any>, challenge: any) {
         let formattedParticipants = participants
@@ -156,7 +161,7 @@ export class ChallengeService {
                     .then(result => {
                         this.af.database.object(result.url).update(result.data);
                         if (result.failed){
-
+                            this.failedChallengesPopup(challenge);
                         }
                         else if (result.addXP) {
                             this._levelService.addXP(challenge);

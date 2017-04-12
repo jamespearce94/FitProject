@@ -25,6 +25,9 @@
 
 
 <ion-content no-padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.completeChallengesPopup(challenge)">
     <img src="img/challenges/{{challenge.image_url}}"/>
     <ion-item>
@@ -40,10 +43,16 @@
       <ion-icon item-left name="walk"></ion-icon>
       <span item-left>{{challenge.completion.required}} {{challenge.type}}</span>
       <button ion-button icon-left clear item-right
-              *ngIf="!challenge.active" color="danger">
-        <ion-icon name="clock"></ion-icon>
-        <span>Pending</span>
+                           *ngIf="!challenge.active" color="danger">
+      <ion-icon name="clock"></ion-icon>
+      <span>Pending</span>
+    </button>
+      <button ion-button icon-left clear item-right
+              *ngIf="challenge.active && challenge.completion.time" color="danger">
+        <ion-icon name="alert"></ion-icon>
+        <span>Expired {{challenge.start_time + challenge.completion.time | HumanizeDate}} ago</span>
       </button>
+
     </ion-item>
   </ion-card>
 

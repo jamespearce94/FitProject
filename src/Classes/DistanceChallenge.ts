@@ -1,5 +1,4 @@
 import {ChallengeType} from "./ChallengeType";
-import {IChallenge} from "./IChallenge";
 import {BaseChallenge} from "./BaseChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
@@ -23,7 +22,8 @@ export class DistanceChallenge extends BaseChallenge {
 
     checkIfComplete( progress : any ) : boolean {
         console.log('progress ' + progress);
-        return progress >= this.completion.required;
+
+        return progress >= this.completion.required || (this.start_time + this.completion.time) <= moment().unix();
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {

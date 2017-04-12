@@ -4,6 +4,7 @@ import {UserService} from "../../../providers/user-service";
 import {ChallengeService} from "../../../providers/challenge-service";
 import {ChallengeListPage} from "../../challenge-list/challenge-list";
 import {SettingsModal} from "../../../modals/settings/settings";
+import {EventService} from "../../../providers/event.service";
 
 /*
  Generated class for the CompletedChallenges page.
@@ -21,7 +22,8 @@ export class CompletedChallengesPage implements OnInit {
                 public navParams: NavParams,
                 private _userService: UserService,
                 private modalCtrl: ModalController,
-                private _challengeService: ChallengeService) {
+                private _challengeService: ChallengeService,
+                private _eventService: EventService) {
     }
 
     ngOnInit() {
@@ -38,5 +40,11 @@ export class CompletedChallengesPage implements OnInit {
 
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
+    }
+    doRefresh(refresher){
+        this._eventService.announceActiveChallenges();
+        setTimeout(() => {
+            refresher.complete();
+        }, 1000);
     }
 }

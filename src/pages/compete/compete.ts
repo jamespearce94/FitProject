@@ -37,4 +37,11 @@ export class CompetePage implements OnInit {
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
     }
+
+    doRefresh(refresher){
+        this._eventService.announceActiveChallenges();
+        setTimeout(() => {
+            refresher.complete();
+        }, 1000);
+    }
 }

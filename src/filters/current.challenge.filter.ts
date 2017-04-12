@@ -6,7 +6,7 @@ import {PipeTransform, Pipe} from "@angular/core";
 export class CurrentFilter implements PipeTransform {
     transform(challenges, search) {
         return challenges.filter(challenge => {
-            return challenge.isComplete === search;
+            return challenge.isComplete == search;
         });
     }
 }

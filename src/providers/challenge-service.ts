@@ -155,7 +155,10 @@ export class ChallengeService {
                 challenge.updateChallengeProgress(this._healthkitService, this._notificationsService, this._userService.user.uid)
                     .then(result => {
                         this.af.database.object(result.url).update(result.data);
-                        if (result.addXP) {
+                        if (result.failed){
+
+                        }
+                        else if (result.addXP) {
                             this._levelService.addXP(challenge);
                             this.completeChallengesPopup(challenge);
                         }

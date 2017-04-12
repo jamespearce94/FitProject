@@ -29,14 +29,28 @@ export class DistanceChallenge extends BaseChallenge {
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
 
         console.debug('updateChallengeProgress');
+        let userIndex = this.participants.findIndex(participant => {
+            return participant.id === uid
+        });
 
         if( this.isComplete ){
             return Promise.reject('Challenge Complete');
         }
+
         if(moment().unix() >= this.start_time + this.completion.time)
         {
-            return Promise.reject('Challenge Failed');
+            if(this.participants[userIndex].failed)
+            {
+                return Promise.reject('failed');
+            }
+            return Promise.resolve({
+                url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                data: {
+                    failed: true
+                }
+            });
         }
+
 
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
@@ -58,9 +72,7 @@ export class DistanceChallenge extends BaseChallenge {
                         }
                     }
 
-                    let userIndex = this.participants.findIndex(participant => {
-                        return participant.id === uid
-                    });
+
 
                     return Promise.resolve({
                         url: '/active_challenges/' + this.key + '/participants/' + userIndex,

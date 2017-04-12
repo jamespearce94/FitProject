@@ -40,7 +40,7 @@
     <ion-item *ngIf="!loading">
       <ion-icon item-left name="trophy"></ion-icon>
       <h2>{{participant.percentage}}%</h2>
-      <progress value="{{participant.progress}}" max="{{challenge.completion.required}}"></progress>
+      <progress value="{{participant.percentage}}" max="100"></progress>
     </ion-item>
     <ion-item *ngIf="participant.complete">
     <ion-icon item-left name="stopwatch"></ion-icon>

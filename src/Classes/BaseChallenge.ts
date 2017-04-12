@@ -38,6 +38,7 @@ export abstract class BaseChallenge {
     abstract updateChallengeProgress( _healthKitService : HealthKitService, _notificationsService : NotificationService, uid : any ) : Promise<any>;
     abstract setCompleteState() : void;
     abstract checkIfComplete( progress : any ) : boolean;
+    abstract checkIfCurrent( ) : boolean;
 
     getChallengeXP(): number {
         return this.xp;

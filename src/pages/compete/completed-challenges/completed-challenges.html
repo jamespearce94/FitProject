@@ -28,7 +28,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.completeChallengesPopup(challenge)">
+  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:false)" (click)="_challengeService.completeChallengesPopup(challenge)">
     <img src="img/challenges/{{challenge.image_url}}"/>
     <ion-item>
       <ion-icon item-left name="trophy"></ion-icon>
@@ -47,10 +47,10 @@
       <ion-icon name="clock"></ion-icon>
       <span>Pending</span>
     </button>
-      <button ion-button icon-left clear item-right
-              *ngIf="challenge.active && challenge.completion.time" color="danger">
-        <ion-icon name="alert"></ion-icon>
-        <span>Expired {{challenge.start_time + challenge.completion.time | HumanizeDate}} ago</span>
+      <button  ion-button icon-left clear item-right
+              *ngIf="challenge.active && challenge.completion.time " color="danger">
+        <ion-icon *ngIf="challenge.start_time + challenge.completion.time <= getCurrentTime()" name="alert"></ion-icon>
+        <span *ngIf="challenge.start_time + challenge.completion.time <= getCurrentTime()" >Expired {{challenge.start_time + challenge.completion.time | HumanizeDate}} ago</span>
       </button>
 
     </ion-item>

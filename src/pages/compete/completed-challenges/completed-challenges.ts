@@ -5,6 +5,7 @@ import {ChallengeService} from "../../../providers/challenge-service";
 import {ChallengeListPage} from "../../challenge-list/challenge-list";
 import {SettingsModal} from "../../../modals/settings/settings";
 import {EventService} from "../../../providers/event.service";
+import * as moment from "moment";
 
 /*
  Generated class for the CompletedChallenges page.
@@ -40,6 +41,9 @@ export class CompletedChallengesPage implements OnInit {
 
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
+    }
+    getCurrentTime(){
+        return moment().unix();
     }
     doRefresh(refresher){
         this._eventService.announceActiveChallenges();

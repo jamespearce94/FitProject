@@ -56,8 +56,9 @@ export class HealthKitService {
 
         return Health.queryAggregated(queryObj)
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b))
-            // .catch( err => {return 10 });
+            // .catch( err => Math.floor(Math.random() * 20) * 1000);
     }
+
     // getSignupDate(signupDate: Date) {
     //     signupDate.setHours(0);
     //     signupDate.setMinutes(0);

@@ -24,11 +24,12 @@ export class ChallengeCompleteModal implements OnInit {
                 this.challenge.participants.forEach(participant => {
                     if (participant.progress) {
                         participant.percentage = Math.round((participant.progress / this.challenge.completion) * 100);
+                        console.log(participant.progress / this.challenge.completion);
                     } else {
                         participant.percentage = 0;
                     }
 
-                    participant.percentage = participant.percentage <= 100 ? participant.percentage : 100;
+                    participant.percentage = participant.percentage < 100 ? participant.percentage : 100;
                     if (participant.complete_date) {
                         participant.complete_date = moment.duration(moment(participant.complete_date).diff(moment(this.challenge.start_time))).humanize();
                     }

@@ -5,74 +5,70 @@ import * as moment from "moment";
 import {NotificationService} from "../providers/notification-service";
 
 export class DistanceChallenge extends BaseChallenge {
-    public isComplete : boolean = false;
+    public isComplete: boolean = false;
+    public isExpired: boolean = false;
 
-    constructor(challengeObj: any, type: ChallengeType, uid : any) {
+    constructor(challengeObj: any, type: ChallengeType, uid: any) {
         super(challengeObj, type, uid);
-        console.log('constructor');
 
         this.setCompleteState();
     }
 
-    setCompleteState() : void {
-        let user = this.participants.find( participant => participant.id === this.uid );
+    setCompleteState(): void {
+        let user = this.participants.find(participant => participant.id === this.uid);
 
-        this.isComplete = this.checkIfComplete( user.progress );
+        this.isComplete = this.checkIfComplete(user.progress);
+        this.isExpired = this.checkIfExpired();
     }
 
-    checkIfComplete( progress : any ) : boolean {
-        console.log('progress ' + progress);
+    checkIfComplete(progress: any): boolean {
+        return progress >= this.completion.required;
+    }
 
-        return progress >= this.completion.required || (this.start_time + this.completion.time) <= moment().unix();
+    checkIfExpired() {
+        return (this.start_time + this.completion.time) <= moment().unix();
+    }
+
+    checkIfCurrent() {
+        return !this.isComplete && !this.isExpired;
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
-
-        console.debug('updateChallengeProgress');
         let userIndex = this.participants.findIndex(participant => {
             return participant.id === uid
         });
 
-        if( this.isComplete ){
+        if (this.isComplete) {
             return Promise.reject('Challenge Complete');
-        }
-
-        if(moment().unix() >= this.start_time + this.completion.time)
-        {
-            if(this.participants[userIndex].failed)
-            {
-                return Promise.reject('failed');
-            }
+        } else if( this.isExpired && !this.participants[userIndex].failed ) {
             return Promise.resolve({
                 url: '/active_challenges/' + this.key + '/participants/' + userIndex,
                 data: {
-                    failed: true
+                    failed: !this.participants[userIndex].failed
                 }
             });
         }
 
-
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
-                console.log('got data bruva', metricValue);
-                let sent;
-                let user = this.participants.find(user =>{return user.id == uid});
+                let sent = false;
+                let user = this.participants.find(user => {
+                    return user.id == uid
+                });
                 metricValue = metricValue / 1000;
-                if(user.progress != metricValue) {
+                if (user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
                     let addXp = isComplete && !this.isComplete;
-                        console.log(isComplete);
+
                     //mark as complete straight away so the UI changes before the db catch up
                     this.isComplete = isComplete;
-                    if (!isComplete){
-                        if(!user.notification) {
+                    if (!isComplete) {
+                        if (!user.notification) {
                             sent = true;
                             let message = this.getName() + ' is almost over';
-                            _notificationsService.sendNotification(this.completion.time , message, this.getStartTime());
+                            _notificationsService.sendNotification(this.completion.time, message, this.getStartTime());
                         }
                     }
-
-
 
                     return Promise.resolve({
                         url: '/active_challenges/' + this.key + '/participants/' + userIndex,
@@ -87,12 +83,12 @@ export class DistanceChallenge extends BaseChallenge {
                     });
                 }
                 else {
-                    return Promise.reject(new Error("Progress not changed"));
+                    return Promise.reject('No Change');
                 }
             }).catch(err => Promise.reject(err));
     }
 
-    getLeader(participants: any){
+    getLeader(participants: any) {
 
     }
 

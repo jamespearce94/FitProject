@@ -3,6 +3,7 @@ import {IChallenge} from "./IChallenge";
 import {BaseChallenge} from "./BaseChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
+import {NotificationService} from "../providers/notification-service";
 
 export class StepsChallenge extends BaseChallenge {
     public isComplete : boolean = false;
@@ -24,7 +25,11 @@ export class StepsChallenge extends BaseChallenge {
         return progress >= this.completion.required;
     }
 
-    updateChallengeProgress(_healthKitService: HealthKitService, uid: any): Promise<any> {
+    checkIfCurrent() {
+        return !this.isComplete;
+    }
+
+    updateChallengeProgress(_healthKitService: HealthKitService,_notificationsService: NotificationService, uid: any): Promise<any> {
 
         console.debug('updateChallengeProgress');
 
@@ -59,7 +64,7 @@ export class StepsChallenge extends BaseChallenge {
                     });
                 }
                 else {
-                    return Promise.reject(new Error("Progress not changed"));
+                    return Promise.reject('No Change');
                 }
             }).catch(err => Promise.reject(err));
     }

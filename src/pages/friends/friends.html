@@ -36,7 +36,7 @@
                 <ion-spinner name="dots" *ngIf="!friend.stats"></ion-spinner>
             </ion-item>
             <ion-item-options>
-                <button ion-button color="danger" icon-left>
+                <button ion-button color="danger" (click)="_friendService.removeFriend(friend.$key)" icon-left>
                     <ion-icon name="trash"></ion-icon>
                     Unfriend
                 </button>

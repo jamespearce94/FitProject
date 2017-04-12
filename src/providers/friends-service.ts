@@ -71,5 +71,14 @@ export class FriendsService {
             .remove();
     }
 
+    removeFriend(uid: string){
+        console.log('remove');
+        this.af.database.object('/users/' + this._userService.user.auth.uid + '/friends/' + uid)
+            .remove();
+
+        this.af.database.object('/users/' + uid + '/friends/' + this._userService.user.auth.uid)
+            .remove();
+    }
+
 
 }

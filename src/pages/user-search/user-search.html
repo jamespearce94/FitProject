@@ -29,7 +29,7 @@
         <h2>{{user.fitness_stats.name}}</h2>
         <p>Last Active</p>
         <div *ngIf="user.fitness_stats.last_update">
-          <p>{{user.fitness_stats.last_update}}</p>
+          <p>{{user.fitness_stats.last_update | HumanizeDate}} ago</p>
         </div>
         <ion-spinner name="dots" *ngIf="!user"></ion-spinner>
       </ion-item>

@@ -3,6 +3,7 @@ import {ChallengeType} from "./ChallengeType";
 import {IChallenge} from "./IChallenge";
 import {HealthKitService} from "../providers/healthkit-service";
 import * as moment from "moment";
+import {NotificationService} from "../providers/notification-service";
 
 export class CaloriesChallenge extends BaseChallenge {
     public isComplete : boolean = false;
@@ -23,7 +24,11 @@ export class CaloriesChallenge extends BaseChallenge {
         return progress >= this.completion.required;
     }
 
-    updateChallengeProgress(_healthKitService: HealthKitService, uid: any): Promise<any> {
+    checkIfCurrent() {
+        return !this.isComplete;
+    }
+
+    updateChallengeProgress(_healthKitService: HealthKitService,_notificationsService: NotificationService, uid: any): Promise<any> {
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
                 let user = this.participants.find(user =>{return user.id == uid});
@@ -37,7 +42,7 @@ export class CaloriesChallenge extends BaseChallenge {
                         return participant.id === uid
                     });
 
-                    return {
+                    return Promise.resolve({
                         url: '/active_challenges/' + this.key + '/participants/' + userIndex,
                         addXP: addXp,
                         data: {
@@ -46,10 +51,10 @@ export class CaloriesChallenge extends BaseChallenge {
                             last_update: moment().unix(),
                             complete_date: isComplete ? moment().unix() : null
                         }
-                    };
+                    });
                 }
                 else{
-                    Promise.reject('Progress not changed');
+                    return Promise.reject('No Change');
                 }
             }).catch(err => console.log(err));
     }

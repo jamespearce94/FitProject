@@ -32,7 +32,7 @@ export class ChallengeService {
                 private _healthkitService: HealthKitService,
                 private _levelService: LevelService,
                 private _eventService: EventService,
-                private _notificationsService : NotificationService) {
+                private _notificationsService: NotificationService) {
 
         this.getChallengeList()
             .take(1)
@@ -89,7 +89,7 @@ export class ChallengeService {
                             }
                         });
 
-                        if( this.firstLoad ){
+                        if (this.firstLoad) {
                             _eventService.announceActiveChallenges();
                             this.firstLoad = false;
                         }
@@ -127,6 +127,7 @@ export class ChallengeService {
         this.modalCtrl.create(ChallengeCompleteModal, challenge).present();
 
     }
+
     failedChallengesPopup(challenge): void {
         this.modalCtrl.create(ChallengeFailedModal, challenge).present();
 
@@ -159,16 +160,25 @@ export class ChallengeService {
             if (challenge.getActiveStatus()) {
                 challenge.updateChallengeProgress(this._healthkitService, this._notificationsService, this._userService.user.uid)
                     .then(result => {
-                        this.af.database.object(result.url).update(result.data);
-                        if (result.failed){
+                        console.log('updateChallengeProgress -res', result);
+                        if (result.data.failed) {
+                            debugger;
+                            console.log('failed url' + result.url);
+                            this.af.database.object(result.url).update(result.data);
                             this.failedChallengesPopup(challenge);
                         }
-                        else if (result.addXP) {
-                            this._levelService.addXP(challenge);
-                            this.completeChallengesPopup(challenge);
+                        else {
+                            this.af.database.object(result.url).update(result.data);
+                            if (result.addXP) {
+                                this._levelService.addXP(challenge);
+                                this.completeChallengesPopup(challenge);
+                            }
                         }
+
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => {
+                        console.log('updateChallengeProgress', err);
+                    });
             }
         }));
     }

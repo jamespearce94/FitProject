@@ -27,21 +27,22 @@
         <ion-item>
             <ion-icon item-left name="flash"></ion-icon>
             <h2>{{challenge.xp}} XP</h2>
-            <span item-right>{{challenge.completion}} {{challenge.type}}</span>
+            <span *ngIf="!challenge.type == 'MultiStep'" item-right>{{challenge.completion.required}} {{challenge.type}}</span>
+            <span *ngIf="challenge.type == 'MultiStep'" item-right>{{challenge.completion.step1 + challenge.completion.step2}} Steps</span>
         </ion-item>
         <ion-item>
             <ion-icon item-left name="contact"></ion-icon>
             <h2>{{challenge.host}}</h2>
         </ion-item>
         <ion-item class="item item-block item-ios">
-            <button clear ion-button item-left color="secondary" (click)="acceptChallenge(challenge)"
-                    class="disable-hover item-button button button-ios button-clear button-clear-ios">
-                <span class="button-inner">Accept</span>
-                <div class="button-effect"></div>
-            </button>
-            <button clear ion-button item-right color="danger" (click)="rejectChallenge(challenge)"
+            <button clear ion-button item-left color="danger" (click)="rejectChallenge(challenge)"
                     class="disable-hover item-button button button-ios button-clear button-clear-ios">
                 <span class="button-inner">Decline</span>
+                <div class="button-effect"></div>
+            </button>
+            <button clear ion-button item-right color="secondary" (click)="acceptChallenge(challenge)"
+                    class="disable-hover item-button button button-ios button-clear button-clear-ios">
+                <span class="button-inner">Accept</span>
                 <div class="button-effect"></div>
             </button>
             <div class="button-effect"></div>

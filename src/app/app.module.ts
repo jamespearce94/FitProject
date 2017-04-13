@@ -36,6 +36,8 @@ import {EventService} from "../providers/event.service";
 import {NotificationService} from "../providers/notification-service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {ChallengeFailedModal} from "../modals/challenge-failed/challenge-failed.modal";
+import {MultiStepChallenge} from "../Classes/MultiStepChallenge";
+import {MultiStepChallengeModal} from "../modals/multistep-challenges/multistep-challenges.modal";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBREEQOeO1de92knkA8xhiCMZCKiwo3Byo",
@@ -75,7 +77,8 @@ const firebaseAuthConfig = {
         CompletedChallengesPage,
         LevelUpModal,
         ChallengeCompleteModal,
-        ChallengeFailedModal
+        ChallengeFailedModal,
+        MultiStepChallengeModal
     ],
     imports: [
         IonicModule.forRoot(MyApp, {tabsPlacement: 'top'}),
@@ -103,7 +106,9 @@ const firebaseAuthConfig = {
         CompletedChallengesPage,
         LevelUpModal,
         ChallengeCompleteModal,
-        ChallengeFailedModal
+        ChallengeFailedModal,
+        MultiStepChallengeModal
+
     ],
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},

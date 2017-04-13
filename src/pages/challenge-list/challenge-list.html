@@ -25,9 +25,15 @@
             <ion-icon item-left name="flash"></ion-icon>
             <h2>{{challenge.xp}} XP</h2>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="challenge.type != 'MultiStep'">
             <span *ngIf="challenge.type != 'Distance'" item-left>{{challenge.completion.required}} {{challenge.type}}</span>
             <span *ngIf="challenge.type == 'Distance'" item-left>{{challenge.completion.required}} Miles</span>
+            <button ion-button icon-left clear item-right (click)="challengeAlert(challenge)">
+                <ion-icon  name="game-controller-a"></ion-icon> Start
+            </button>
+        </ion-item>
+        <ion-item *ngIf="challenge.type == 'MultiStep'">
+            <span item-left>{{challenge.completion.step1 + challenge.completion.step2}} Total Steps</span>
             <button ion-button icon-left clear item-right (click)="challengeAlert(challenge)">
                 <ion-icon  name="game-controller-a"></ion-icon> Start
             </button>

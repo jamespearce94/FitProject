@@ -18,6 +18,8 @@ import {EventService} from "./event.service";
 import {BaseChallenge} from "../Classes/BaseChallenge";
 import {NotificationService} from "./notification-service";
 import {ChallengeFailedModal} from "../modals/challenge-failed/challenge-failed.modal";
+import {MultiStepChallenge} from "../Classes/MultiStepChallenge";
+import {MultiStepChallengeModal} from "../modals/multistep-challenges/multistep-challenges.modal";
 
 @Injectable()
 export class ChallengeService {
@@ -83,6 +85,11 @@ export class ChallengeService {
                                         ChallengeType.DISTANCE, this._userService.user.uid));
                                     break;
                                 }
+                                case ChallengeType.MULTI: {
+                                    this.challenges.splice(index, 1, new MultiStepChallenge(challenge,
+                                        ChallengeType.MULTI, this._userService.user.uid));
+                                    break;
+                                }
                                 default: {
 
                                 }
@@ -106,13 +113,13 @@ export class ChallengeService {
     }
 
     acceptChallenge(challenge): firebase.Promise<any> {
-        return this.af.database.object('/active_challenges/' + challenge.key)
-            .update({
-                pending_participants: challenge.pending_participants
-                    .filter(p => p !== this._userService.user.auth.uid),
-                active: challenge.pending_participants.length === 1,
-                start_time: challenge.pending_participants.length ? moment().unix() : null
-            });
+            return this.af.database.object('/active_challenges/' + challenge.key)
+                .update({
+                    pending_participants: challenge.pending_participants
+                        .filter(p => p !== this._userService.user.auth.uid),
+                    active: challenge.pending_participants.length === 1,
+                    start_time: challenge.pending_participants.length ? moment().unix() : null
+                });
     }
 
     rejectChallenge(challenge) {
@@ -120,7 +127,13 @@ export class ChallengeService {
     }
 
     viewChallenge(challenge): void {
-        this.modalCtrl.create(ViewChallengeModal, challenge).present();
+        if (challenge.type != 'MultiStep'){
+            this.modalCtrl.create(ViewChallengeModal, challenge).present();
+        }
+        else
+        {
+            this.modalCtrl.create(MultiStepChallengeModal, challenge).present();
+        }
     }
 
     completeChallengesPopup(challenge): void {
@@ -134,16 +147,39 @@ export class ChallengeService {
     }
 
     createChallenge(participants: Array<any>, challenge: any) {
-        let formattedParticipants = participants
-            .map(participant => {
-                return {
-                    "id": participant,
-                    "progress": 0,
-                    "complete_time": null,
-                    "last_update": null,
-                    "notification": false
-                }
-            });
+        let formattedParticipants;
+        if(challenge.type == 'MultiStep'){
+        formattedParticipants = participants
+                .map(participant => {
+                    return {
+                        "id": participant,
+                        "step1":{
+                            "progress":0,
+                            "complete": false
+                        },
+                        "step2":{
+                            "progress":0,
+                            "complete": false
+                        },
+                        "complete_time": null,
+                        "last_update": null,
+                        "notification": false
+                    }
+                });
+        }
+        else{
+          formattedParticipants = participants
+                .map(participant => {
+                    return {
+                        "id": participant,
+                        "progress": 0,
+                        "complete_time": null,
+                        "last_update": null,
+                        "notification": false
+                    }
+                });
+        }
+
         this.af.database.list('/active_challenges')
             .push({
                 "active": false,

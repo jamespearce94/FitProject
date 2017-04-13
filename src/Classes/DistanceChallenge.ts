@@ -48,6 +48,9 @@ export class DistanceChallenge extends BaseChallenge {
                 }
             });
         }
+        else if(this.isExpired){
+            return Promise.reject('Expired');
+        }
 
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {

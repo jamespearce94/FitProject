@@ -13,6 +13,7 @@ export class StepsChallenge extends BaseChallenge {
         console.log('constructor');
 
         this.setCompleteState();
+        this.sortParticipants();
     }
 
     setCompleteState() : void {

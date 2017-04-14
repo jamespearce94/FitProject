@@ -55,4 +55,13 @@ export abstract class BaseChallenge {
     getStartTime(): number{
         return this.start_time;
     }
+
+    protected sortParticipants(): void {
+        this.participants.sort( ( participantA, participantB ) => {
+            return (participantA.complete_date < participantB.complete_date
+                    || participantA.progress > participantB.progress) ? 0 : 1;
+        } );
+
+        // this.participants[0].leader = tr = leader
+    }
 }

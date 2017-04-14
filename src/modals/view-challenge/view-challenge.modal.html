@@ -42,31 +42,31 @@
     </ion-list-header>
 
     <ion-spinner name="bubbles" *ngIf="loading"></ion-spinner>
-    <ion-card *ngIf="!loading" >
-      <ion-item *ngIf="!loading">
-        <ion-avatar item-left>
-          <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
-        </ion-avatar>
-        <h2>{{leader.fitness_stats.name}} <ion-icon color="golden" name="ribbon"></ion-icon> <i *ngIf="leader.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
-        <p style="white-space: normal"></p>
-      </ion-item>
-      <ion-item *ngIf="!loading">
-        <ion-icon item-left name="trophy"></ion-icon>
-        <h2>{{leader.percentage}}%</h2>
-        <progress value="{{leader.progress}}" max="{{challenge.completion.required}}"></progress>
-      </ion-item>
-      <ion-item *ngIf="leader.complete">
-        <ion-icon item-left name="stopwatch"></ion-icon>
-        <h2>Completed : {{leader.complete_date | HumanizeDate}} ago</h2>
-      </ion-item>
-      <ion-item *ngIf="!leader.complete" >
-        <ion-icon item-left name="clock"></ion-icon>
-        <h2 *ngIf="leader.last_update" >Last active : {{leader.last_update | HumanizeDate}} ago</h2>
-        <h2 *ngIf="!leader.last_update" >Last active : {{leader.last_update | HumanizeDate}}</h2>
-      </ion-item>
-    </ion-card>
+    <!--<ion-card *ngIf="!loading" >-->
+      <!--<ion-item *ngIf="!loading">-->
+        <!--<ion-avatar item-left>-->
+          <!--<img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">-->
+        <!--</ion-avatar>-->
+        <!--<h2>{{leader.fitness_stats.name}} <ion-icon color="golden" name="ribbon"></ion-icon> <i *ngIf="leader.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>-->
+        <!--<p style="white-space: normal"></p>-->
+      <!--</ion-item>-->
+      <!--<ion-item *ngIf="!loading">-->
+        <!--<ion-icon item-left name="trophy"></ion-icon>-->
+        <!--<h2>{{leader.percentage}}%</h2>-->
+        <!--<progress value="{{leader.progress}}" max="{{challenge.completion.required}}"></progress>-->
+      <!--</ion-item>-->
+      <!--&lt;!&ndash;<ion-item *ngIf="leader.complete">&ndash;&gt;-->
+        <!--&lt;!&ndash;<ion-icon item-left name="stopwatch"></ion-icon>&ndash;&gt;-->
+        <!--&lt;!&ndash;<h2>Completed : {{leader.complete_date | HumanizeDate}} ago</h2>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
+      <!--&lt;!&ndash;<ion-item *ngIf="!leader.complete" >&ndash;&gt;-->
+        <!--&lt;!&ndash;<ion-icon item-left name="clock"></ion-icon>&ndash;&gt;-->
+        <!--&lt;!&ndash;<h2 *ngIf="leader.last_update" >Last active : {{leader.last_update | HumanizeDate}} ago</h2>&ndash;&gt;-->
+        <!--&lt;!&ndash;<h2 *ngIf="!leader.last_update" >Last active : {{leader.last_update | HumanizeDate}}</h2>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
+    <!--</ion-card>-->
 
-    <ion-card *ngFor="let participant of challenge.participants || orderByChild">
+    <ion-card *ngFor="let participant of challenge.participants">
       <ion-item *ngIf="!loading">
         <ion-avatar item-left>
           <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">

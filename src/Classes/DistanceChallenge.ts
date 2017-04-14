@@ -12,6 +12,7 @@ export class DistanceChallenge extends BaseChallenge {
         super(challengeObj, type, uid);
 
         this.setCompleteState();
+        this.sortParticipants();
     }
 
     setCompleteState(): void {

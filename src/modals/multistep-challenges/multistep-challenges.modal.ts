@@ -26,7 +26,7 @@ export class MultiStepChallengeModal implements OnInit {
                     participant.step2.percentage = Math.round((participant.step2.progress / this.challenge.completion.step2) * 100);
 
 
-                    let user = users.find(user => user.$key === participant.id);
+                    let user = users.find(user => user.$key === participant.uid);
                     Object.assign(participant, user);
                 });
                 this.loading = false;

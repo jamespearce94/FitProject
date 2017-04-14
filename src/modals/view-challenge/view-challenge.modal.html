@@ -66,12 +66,16 @@
       <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
     <!--</ion-card>-->
 
-    <ion-card *ngFor="let participant of challenge.participants">
+    <ion-card *ngFor="let participant of challenge.participants; let first = first">
       <ion-item *ngIf="!loading">
         <ion-avatar item-left>
           <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
         </ion-avatar>
-        <h2>{{participant.fitness_stats.name}} <i *ngIf="participant.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
+        <h2>{{participant.fitness_stats.name}}
+          <ion-icon color="golden" name="ribbon" *ngIf="first"></ion-icon>
+          <i *ngIf="participant.complete_date">
+            <ion-icon color="primary" name="checkmark-circle"></ion-icon>
+          </i></h2>
         <p style="white-space: normal"></p>
       </ion-item>
       <ion-item *ngIf="!loading">

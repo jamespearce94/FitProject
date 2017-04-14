@@ -24,7 +24,7 @@ export class ViewChallengeModal implements OnInit {
                 this.challenge.participants.forEach( participant => {
                     participant.percentage = Math.round((participant.progress / this.challenge.completion.required)*100);
 
-                    let user = users.find( user => user.$key === participant.id );
+                    let user = users.find( user => user.$key === participant.uid );
 
                     Object.assign(participant, user);
                 });

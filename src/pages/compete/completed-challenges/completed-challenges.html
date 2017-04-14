@@ -28,7 +28,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:false)" (click)="_challengeService.completeChallengesPopup(challenge)">
+  <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:false)" (click)="_challengeService.completeChallengesPopup(challenge, true)">
     <img src="img/challenges/{{challenge.image_url}}"/>
     <ion-item>
       <ion-icon item-left name="trophy"></ion-icon>

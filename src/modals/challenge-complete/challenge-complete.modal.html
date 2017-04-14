@@ -17,9 +17,6 @@
   <ion-card *ngIf="!loading">
     <img src="img/challenges/{{challenge.image_url}}"/>
     <ion-item>
-      <h2>Scott</h2>
-    </ion-item>
-    <ion-item>
       <ion-icon item-left name="medal"></ion-icon>
       <h2>{{challenge.name}}</h2>
     </ion-item>
@@ -28,13 +25,17 @@
       <h2>{{challenge.xp}} XP Gained</h2>
     </ion-item>
   </ion-card>
-
-  <ion-card *ngFor="let participant of challenge.participants">
+  <div *ngIf="showStats">
+  <ion-card *ngFor="let participant of challenge.participants; let first = first">
     <ion-item *ngIf="!loading">
       <ion-avatar item-left>
         <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
       </ion-avatar>
-      <h2>{{participant.fitness_stats.name}} <i *ngIf="participant.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>
+      <h2>{{participant.fitness_stats.name}}
+        <ion-icon color="golden" name="ribbon" *ngIf="first"></ion-icon>
+        <i *ngIf="participant.complete_date">
+          <ion-icon color="primary" name="checkmark-circle"></ion-icon>
+        </i></h2>
       <p style="white-space: normal"></p>
     </ion-item>
     <ion-item *ngIf="!loading">
@@ -44,12 +45,13 @@
     </ion-item>
     <ion-item *ngIf="participant.complete">
     <ion-icon item-left name="stopwatch"></ion-icon>
-    <h2>Completed in {{participant.complete_date}}</h2>
+    <h2>Completed in {{participant.complete_date | HumanizeDate}}</h2>
   </ion-item>
     <ion-item *ngIf="!participant.complete">
       <ion-icon item-left name="clock"></ion-icon>
       <h2>Last updated {{participant.last_update | HumanizeDate}} ago</h2>
     </ion-item>
   </ion-card>
+  </div>
 
 </ion-content>

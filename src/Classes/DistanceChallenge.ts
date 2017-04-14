@@ -16,7 +16,7 @@ export class DistanceChallenge extends BaseChallenge {
     }
 
     setCompleteState(): void {
-        let user = this.participants.find(participant => participant.id === this.uid);
+        let user = this.participants.find(participant => participant.uid === this.uid);
 
         this.isComplete = this.checkIfComplete(user.progress);
         this.isExpired = this.checkIfExpired();
@@ -35,17 +35,16 @@ export class DistanceChallenge extends BaseChallenge {
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
-        let userIndex = this.participants.findIndex(participant => {
-            return participant.id === uid
+        let user = this.participants.find((user) => {
+            return user.uid === uid
         });
-
         if (this.isComplete) {
             return Promise.reject('Challenge Complete');
-        } else if( this.isExpired && !this.participants[userIndex].failed ) {
+        } else if( this.isExpired && !this.participants[user.id].failed ) {
             return Promise.resolve({
-                url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                url: '/active_challenges/' + this.key + '/participants/' + user.id,
                 data: {
-                    failed: !this.participants[userIndex].failed
+                    failed: !this.participants[user.id].failed
                 }
             });
         }
@@ -56,9 +55,6 @@ export class DistanceChallenge extends BaseChallenge {
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
                 let sent = false;
-                let user = this.participants.find(user => {
-                    return user.id == uid
-                });
                 metricValue = metricValue / 1000;
                 if (user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
@@ -75,7 +71,7 @@ export class DistanceChallenge extends BaseChallenge {
                     }
 
                     return Promise.resolve({
-                        url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                        url: '/active_challenges/' + this.key + '/participants/' + user.id,
                         addXP: addXp,
                         data: {
                             progress: metricValue,

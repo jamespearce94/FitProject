@@ -27,7 +27,7 @@ export class MultiStepChallenge extends BaseChallenge {
     }
 
     setCompleteState(): void {
-        let user = this.participants.find(participant => participant.id === this.uid);
+        let user = this.participants.find(participant => participant.uid === this.uid);
         this.isComplete = this.checkIfComplete(user.step1.progress + user.step2.progress);
     }
 
@@ -48,17 +48,17 @@ export class MultiStepChallenge extends BaseChallenge {
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
-        let userIndex = this.participants.findIndex(participant => {
-            return participant.id === uid
+        let user = this.participants.find((user) => {
+            return user.uid === uid
         });
 
         if (this.isComplete) {
             return Promise.reject('Challenge Complete');
-        } else if (this.isExpired && !this.participants[userIndex].failed) {
+        } else if (this.isExpired && !this.participants[user.id].failed) {
             return Promise.resolve({
-                url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                url: '/active_challenges/' + this.key + '/participants/' + user.id,
                 data: {
-                    failed: !this.participants[userIndex].failed
+                    failed: !this.participants[user.id].failed
                 }
             });
         }
@@ -66,9 +66,7 @@ export class MultiStepChallenge extends BaseChallenge {
         return _healthKitService.getChallengeMetrics('Steps', this.start_time)
             .then(metricValue => {
                 let sent = false;
-                let user = this.participants.find(user => {
-                    return user.id == uid
-                });
+
                 if (user.step1.progress + user.step2.progress != metricValue) {
                     this.step1Complete = this.checkIfStep1Complete(metricValue);
                     if (this.step1Complete) {
@@ -81,7 +79,7 @@ export class MultiStepChallenge extends BaseChallenge {
                     this.isComplete = isComplete;
                     if (this.step1Complete) {
                         return Promise.resolve({
-                            url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                            url: '/active_challenges/' + this.key + '/participants/' + user.id,
                             addXP: addXp,
                             data: {
                                 step1: {
@@ -100,7 +98,7 @@ export class MultiStepChallenge extends BaseChallenge {
                     }
                     else {
                         return Promise.resolve({
-                            url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                            url: '/active_challenges/' + this.key + '/participants/' + user.id,
                             addXP: addXp,
                             data: {
                                 step1: {

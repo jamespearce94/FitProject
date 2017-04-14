@@ -52,7 +52,7 @@ export class ChallengeService {
                             if (!activeChallenge.pending_participants || activeChallenge.pending_participants
                                     .indexOf(this._userService.user.uid) == -1) {
                                 let isPresent = activeChallenge.participants.filter(participant => {
-                                    return participant.id === this._userService.user.auth.uid;
+                                    return participant.uid === this._userService.user.auth.uid;
                                 }).length;
 
                                 if (isPresent) {
@@ -136,8 +136,9 @@ export class ChallengeService {
         }
     }
 
-    completeChallengesPopup(challenge): void {
-        this.modalCtrl.create(ChallengeCompleteModal, challenge).present();
+    completeChallengesPopup(challenge, showStats): void {
+        debugger;
+        this.modalCtrl.create(ChallengeCompleteModal, {challenge: challenge,  showStats : showStats}).present();
 
     }
 
@@ -148,11 +149,17 @@ export class ChallengeService {
 
     createChallenge(participants: Array<any>, challenge: any) {
         let formattedParticipants;
+
         if(challenge.type == 'MultiStep'){
         formattedParticipants = participants
                 .map(participant => {
+                        let index = participants.findIndex((user) => {
+                            return user === participant
+                        });
+
                     return {
-                        "id": participant,
+                        "id": index,
+                        "uid": participant,
                         "step1":{
                             "progress":0,
                             "complete": false
@@ -170,8 +177,13 @@ export class ChallengeService {
         else{
           formattedParticipants = participants
                 .map(participant => {
+                    let index = participants.findIndex((user) => {
+                        return user === participant
+                    });
+
                     return {
-                        "id": participant,
+                        "id": index,
+                        "uid": participant,
                         "progress": 0,
                         "complete_time": null,
                         "last_update": null,
@@ -198,7 +210,6 @@ export class ChallengeService {
                     .then(result => {
                         console.log('updateChallengeProgress -res', result);
                         if (result.data.failed) {
-                            debugger;
                             console.log('failed url' + result.url);
                             this.af.database.object(result.url).update(result.data);
                             this.failedChallengesPopup(challenge);
@@ -207,7 +218,7 @@ export class ChallengeService {
                             this.af.database.object(result.url).update(result.data);
                             if (result.addXP) {
                                 this._levelService.addXP(challenge);
-                                this.completeChallengesPopup(challenge);
+                                this.completeChallengesPopup(challenge, false);
                             }
                         }
 

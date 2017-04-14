@@ -16,7 +16,7 @@ export class CaloriesChallenge extends BaseChallenge {
     }
 
     setCompleteState() : void {
-        let user = this.participants.find( participant => participant.id === this.uid );
+        let user = this.participants.find( participant => participant.uid === this.uid );
 
         this.isComplete = this.checkIfComplete( user.progress );
     }
@@ -32,19 +32,16 @@ export class CaloriesChallenge extends BaseChallenge {
     updateChallengeProgress(_healthKitService: HealthKitService,_notificationsService: NotificationService, uid: any): Promise<any> {
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
-                let user = this.participants.find(user =>{return user.id == uid});
+                let user = this.participants.find(user =>{return user.uid == uid});
                 if(user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
                     let addXp = isComplete && !this.isComplete;
 
                     //mark as complete straight away so the UI changes before the db catch up
                     this.isComplete = isComplete;
-                    let userIndex = this.participants.findIndex(participant => {
-                        return participant.id === uid
-                    });
 
                     return Promise.resolve({
-                        url: '/active_challenges/' + this.key + '/participants/' + userIndex,
+                        url: '/active_challenges/' + this.key + '/participants/' + user.id,
                         addXP: addXp,
                         data: {
                             progress: metricValue,

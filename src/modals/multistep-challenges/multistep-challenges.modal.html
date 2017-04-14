@@ -43,6 +43,13 @@
                 <span>Pending</span>
             </button>
         </ion-item>
+        <ion-item *ngIf="challenge.active">
+            <button ion-button icon-left clear item-right
+                    color="primary">
+                <ion-icon name="clock"></ion-icon>
+                <span>Challenge time : {{challenge.start_time | HumanizeDate}}</span>
+            </button>
+        </ion-item>
     </ion-card>
 
     <ion-list>

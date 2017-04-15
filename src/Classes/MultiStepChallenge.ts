@@ -17,12 +17,12 @@ export class MultiStepChallenge extends BaseChallenge {
         this.sortParticipants();
     }
 
-    protected sortParticipants(): void {
+ sortParticipants(): void {
         this.participants.sort((participantA, participantB) => {
             const progA = participantA.step1.progress + participantA.step2.progress;
             const progB = participantB.step1.progress + participantB.step2.progress;
 
-            return (participantA.complete_date < participantB.complete_date || progA > progB) ? 0 : 1;
+            return (participantA.complete_date < participantB.complete_date || progA > progB) ? -1 : 1;
         });
     }
 

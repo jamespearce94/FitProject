@@ -56,10 +56,24 @@ export abstract class BaseChallenge {
         return this.start_time;
     }
 
-    protected sortParticipants(): void {
+    sortParticipants(): void {
         this.participants.sort( ( participantA, participantB ) => {
-            return (participantA.complete_date < participantB.complete_date
-                    || participantA.progress > participantB.progress) ? 0 : 1;
+        //    if(participantA.complete_date && participantB.complete_date)
+        //    {
+        //        return (participantA.complete_date < participantB.complete_date) ? 1: 0;
+        //    }
+        //    else{
+            // return (participantA.progress > participantB.progress) ? 0 : 1;
+            console.log(this.name)
+            console.log(participantA.id + ' '); 
+            if(participantA.progress > participantB.progress){
+                return 0
+            };
+            if(participantA.progress < participantB.progress){
+                return -1
+            }
+         
+            
         } );
 
         // this.participants[0].leader = tr = leader

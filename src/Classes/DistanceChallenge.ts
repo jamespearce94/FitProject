@@ -14,6 +14,15 @@ export class DistanceChallenge extends BaseChallenge {
         this.setCompleteState();
         this.sortParticipants();
     }
+         sortParticipants(): void {
+        this.participants.sort((participantA, participantB) => {
+            const progA = participantA.progress;
+            const progB = participantB.progress;
+
+            return (participantA.complete_date < participantB.complete_date || progA > progB) ? -1 : 1;
+        });
+    }
+
 
     setCompleteState(): void {
         let user = this.participants.find(participant => participant.uid === this.uid);

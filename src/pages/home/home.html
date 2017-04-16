@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar color="primary">
+    <ion-navbar color="dark">
         <ion-buttons start>
             <button ion-button menuToggle icon-only>
                 <ion-icon name="menu"></ion-icon>
@@ -28,12 +28,8 @@
             </ion-item>
             <ion-item>
                 <span class="progress-type">{{_levelService.progress.percentage}}%</span>
-                    <progress value="{{_levelService.progress.current}}" max="{{_levelService.progress.max_progress}}" style="width: 100%;">
+                    <progress class="progress" value="{{_levelService.progress.current}}" max="{{_levelService.progress.max_progress}}" style="width: 100%; color: black;">
                     </progress>
-            </ion-item>
-            <ion-item>
-                <ion-icon name="podium" item-left></ion-icon>
-                <h2>Completed Challenges: <b>10</b></h2>
             </ion-item>
             <ion-item>
                 <ion-icon name="ribbon"  item-left></ion-icon>

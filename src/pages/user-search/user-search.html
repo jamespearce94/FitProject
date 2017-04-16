@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar color="dark">
     <ion-buttons start>
       <button ion-button menuToggle icon-only>
         <ion-icon name="menu"></ion-icon>
@@ -18,7 +18,7 @@
 
 
 <ion-content no-padding>
-  <ion-searchbar [(ngModel)]="searchTerm">
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search Friend Name">
   </ion-searchbar>
   <ion-list padding>
     <ion-item-sliding *ngFor="let user of usersList | userNameFilter:searchTerm">

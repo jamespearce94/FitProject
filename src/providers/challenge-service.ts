@@ -208,7 +208,6 @@ export class ChallengeService {
             if (challenge.getActiveStatus()) {
                 challenge.updateChallengeProgress(this._healthkitService, this._notificationsService, this._userService.user.uid)
                     .then(result => {
-                        console.log('updateChallengeProgress -res', result);
                         if (result.data.failed) {
                             console.log('failed url' + result.url);
                             this.af.database.object(result.url).update(result.data);
@@ -224,7 +223,7 @@ export class ChallengeService {
 
                     })
                     .catch(err => {
-                        console.log('updateChallengeProgress', err);
+                        console.error('updateChallengeProgress Error', err);
                     });
             }
         }));

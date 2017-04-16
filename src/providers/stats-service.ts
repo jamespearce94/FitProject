@@ -43,7 +43,6 @@ export class StatsService {
     }
 
     updateCurrentSteps(uid: string, steps: number) {
-        console.log('steps', steps);
         this.stats.current_steps = steps;
         this.af.database.object('users/' + uid + '/fitness_stats')
             .update({

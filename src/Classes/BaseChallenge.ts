@@ -5,19 +5,19 @@ import {NotificationService} from "../providers/notification-service";
 
 export abstract class BaseChallenge {
 
-    protected type : ChallengeType;
-    protected name : string;
-    protected id : string;
-    protected completion : any;
-    protected description :  string;
-    protected image_url : string;
-    protected xp : number;
-    protected participants : Array<any> = [];
-    protected start_time : number;
-    protected host : string;
-    protected key : string;
-    protected active : boolean;
-    protected uid : any;
+    protected type: ChallengeType;
+    protected name: string;
+    protected id: string;
+    protected completion: any;
+    protected description: string;
+    protected image_url: string;
+    protected xp: number;
+    protected participants: Array<any> = [];
+    protected start_time: number;
+    protected host: string;
+    protected key: string;
+    protected active: boolean;
+    protected uid: any;
 
     constructor(challengeObj, type, uid) {
         this.uid = uid;
@@ -29,53 +29,50 @@ export abstract class BaseChallenge {
         this.image_url = challengeObj.image_url;
         this.xp = challengeObj.xp;
         this.participants = challengeObj.participants;
-        this.start_time =  challengeObj.start_time;
+        this.start_time = challengeObj.start_time;
         this.host = challengeObj.host;
         this.key = challengeObj.key;
         this.active = challengeObj.active;
     }
 
-    abstract updateChallengeProgress( _healthKitService : HealthKitService, _notificationsService : NotificationService, uid : any ) : Promise<any>;
-    abstract setCompleteState() : void;
-    abstract checkIfComplete( progress : any ) : boolean;
-    abstract checkIfCurrent( ) : boolean;
+    abstract updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any>;
+
+    abstract setCompleteState(): void;
+
+    abstract checkIfComplete(progress: any): boolean;
+
+    abstract checkIfCurrent(): boolean;
 
     getChallengeXP(): number {
         return this.xp;
     }
+
     getActiveStatus(): boolean {
         return this.active;
     }
+
     getCompletion(): any {
         return this.completion;
     }
+
     getName(): string {
         return this.name;
     }
-    getStartTime(): number{
+
+    getStartTime(): number {
         return this.start_time;
     }
 
     sortParticipants(): void {
-        this.participants.sort( ( participantA, participantB ) => {
-        //    if(participantA.complete_date && participantB.complete_date)
-        //    {
-        //        return (participantA.complete_date < participantB.complete_date) ? 1: 0;
-        //    }
-        //    else{
-            // return (participantA.progress > participantB.progress) ? 0 : 1;
-            console.log(this.name)
-            console.log(participantA.id + ' '); 
-            if(participantA.progress > participantB.progress){
+        this.participants.sort((participantA, participantB) => {
+
+            if (participantA.progress > participantB.progress) {
                 return 0
-            };
-            if(participantA.progress < participantB.progress){
+            }
+            ;
+            if (participantA.progress < participantB.progress) {
                 return -1
             }
-         
-            
-        } );
-
-        // this.participants[0].leader = tr = leader
+        });
     }
 }

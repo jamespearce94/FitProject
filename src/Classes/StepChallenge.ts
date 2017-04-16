@@ -6,16 +6,16 @@ import * as moment from "moment";
 import {NotificationService} from "../providers/notification-service";
 
 export class StepsChallenge extends BaseChallenge {
-    public isComplete : boolean = false;
+    public isComplete: boolean = false;
 
-    constructor(challengeObj: any, type: ChallengeType, uid : any) {
+    constructor(challengeObj: any, type: ChallengeType, uid: any) {
         super(challengeObj, type, uid);
-        console.log('constructor');
 
         this.setCompleteState();
         this.sortParticipants();
     }
-     sortParticipants(): void {
+
+    sortParticipants(): void {
         this.participants.sort((participantA, participantB) => {
             const progA = participantA.progress;
             const progB = participantB.progress;
@@ -24,12 +24,12 @@ export class StepsChallenge extends BaseChallenge {
         });
     }
 
-    setCompleteState() : void {
-        let user = this.participants.find( participant => participant.uid === this.uid );
-        this.isComplete = this.checkIfComplete( user.progress );
+    setCompleteState(): void {
+        let user = this.participants.find(participant => participant.uid === this.uid);
+        this.isComplete = this.checkIfComplete(user.progress);
     }
 
-    checkIfComplete( progress : any ) : boolean {
+    checkIfComplete(progress: any): boolean {
         return progress >= this.completion.required;
     }
 
@@ -37,18 +37,18 @@ export class StepsChallenge extends BaseChallenge {
         return !this.isComplete;
     }
 
-    updateChallengeProgress(_healthKitService: HealthKitService,_notificationsService: NotificationService, uid: any): Promise<any> {
+    updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
         let user = this.participants.find((user) => {
             return user.uid === uid
         });
 
-        if( this.isComplete ){
+        if (this.isComplete) {
             return Promise.reject('Challenge Complete');
         }
 
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
-                if(user.progress != metricValue) {
+                if (user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
                     let addXp = isComplete && !this.isComplete;
 

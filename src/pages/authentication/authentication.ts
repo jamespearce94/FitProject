@@ -22,7 +22,6 @@ export class AuthenticationPage implements OnInit, OnDestroy {
         email: null,
         password: null,
         name: null,
-        goal: null,
         signupDate: null
     };
 

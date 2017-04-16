@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from '@angular/core';
 import {ViewController} from "ionic-angular";
 import {UserService} from "../../providers/user-service";
@@ -32,7 +31,6 @@ export class ChallengeFailedModal implements OnInit {
                     if (participant.complete_date) {
                         participant.complete_date = moment.duration(moment(participant.complete_date).diff(moment(this.challenge.start_time))).humanize();
                     }
-                    console.log(participant.complete_date);
                     let user = users.find(user => user.$key === participant.id);
                     Object.assign(participant, user);
                 });

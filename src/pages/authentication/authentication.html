@@ -7,13 +7,14 @@
 <ion-header>
 
     <ion-navbar>
-        <ion-title>FitCompete Login</ion-title>
+        <ion-title>Welcome to SFC</ion-title>
     </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+        <img src="img/icon.png" style="max-height: 100px; max-width: 100px; margin-left: 36%"/>
     <ion-list *ngIf="action != 'signup'">
 
         <ion-item no-padding>
@@ -42,86 +43,11 @@
             <ion-input type="text" placeholder="Full Name" [(ngModel)]="signupModel.name"></ion-input>
         </ion-item>
 
-        <ion-item no-padding>
-            <ion-input type="number" placeholder="Goal Weight (KG)" [(ngModel)]="signupModel.goal"></ion-input>
-        </ion-item>
-
     </ion-list>
 
-    <button ion-button color="primary" full *ngIf="action != 'signup'" (click)="login()">Login</button>
-    <button ion-button color="primary" full *ngIf="action != 'signup'" (click)="action = 'signup'">Sign Up</button>
+    <button ion-button color="dark" full *ngIf="action != 'signup'" (click)="login()">Login</button>
+    <button ion-button color="dark" full *ngIf="action != 'signup'" (click)="action = 'signup'">Sign Up</button>
 
-    <button ion-button color="primary" full *ngIf="action == 'signup'" (click)="action = 'login'">Login</button>
-    <button ion-button color="primary" full *ngIf="action == 'signup'" (click)="signup()">Sign Up</button>
-    <!--<ion-card>-->
-
-    <!--<ion-card-content>-->
-    <!--<ion-card-title>-->
-    <!--Login-->
-    <!--</ion-card-title>-->
-
-    <!--<ion-list *ngIf="action != 'signup'">-->
-
-    <!--<ion-item >-->
-    <!--<ion-input [(ngModel)]="loginModel.email" type="email" placeholder="Email"></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-    <!--<ion-input [(ngModel)]="loginModel.password" type="password" placeholder="Password"></ion-input>-->
-    <!--</ion-item>-->
-
-
-
-    <!--<button ion-button outline item-left icon-left (click)="login()" >-->
-    <!--<ion-icon name="ios-checkmark-circle"></ion-icon>-->
-    <!--Login-->
-    <!--</button>-->
-
-    <!--<button ion-button outline item-left icon-left (click)="action = 'signup'" >-->
-    <!--<ion-icon name="ios-clipboard"></ion-icon>-->
-    <!--Sign Up-->
-    <!--</button>-->
-
-    <!--</ion-list>-->
-
-    <!--<ion-list *ngIf="action == 'signup'">-->
-
-    <!--<ion-item >-->
-    <!--<ion-input [(ngModel)]="signupModel.email" type="email" placeholder="Email"></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-    <!--<ion-input [(ngModel)]="signupModel.password" type="password" placeholder="Password"></ion-input>-->
-    <!--</ion-item>-->
-    <!--<ion-item>-->
-    <!--<ion-input type="number" placeholder="Height CM"></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-    <!--<ion-input type="number" placeholder="Weight KG"></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<ion-item>-->
-    <!--<ion-input type="number" placeholder="Goal Weight KG"></ion-input>-->
-    <!--</ion-item>-->
-
-    <!--<button ion-button outline item-left icon-left (click)="action = 'login'" >-->
-    <!--<ion-icon name="ios-checkmark-circle"></ion-icon>-->
-    <!--Login-->
-    <!--</button>-->
-
-    <!--<button ion-button outline item-left icon-left *ngIf="action != 'signup'" (click)="action = 'signup'" >-->
-    <!--<ion-icon name="ios-clipboard"></ion-icon>-->
-    <!--Sign Up-->
-    <!--</button>-->
-
-    <!--<button ion-button outline item-left icon-left *ngIf="action == 'signup'" (click)="signup()" >-->
-    <!--<ion-icon name="ios-clipboard"></ion-icon>-->
-    <!--Sign Up-->
-    <!--</button>-->
-
-    <!--</ion-list>-->
-    <!--</ion-card-content>-->
-    <!--</ion-card>-->
-
+    <button ion-button color="dark" full *ngIf="action == 'signup'" (click)="action = 'login'"><div><ion-icon name="return-left"></ion-icon></div></button>
+    <button ion-button color="dark" full *ngIf="action == 'signup'" (click)="signup()">Sign Up</button>
 </ion-content>

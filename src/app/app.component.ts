@@ -20,7 +20,6 @@ export class MyApp {
         {title: "Home", icon: "home", root: HomePage},
         {title: "Friends", icon: "people", root : FriendsTabsPage},
         {title: "Compete", icon: "stopwatch",root : CompeteTabsPage},
-        {title: "Leader Boards", icon: "podium", root : LeaderboardsPage}
     ];
 
     constructor(private platform: Platform,

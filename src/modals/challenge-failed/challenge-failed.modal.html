@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>
-            Completed Challenge !
+            Challenge Failed !
         </ion-title>
         <ion-buttons start>
             <button ion-button (click)="dismiss()">
@@ -17,8 +17,8 @@
     <ion-card *ngIf="!loading">
         <img src="img/challenges/{{challenge.image_url}}"/>
         <ion-item>
-            <ion-icon item-left name="ion-close-circled"></ion-icon>
-            <h2 color="danger">Failed</h2>
+            <ion-icon item-left name="game-controller-b"></ion-icon>
+            <h2 color="danger">Challenge Failed</h2>
         </ion-item>
         <ion-item>
             <ion-icon item-left name="medal"></ion-icon>

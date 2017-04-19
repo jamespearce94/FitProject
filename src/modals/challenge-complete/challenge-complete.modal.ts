@@ -17,7 +17,6 @@ export class ChallengeCompleteModal implements OnInit {
                 private _userService: UserService) {
         this.challenge = this.viewCtrl.data.challenge;
         this.showStats = this.viewCtrl.data.showStats;
-       debugger;
     }
 
     ngOnInit() {

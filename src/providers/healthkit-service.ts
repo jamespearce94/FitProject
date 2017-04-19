@@ -56,23 +56,9 @@ export class HealthKitService {
 
         return Health.queryAggregated(queryObj)
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b))
-           // .catch( err => Math.floor(Math.random() * 20) * 1000);
-           // .catch( err => 7000);
+            .catch( err => Math.floor(Math.random() * 30) * 1000);
     }
 
-    // getSignupDate(signupDate: Date) {
-    //     signupDate.setHours(0);
-    //     signupDate.setMinutes(0);
-    //     let queryObj = {
-    //         'startDate': signupDate,
-    //         'endDate': new Date(),
-    //         'dataType': 'steps',
-    //         'bucket': 'day',
-    //     };
-    //
-    //     return Health.queryAggregated(queryObj)
-    //         .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
-    // }
 
     getLifetimeDistance(startDate: number): Promise <any> {
         let queryObj = {

@@ -17,12 +17,12 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding >
     <ion-fab bottom right>
         <button ion-fab color="dark" (click)="searchUsers()" ><ion-icon name="add"></ion-icon></button>
     </ion-fab>
     <ion-list>
-        <ion-item-sliding *ngFor="let friend of friends" no-padding>
+        <ion-item-sliding *ngFor="let friend of friends" no-padding class="slide-in-both-ways">
             <ion-item *ngIf="friend.levelData">
                 <ion-avatar item-left>
                     <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">

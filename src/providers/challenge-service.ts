@@ -137,7 +137,6 @@ export class ChallengeService {
     }
 
     completeChallengesPopup(challenge, showStats): void {
-        debugger;
         this.modalCtrl.create(ChallengeCompleteModal, {challenge: challenge,  showStats : showStats}).present();
 
     }
@@ -223,7 +222,7 @@ export class ChallengeService {
 
                     })
                     .catch(err => {
-                        console.error('updateChallengeProgress Error', err);
+                        console.warn('updateChallengeProgress ', err);
                     });
             }
         }));

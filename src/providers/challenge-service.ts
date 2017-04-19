@@ -222,7 +222,7 @@ export class ChallengeService {
 
                     })
                     .catch(err => {
-                        console.warn('updateChallengeProgress ', err);
+                        console.warn('updateChallengeProgress Error', err);
                     });
             }
         }));

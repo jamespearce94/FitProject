@@ -47,8 +47,7 @@ export class DistanceChallenge extends BaseChallenge {
         let user = this.participants.find((user) => {
             return user.uid === uid
         });
-        console.log('test ' + user.failed);
-        debugger;
+
         if (this.isComplete) {
             return Promise.reject('Challenge Complete');
         } else if( this.isExpired && !user.failed ) {

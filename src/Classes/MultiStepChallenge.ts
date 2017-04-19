@@ -22,7 +22,14 @@ export class MultiStepChallenge extends BaseChallenge {
             const progA = participantA.step1.progress + participantA.step2.progress;
             const progB = participantB.step1.progress + participantB.step2.progress;
 
-            return (participantA.complete_date < participantB.complete_date || progA > progB) ? -1 : 1;
+            if(progA && progB >= this.completion.step1 + this.completion.step2)
+            {
+                return (participantA.complete_date < participantB.complete_date) ? 1 : -1;
+            }
+            else{
+                return (progA > progB) ? -1 : 1;
+            }
+
         });
     }
 

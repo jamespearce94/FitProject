@@ -19,8 +19,15 @@ export class StepsChallenge extends BaseChallenge {
         this.participants.sort((participantA, participantB) => {
             const progA = participantA.progress;
             const progB = participantB.progress;
+            if(progA && progB >= this.completion.required)
+            {
 
-            return (participantA.complete_date < participantB.complete_date || progA > progB) ? -1 : 1;
+                return (participantA.complete_date < participantB.complete_date) ? 1 : -1;
+            }
+            else{
+                return(progA > progB) ? -1 : 1;
+            }
+
         });
     }
 

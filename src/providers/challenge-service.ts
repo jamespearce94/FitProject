@@ -55,7 +55,7 @@ export class ChallengeService {
                                 let isPresent = activeChallenge.participants.filter(participant => {
                                     return participant.uid === this._userService.user.auth.uid;
                                 }).length;
-                        // if matched combine active and list challenge together
+                                // if matched combine active and list challenge together
                                 if (isPresent) {
                                     let matchingChallenge = allChallenges.find(challenge => {
                                         return challenge.$key === activeChallenge.id
@@ -131,15 +131,33 @@ export class ChallengeService {
                 .remove()
         }
         else {
-            //remove participant
-            var index = challenge.pending_participants.findIndex((participant) => {
+            let pending = challenge.pending_participants;
+            let participants = challenge.participants;
+            //remove pending participants
+            let pendingIndex = pending.findIndex((participant) => {
                 return participant == uid
             });
-            if (index > -1) {
-                challenge.pending_participants.splice(index, 1);
+            let participant = participants.find(participant => {
+                return participant.uid == uid;
+            });
+
+            let index = challenge.participants.findIndex(user => {
+                return user.id == participant.id
+            });
+
+            if (pendingIndex > -1) {
+                challenge.pending_participants.splice(pendingIndex, 1);
             }
+            if (index > -1) {
+                challenge.participants.splice(index, 1);
+            }
+
+
             this.af.database.object('active_challenges/' + challenge.key)
-                .update({pending_participants: challenge.pending_participants})
+                .update({
+                    pending_participants: challenge.pending_participants,
+                    participants : challenge.participants
+                })
         }
     }
 

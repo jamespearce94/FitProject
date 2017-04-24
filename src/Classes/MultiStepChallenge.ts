@@ -13,20 +13,21 @@ export class MultiStepChallenge extends BaseChallenge {
     constructor(challengeObj: any, type: ChallengeType, uid: any) {
         super(challengeObj, type, uid);
 
+        //check if complete and sort straight away
         this.setCompleteState();
         this.sortParticipants();
     }
 
- sortParticipants(): void {
+    sortParticipants(): void {
+        // sort by progress and completion time
         this.participants.sort((participantA, participantB) => {
             const progA = participantA.step1.progress + participantA.step2.progress;
             const progB = participantB.step1.progress + participantB.step2.progress;
 
-            if(progA && progB >= this.completion.step1 + this.completion.step2)
-            {
+            if (progA && progB >= this.completion.step1 + this.completion.step2) {
                 return (participantA.complete_date < participantB.complete_date) ? 1 : -1;
             }
-            else{
+            else {
                 return (progA > progB) ? -1 : 1;
             }
 
@@ -34,6 +35,7 @@ export class MultiStepChallenge extends BaseChallenge {
     }
 
     setCompleteState(): void {
+        //check if challenge complete for logged in user
         let user = this.participants.find(participant => participant.uid === this.uid);
         this.isComplete = this.checkIfComplete(user.step1.progress + user.step2.progress);
     }
@@ -55,27 +57,22 @@ export class MultiStepChallenge extends BaseChallenge {
     }
 
     updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
+        // update challenge progress from healthkit
         let user = this.participants.find((user) => {
             return user.uid === uid
         });
-
+        // If complete don't update
         if (this.isComplete) {
             return Promise.reject('Challenge Complete');
-        } else if (this.isExpired && !this.participants[user.id].failed) {
-            return Promise.resolve({
-                url: '/active_challenges/' + this.key + '/participants/' + user.id,
-                data: {
-                    failed: !this.participants[user.id].failed
-                }
-            });
         }
 
         return _healthKitService.getChallengeMetrics('Steps', this.start_time)
             .then(metricValue => {
-                let sent = false;
-
+                //healthkit callback function
+                //check if each step is complete
                 if (user.step1.progress + user.step2.progress != metricValue) {
                     this.step1Complete = this.checkIfStep1Complete(metricValue);
+                    //only check step 2 if step 1 is complete
                     if (this.step1Complete) {
                         this.step2Complete = this.checkIfStep2Complete(metricValue);
                     }

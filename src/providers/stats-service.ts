@@ -16,7 +16,7 @@ export class StatsService {
                 private af: AngularFire,
                 private _userService: UserService,
                 private loadingCtrl: LoadingController,
-                private _healthKitService : HealthKitService) {
+                private _healthKitService: HealthKitService) {
         let loader = this.loadingCtrl
             .create({
                 content: "Retrieving Profile..."
@@ -57,12 +57,7 @@ export class StatsService {
             .update({lifetime_walking_distance: steps});
     }
 
-    updateDate(uid: string) {
-        this.af.database.object('users/' + uid + '/fitness_stats')
-            .update({last_update: moment().unix()});
-    }
-
-    getHealthKitSteps(){
+    getHealthKitSteps() {
         this._healthKitService.getDaySteps()
             .then((result) => {
                 this.updateCurrentSteps(this._userService.user.uid, result);
@@ -71,12 +66,14 @@ export class StatsService {
                 console.log(err);
             });
     }
-    getHealthKitLifeDistance(){
+
+    getHealthKitLifeDistance() {
         this._healthKitService.getLifetimeDistance(this.stats.signup_date)
             .then((result) => {
-                if(result/1000 != this.stats.lifetime_walking_distance) {
+            // convert to KM
+                if (result / 1000 != this.stats.lifetime_walking_distance) {
                     this.updateLifetimeDistance(this._userService.user.uid, result / 1000);
-                    this.stats.lifetime_walking_distance = result/1000;
+                    this.stats.lifetime_walking_distance = result / 1000;
                 }
             })
             .catch((err) => {

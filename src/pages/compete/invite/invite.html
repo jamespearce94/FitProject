@@ -17,7 +17,8 @@
 
 <ion-content no-padding>
 
-    <ion-card *ngFor="let challenge of challengeList" (click)="_challengeService.viewChallenge(challenge)" class="slide-in-both-ways">
+    <ion-card *ngFor="let challenge of challengeList" (click)="_challengeService.viewChallenge(challenge)"
+              class="slide-in-both-ways">
         <img src="img/challenges/{{challenge.image_url}}"/>
         <ion-item>
             <ion-icon item-left name="trophy"></ion-icon>
@@ -27,7 +28,8 @@
         <ion-item>
             <ion-icon item-left name="flash"></ion-icon>
             <h2>{{challenge.xp}} XP</h2>
-            <span *ngIf="!challenge.type == 'MultiStep'" item-right>{{challenge.completion.required}} {{challenge.type}}</span>
+            <span *ngIf="!challenge.type == 'MultiStep'"
+                  item-right>{{challenge.completion.required}} {{challenge.type}}</span>
             <span *ngIf="challenge.type == 'MultiStep'" item-right>{{challenge.completion.step1 + challenge.completion.step2}} Steps</span>
         </ion-item>
         <ion-item>

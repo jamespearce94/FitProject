@@ -23,12 +23,13 @@ export class LevelService {
                 private af: AngularFire,
                 private _userService: UserService,
                 private modalCtrl: ModalController,) {
+        //Initialise user level data
         this.getLevelData(_userService.user.uid)
             .subscribe(levelData => {
                 this.level = levelData;
                 this.GetLevels()
                     .subscribe((levels) => {
-                    this.definedLevels = levels;
+                        this.definedLevels = levels;
                         this.updateLevelIfRequired();
                         levels.forEach((level) => {
                             if (level.level == this.level.level) {
@@ -65,18 +66,18 @@ export class LevelService {
     }
 
     updateLevelIfRequired(): void {
-                let currentLevel = this.definedLevels
-                    .find(level => this.level.current_experience >= level.exp_min
-                    && this.level.current_experience <= level.exp_required);
+        let currentLevel = this.definedLevels
+            .find(level => this.level.current_experience >= level.exp_min
+            && this.level.current_experience <= level.exp_required);
 
-                if (this.level.level != currentLevel.level) {
-                    this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
-                        .update({
-                            level: currentLevel.level,
-                            experience_name: currentLevel.experience_name
-                        });
-                    this.levelUpModel(currentLevel);
-                }
+        if (this.level.level != currentLevel.level) {
+            this.af.database.object('users/' + this._userService.user.uid + '/leveldata')
+                .update({
+                    level: currentLevel.level,
+                    experience_name: currentLevel.experience_name
+                });
+            this.levelUpModel(currentLevel);
+        }
 
 
     }

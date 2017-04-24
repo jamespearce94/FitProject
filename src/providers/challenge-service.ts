@@ -36,6 +36,7 @@ export class ChallengeService {
                 private _eventService: EventService,
                 private _notificationsService: NotificationService) {
 
+        // get active challenges and list of challenges
         this.getChallengeList()
             .take(1)
             .subscribe
@@ -47,14 +48,14 @@ export class ChallengeService {
                         if (!listOfChallenges) {
                             return [];
                         }
-
+                        // check if user is in the active challenge
                         listOfChallenges.forEach(activeChallenge => {
                             if (!activeChallenge.pending_participants || activeChallenge.pending_participants
                                     .indexOf(this._userService.user.uid) == -1) {
                                 let isPresent = activeChallenge.participants.filter(participant => {
                                     return participant.uid === this._userService.user.auth.uid;
                                 }).length;
-
+                        // if matched combine active and list challenge together
                                 if (isPresent) {
                                     let matchingChallenge = allChallenges.find(challenge => {
                                         return challenge.$key === activeChallenge.id
@@ -68,6 +69,7 @@ export class ChallengeService {
                         return challenges;
                     })
                     .subscribe(list => {
+                        //Initialise challenges by type
                         list.forEach((challenge, index) => {
                             switch (challenge.type) {
                                 case ChallengeType.STEPS: {
@@ -95,7 +97,7 @@ export class ChallengeService {
                                 }
                             }
                         });
-
+                        //update progress for challenges
                         if (this.firstLoad) {
                             _eventService.announceActiveChallenges();
                             this.firstLoad = false;
@@ -113,31 +115,45 @@ export class ChallengeService {
     }
 
     acceptChallenge(challenge): firebase.Promise<any> {
-            return this.af.database.object('/active_challenges/' + challenge.key)
-                .update({
-                    pending_participants: challenge.pending_participants
-                        .filter(p => p !== this._userService.user.auth.uid),
-                    active: challenge.pending_participants.length === 1,
-                    start_time: challenge.pending_participants.length ? moment().unix() : null
-                });
+        return this.af.database.object('/active_challenges/' + challenge.key)
+            .update({
+                pending_participants: challenge.pending_participants
+                    .filter(p => p !== this._userService.user.auth.uid),
+                active: challenge.pending_participants.length === 1,
+                start_time: challenge.pending_participants.length ? moment().unix() : null
+            });
     }
 
-    rejectChallenge(challenge) {
-
+    rejectChallenge(challenge, uid) {
+        if (challenge.pending_participants.length == 1) {
+            //delete challenge if last participant rejects
+            this.af.database.object('active_challenges/' + challenge.key)
+                .remove()
+        }
+        else {
+            //remove participant
+            var index = challenge.pending_participants.findIndex((participant) => {
+                return participant == uid
+            });
+            if (index > -1) {
+                challenge.pending_participants.splice(index, 1);
+            }
+            this.af.database.object('active_challenges/' + challenge.key)
+                .update({pending_participants: challenge.pending_participants})
+        }
     }
 
     viewChallenge(challenge): void {
-        if (challenge.type != 'MultiStep'){
+        if (challenge.type != 'MultiStep') {
             this.modalCtrl.create(ViewChallengeModal, challenge).present();
         }
-        else
-        {
+        else {
             this.modalCtrl.create(MultiStepChallengeModal, challenge).present();
         }
     }
 
     completeChallengesPopup(challenge, showStats): void {
-        this.modalCtrl.create(ChallengeCompleteModal, {challenge: challenge,  showStats : showStats}).present();
+        this.modalCtrl.create(ChallengeCompleteModal, {challenge: challenge, showStats: showStats}).present();
 
     }
 
@@ -149,22 +165,22 @@ export class ChallengeService {
     createChallenge(participants: Array<any>, challenge: any) {
         let formattedParticipants;
 
-        if(challenge.type == 'MultiStep'){
-        formattedParticipants = participants
+        if (challenge.type == 'MultiStep') {
+            formattedParticipants = participants
                 .map(participant => {
-                        let index = participants.findIndex((user) => {
-                            return user === participant
-                        });
+                    let index = participants.findIndex((user) => {
+                        return user === participant
+                    });
 
                     return {
                         "id": index,
                         "uid": participant,
-                        "step1":{
-                            "progress":0,
+                        "step1": {
+                            "progress": 0,
                             "complete": false
                         },
-                        "step2":{
-                            "progress":0,
+                        "step2": {
+                            "progress": 0,
                             "complete": false
                         },
                         "complete_time": null,
@@ -173,8 +189,8 @@ export class ChallengeService {
                     }
                 });
         }
-        else{
-          formattedParticipants = participants
+        else {
+            formattedParticipants = participants
                 .map(participant => {
                     let index = participants.findIndex((user) => {
                         return user === participant
@@ -207,8 +223,9 @@ export class ChallengeService {
             if (challenge.getActiveStatus()) {
                 challenge.updateChallengeProgress(this._healthkitService, this._notificationsService, this._userService.user.uid)
                     .then(result => {
+                        // callback function updates Firebase
                         if (result.data.failed) {
-                            console.log('failed url' + result.url);
+                            //first time failed
                             this.af.database.object(result.url).update(result.data);
                             this.failedChallengesPopup(challenge);
                         }

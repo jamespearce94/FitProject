@@ -17,8 +17,6 @@
     <ion-card>
         <img src="img/challenges/{{challenge.image_url}}"/>
         <ion-item>
-            <!--<ion-icon item-left name="trophy"></ion-icon>-->
-            <!--<h2 *ngIf="!loading">Leader : {{leader.fitness_stats.name}}</h2>-->
             <h2>{{challenge.challenge_name}}</h2>
             <p style="white-space: normal">{{challenge.description}}</p>
         </ion-item>
@@ -58,36 +56,6 @@
         </ion-list-header>
 
         <ion-spinner name="bubbles" *ngIf="loading"></ion-spinner>
-        <!--<ion-card *ngIf="!loading">-->
-        <!--<ion-item *ngIf="!loading">-->
-        <!--<ion-avatar item-left>-->
-        <!--<img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">-->
-        <!--</ion-avatar>-->
-        <!--<h2>{{leader.fitness_stats.name}} <ion-icon color="golden" name="ribbon"></ion-icon> <i *ngIf="leader.complete_date"><ion-icon color="primary" name="checkmark-circle"></ion-icon></i> </h2>-->
-        <!--<p style="white-space: normal"></p>-->
-        <!--</ion-item>-->
-        <!--<ion-item *ngIf="!loading">-->
-        <!--<h2>Step 1</h2>-->
-        <!--<ion-icon item-left name="trophy"></ion-icon>-->
-        <!--<h2>{{leader.step1.percentage}}%</h2>-->
-        <!--<progress value="{{leader.step1.progress}}" max="{{challenge.completion.step1}}"></progress>-->
-        <!--</ion-item>-->
-        <!--<ion-item *ngIf="!loading">-->
-        <!--<h2>Step 2</h2>-->
-        <!--<ion-icon item-left name="trophy"></ion-icon>-->
-        <!--<h2>{{leader.step2.percentage}}%</h2>-->
-        <!--<progress value="{{leader.step2.progress}}" max="{{challenge.completion.step2}}"></progress>-->
-        <!--</ion-item>-->
-        <!--<ion-item *ngIf="leader.complete_date">-->
-        <!--<ion-icon item-left name="stopwatch"></ion-icon>-->
-        <!--<h2>Completed : {{leader.complete_date | HumanizeDate}} ago</h2>-->
-        <!--</ion-item>-->
-        <!--<ion-item *ngIf="!leader.complete" >-->
-        <!--<ion-icon item-left name="clock"></ion-icon>-->
-        <!--<h2 *ngIf="leader.last_update" >Last active : {{leader.last_update | HumanizeDate}} ago</h2>-->
-        <!--<h2 *ngIf="!leader.last_update" >Last active : {{leader.last_update | HumanizeDate}}</h2>-->
-        <!--</ion-item>-->
-        <!--</ion-card>-->
 
         <ion-card *ngFor="let participant of challenge.participants; let first = first">
             <ion-item *ngIf="!loading">

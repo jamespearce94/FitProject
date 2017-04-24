@@ -7,9 +7,11 @@ import {ChallengeType} from "../Classes/ChallengeType";
 @Injectable()
 export class HealthKitService {
 
-    constructor(public http: Http) { }
+    constructor(public http: Http) {
+    }
 
     getDaySteps(): Promise<any> {
+        // update daily steps from midnight
         let endDate = new Date();
         endDate.setHours(0);
         endDate.setMinutes(0);
@@ -23,15 +25,11 @@ export class HealthKitService {
 
         return Health.queryAggregated(queryObj)
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
+        // to update value in web browser --  .catch(err => Math.floor(Math.random() * 30) * 1000);
     }
 
-    /**
-     *
-     * @param metricType
-     * @param startDate
-     * @return {Promise<any>}
-     */
     getChallengeMetrics(metricType: any, startDate: number): Promise<any> {
+        // start date in seconds
         let queryObj = {
             'startDate': new Date(startDate * 1000),
             'endDate': new Date(),
@@ -55,12 +53,14 @@ export class HealthKitService {
         }
 
         return Health.queryAggregated(queryObj)
+        // combine multiple days into 1 value
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b))
-            .catch( err => Math.floor(Math.random() * 30) * 1000);
+        // to update value in web browser --  .catch(err => Math.floor(Math.random() * 30) * 1000);
     }
 
 
     getLifetimeDistance(startDate: number): Promise <any> {
+        // start date  ==  sign up date
         let queryObj = {
             'startDate': new Date(startDate * 1000),
             'endDate': new Date(),
@@ -69,6 +69,8 @@ export class HealthKitService {
         };
 
         return Health.queryAggregated(queryObj)
+        // combine multiple days into 1 value
             .then((result: any) => result.map(day => day.value).reduce((a, b) => a + b));
+        // to update value in web browser --  .catch(err => Math.floor(Math.random() * 30) * 1000);
     }
 }

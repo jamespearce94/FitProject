@@ -36,12 +36,12 @@ export class FriendsService {
                 requestDate: new Date(),
                 name: friendName
             });
-            let toast = this.toastCtrl.create({
-                message: 'Friend request was sent to ' + friendName,
-                duration: 3500,
-                position: 'middle'
-            });
-            toast.present();
+        let toast = this.toastCtrl.create({
+            message: 'Friend request was sent to ' + friendName,
+            duration: 3500,
+            position: 'middle'
+        });
+        toast.present();
 
     }
 
@@ -71,7 +71,7 @@ export class FriendsService {
             .remove();
     }
 
-    removeFriend(uid: string){
+    removeFriend(uid: string) {
         this.af.database.object('/users/' + this._userService.user.auth.uid + '/friends/' + uid)
             .remove();
 

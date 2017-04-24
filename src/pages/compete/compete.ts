@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, ModalController} from 'ionic-angular';
-import {SettingsModal} from "../../modals/settings/settings";
 import {ChallengeService} from "../../providers/challenge-service";
 import {ChallengeListPage} from "../challenge-list/challenge-list";
 import {EventService} from "../../providers/event.service";
@@ -9,13 +8,13 @@ import {EventService} from "../../providers/event.service";
     selector: 'page-compete',
     templateUrl: 'compete.html'
 })
-export class CompetePage implements OnInit {
+export class CompetePage {
 
     constructor(public navCtrl: NavController,
                 private modalCtrl: ModalController,
                 private _challengeService: ChallengeService,
                 private _eventService: EventService) {
-
+        // initialise challenge progress on first run
         this._eventService.activeChallengesReadyAnnounced
             .subscribe(() => {
                 try {
@@ -26,19 +25,12 @@ export class CompetePage implements OnInit {
             });
     }
 
-    ngOnInit() {
-    }
-
-    presentModal() {
-        let modal = this.modalCtrl.create(SettingsModal);
-        modal.present();
-    }
-
     searchChallenges() {
         this.navCtrl.parent.parent.push(ChallengeListPage);
     }
 
     doRefresh(refresher){
+        // update challenge progress
         this._eventService.announceActiveChallenges();
         setTimeout(() => {
             refresher.complete();

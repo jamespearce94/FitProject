@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams, ModalController} from 'ionic-angular';
-import {SettingsModal} from "../../../modals/settings/settings";
 import {ChallengeService} from "../../../providers/challenge-service";
 import {UserService} from "../../../providers/user-service";
 
@@ -8,7 +7,7 @@ import {UserService} from "../../../providers/user-service";
     selector: 'page-compete-invite',
     templateUrl: 'invite.html'
 })
-export class CompeteInvitePage implements OnInit {
+export class CompeteInvitePage {
 
     public challengeList = [];
 
@@ -29,7 +28,7 @@ export class CompeteInvitePage implements OnInit {
                         if (!listOfChallenges) {
                             return [];
                         }
-
+                        //Match pending challenge with logged in user
                         listOfChallenges.forEach(activeChallenge => {
                             if (activeChallenge.pending_participants && activeChallenge.pending_participants
                                     .indexOf(this._userService.user.auth.uid) !== -1) {
@@ -38,7 +37,7 @@ export class CompeteInvitePage implements OnInit {
 
                                     return challenge.$key === activeChallenge.id
                                 });
-                                if(matchingChallenge) {
+                                if (matchingChallenge) {
                                     matchingChallenge.key = activeChallenge.$key;
                                     challenges.push(Object.assign(activeChallenge, matchingChallenge));
                                 }
@@ -47,28 +46,17 @@ export class CompeteInvitePage implements OnInit {
 
                         return challenges;
                     })
-                    .subscribe(newList => {this.challengeList = newList;});
+                    .subscribe(newList => {
+                        this.challengeList = newList;
+                    });
             });
     }
 
-    ionViewDidLoad() {
+    acceptChallenge(challenge) {
+        this._challengeService.acceptChallenge(challenge);
     }
 
-    ngOnInit() {
-    }
-
-    presentModal() {
-        let modal = this.modalCtrl.create(SettingsModal);
-        modal.present();
-    }
-
-    acceptChallenge( challenge ){
-        this._challengeService.acceptChallenge(challenge)
-            .then( () => {
-                //nofin mate....
-            });
-    }
-    rejectChallenge( challenge ){
-
+    rejectChallenge(challenge) {
+        this._challengeService.rejectChallenge(challenge,this._userService.user.auth.uid)
     }
 }

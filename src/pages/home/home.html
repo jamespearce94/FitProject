@@ -28,33 +28,34 @@
             </ion-item>
             <ion-item>
                 <span class="progress-type">{{_levelService.progress.percentage}}%</span>
-                    <progress class="progress" value="{{_levelService.progress.current}}" max="{{_levelService.progress.max_progress}}" style="width: 100%; color: black;">
-                    </progress>
+                <progress class="progress" value="{{_levelService.progress.current}}"
+                          max="{{_levelService.progress.max_progress}}" style="width: 100%; color: black;">
+                </progress>
             </ion-item>
             <ion-item>
-                <ion-icon name="game-controller-b"  item-left></ion-icon>
+                <ion-icon name="game-controller-b" item-left></ion-icon>
                 <h2>Rank: <b>{{_levelService.level.experience_name}}</b></h2>
             </ion-item>
         </ion-card>
         <ion-list-header>
             Current Stats
         </ion-list-header>
-        <div *ngIf="_statsService.stats" >
-        <ion-item padding>
-            <ion-icon name="bookmark" item-left></ion-icon>
-            Daily steps
-            <span item-right>{{_statsService.stats.current_steps}}</span>
-        </ion-item>
-        <ion-item padding>
-            <ion-icon name="timer" item-left></ion-icon>
-            Last update
-            <span item-right>{{_statsService.stats.last_update | HumanizeDate }} ago</span>
-        </ion-item>
-        <ion-item padding>
-            <ion-icon name="car" item-left></ion-icon>
-            Lifetime Distance
-            <span item-right>{{_statsService.stats.lifetime_walking_distance | number:'2.1-2'}} km</span>
-        </ion-item>
+        <div *ngIf="_statsService.stats">
+            <ion-item padding>
+                <ion-icon name="bookmark" item-left></ion-icon>
+                Daily steps
+                <span item-right>{{_statsService.stats.current_steps}}</span>
+            </ion-item>
+            <ion-item padding>
+                <ion-icon name="timer" item-left></ion-icon>
+                Last update
+                <span item-right>{{_statsService.stats.last_update | HumanizeDate }} ago</span>
+            </ion-item>
+            <ion-item padding>
+                <ion-icon name="car" item-left></ion-icon>
+                Lifetime Distance
+                <span item-right>{{_statsService.stats.lifetime_walking_distance | number:'2.1-2'}} km</span>
+            </ion-item>
         </div>
 
     </ion-list>

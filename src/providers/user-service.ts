@@ -17,7 +17,7 @@ export class UserService {
     constructor(private http: Http,
                 private af: AngularFire) {
         this.auth = af.auth;
-
+        // listen for change in authentication
         this.af.auth.subscribe(auth => {
             this.user = auth;
             this.isLoggedIn = auth !== null;
@@ -38,12 +38,13 @@ export class UserService {
             .list('/users');
     }
 
-    getUser( userId : string ) : FirebaseObjectObservable<any> {
+    getUser(userId: string): FirebaseObjectObservable<any> {
         return this.af.database
-            .object('/users/' + userId );
+            .object('/users/' + userId);
     }
 
     signup(signupModel) {
+        //create new user
         this.af.auth.createUser(signupModel)
             .then((result) => {
                 result.auth.updateProfile({

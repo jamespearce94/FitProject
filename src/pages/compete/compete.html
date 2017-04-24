@@ -19,7 +19,8 @@
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)" (click)="_challengeService.viewChallenge(challenge)" class="slide-in-both-ways">
+    <ion-card *ngFor="let challenge of (_challengeService.challenges | CurrentFilter:true)"
+              (click)="_challengeService.viewChallenge(challenge)" class="slide-in-both-ways">
         <img src="img/challenges/{{challenge.image_url}}"/>
         <ion-item>
             <ion-icon item-left name="trophy"></ion-icon>
@@ -32,7 +33,8 @@
         </ion-item>
         <ion-item *ngIf="challenge.type != 'MultiStep'">
             <ion-icon item-left name="walk"></ion-icon>
-            <span *ngIf="challenge.type != 'Distance'" item-left>{{challenge.completion.required}} {{challenge.type}}</span>
+            <span *ngIf="challenge.type != 'Distance'"
+                  item-left>{{challenge.completion.required}} {{challenge.type}}</span>
             <span *ngIf="challenge.type == 'Distance'" item-left>{{challenge.completion.required}} Miles</span>
             <button ion-button icon-left clear item-right
                     *ngIf="!challenge.active" color="danger">

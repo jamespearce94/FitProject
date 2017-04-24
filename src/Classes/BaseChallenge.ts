@@ -5,6 +5,7 @@ import {NotificationService} from "../providers/notification-service";
 
 export abstract class BaseChallenge {
 
+    // Challenge Variables
     protected type: ChallengeType;
     protected name: string;
     protected id: string;
@@ -51,10 +52,6 @@ export abstract class BaseChallenge {
         return this.active;
     }
 
-    getCompletion(): any {
-        return this.completion;
-    }
-
     getName(): string {
         return this.name;
     }
@@ -64,6 +61,7 @@ export abstract class BaseChallenge {
     }
 
     sortParticipants(): void {
+        // default sort by progress value
         this.participants.sort((participantA, participantB) => {
 
             if (participantA.progress > participantB.progress) {

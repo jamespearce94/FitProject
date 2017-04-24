@@ -40,7 +40,7 @@ export class UserSearchPage implements OnInit {
             .subscribe((users: any) => {
                 this._friendService.getFriends()
                     .subscribe((friends: any) => {
-
+                        // filter logged in user out of the search
                         this.usersList = users.filter( user => {
                             return user.$key !== this._userService.user.auth.uid
                                 && friends.find(( friend ) => {

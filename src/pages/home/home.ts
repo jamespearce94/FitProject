@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, ModalController} from 'ionic-angular';
 import {UserService} from "../../providers/user-service";
 import {StatsService} from "../../providers/stats-service";
-import {SettingsModal} from "../../modals/settings/settings";
 import {LevelService} from "../../providers/level-service";
 import {EventService} from "../../providers/event.service";
 import {NotificationService} from "../../providers/notification-service";
@@ -16,9 +15,9 @@ export class HomePage {
     public stats: any = {};
     public level: any = {};
     public progress: any = {
-        max_progress : 100,
-        current : 0,
-        percentage : 0
+        max_progress: 100,
+        current: 0,
+        percentage: 0
     };
 
     constructor(private navCtrl: NavController,
@@ -32,12 +31,8 @@ export class HomePage {
 
     }
 
-    presentModal() {
-        let modal = this.modalCtrl.create(SettingsModal);
-        modal.present();
-    }
-
     doRefresh(refresher) {
+        //refresh user daily stats
         this._statsService.getHealthKitSteps();
         this._statsService.getHealthKitLifeDistance();
         this._eventService.announceActiveChallenges();

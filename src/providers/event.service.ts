@@ -11,6 +11,7 @@ export class EventService
     constructor( ) { }
 
     announceActiveChallenges( ) {
+        // can be called anywhere to update challenge progress
         this.activeChallengesReadyEvent.next();
     }
 }

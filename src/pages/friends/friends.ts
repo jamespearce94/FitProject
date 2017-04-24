@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {LoadingController, ModalController, NavController} from 'ionic-angular';
 import {FriendsService} from "../../providers/friends-service";
 import {StatsService} from "../../providers/stats-service";
-import {SettingsModal} from "../../modals/settings/settings";
 import {UserSearchPage} from "../user-search/user-search";
 import {LevelService} from "../../providers/level-service";
 
@@ -38,6 +37,7 @@ export class FriendsPage implements OnInit {
             .subscribe((friends: any) => {
 
                 friends.forEach((friend) => {
+                    //combine friend with their stats
                     this._statsService.getStats(friend.$key)
                         .take(1)
                         .subscribe((friendStats) => {
@@ -63,9 +63,4 @@ export class FriendsPage implements OnInit {
         this.navCtrl.parent.parent.push(UserSearchPage);
     }
 
-
-    presentModal() {
-        let modal = this.modalCtrl.create(SettingsModal);
-        modal.present();
-    }
 }

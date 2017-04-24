@@ -13,13 +13,14 @@ import {FriendsTabsPage} from "../pages/friends/tabs/friends-tabs";
     templateUrl: 'app.html'
 })
 export class MyApp {
-    @ViewChild(Nav) nav : Nav;
+    @ViewChild(Nav) nav: Nav;
 
     readonly rootPage = AuthenticationPage;
+    //sidebar pages
     public pages: Array<Object> = [
         {title: "Home", icon: "home", root: HomePage},
-        {title: "Friends", icon: "people", root : FriendsTabsPage},
-        {title: "Compete", icon: "stopwatch",root : CompeteTabsPage},
+        {title: "Friends", icon: "people", root: FriendsTabsPage},
+        {title: "Compete", icon: "stopwatch", root: CompeteTabsPage},
     ];
 
     constructor(private platform: Platform,
@@ -30,22 +31,22 @@ export class MyApp {
             // declare var cordova:any; you can do any higher level native things you might need.
             StatusBar.styleDefault();
             //
-            if(Device.platform === 'Android'
-                || Device.platform === 'iOS')
-            {
+            if (Device.platform === 'Android'
+                || Device.platform === 'iOS') {
+                //ask for health permissions if available
                 Health.isAvailable()
-                    .then( (isAvailable) => {
-                        let permissions = ['steps','calories','calories.active','distance'];
+                    .then((isAvailable) => {
+                        let permissions = ['steps', 'calories', 'calories.active', 'distance'];
 
-                        Health.requestAuthorization( permissions )
-                            .then( () => {
+                        Health.requestAuthorization(permissions)
+                            .then(() => {
                             })
-                            .catch( err => {
-                              console.log('requestAuthorization',err);
+                            .catch(err => {
+                                console.log('requestAuthorization', err);
                             });
                     })
-                    .catch( err => {
-                      console.log('isAvailable', err);
+                    .catch(err => {
+                        console.log('isAvailable', err);
                     });
             }
 
@@ -57,11 +58,11 @@ export class MyApp {
      * Navigate to page
      * @param page
      */
-    setRoot( page : any ) : void {
+    setRoot(page: any): void {
         this.nav.setRoot(page);
     }
 
-    logout(){
+    logout() {
         this._userService.logout();
         this.nav.setRoot(AuthenticationPage);
     }

@@ -6,13 +6,13 @@ import {UserService} from "../../providers/user-service";
     selector: 'level-up-modal',
     templateUrl: 'level-up.modal.html'
 })
-export class LevelUpModal{
+export class LevelUpModal {
 
     level = null;
     loading = true;
 
     constructor(private viewCtrl: ViewController,
-                private _userService : UserService) {
+                private _userService: UserService) {
         this.level = viewCtrl.data
     }
 

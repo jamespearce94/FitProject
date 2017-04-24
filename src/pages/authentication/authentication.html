@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-        <img src="img/icon.png" style="max-height: 100px; max-width: 100px; margin-left: 36%"/>
+    <img src="img/icon.png" style="max-height: 100px; max-width: 100px; margin-left: 36%"/>
     <ion-list *ngIf="action != 'signup'">
 
         <ion-item no-padding>
@@ -48,6 +48,10 @@
     <button ion-button color="dark" full *ngIf="action != 'signup'" (click)="login()">Login</button>
     <button ion-button color="dark" full *ngIf="action != 'signup'" (click)="action = 'signup'">Sign Up</button>
 
-    <button ion-button color="dark" full *ngIf="action == 'signup'" (click)="action = 'login'"><div><ion-icon name="return-left"></ion-icon></div></button>
+    <button ion-button color="dark" full *ngIf="action == 'signup'" (click)="action = 'login'">
+        <div>
+            <ion-icon name="return-left"></ion-icon>
+        </div>
+    </button>
     <button ion-button color="dark" full *ngIf="action == 'signup'" (click)="signup()">Sign Up</button>
 </ion-content>

@@ -1,39 +1,39 @@
 <ion-header>
 
-  <ion-navbar color="dark">
-    <ion-buttons start>
-      <button ion-button menuToggle icon-only>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>UserSearch</ion-title>
-    <ion-buttons end>
-      <button ion-button menuToggle="right" icon-only (click)="presentModal()">
-        <ion-icon name="settings"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-navbar color="dark">
+        <ion-buttons start>
+            <button ion-button menuToggle icon-only>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>UserSearch</ion-title>
+        <ion-buttons end>
+            <button ion-button menuToggle="right" icon-only (click)="presentModal()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content no-padding>
-  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search Friend Name">
-  </ion-searchbar>
-  <ion-list padding>
-    <ion-item-sliding *ngFor="let user of usersList | userNameFilter:searchTerm">
-      <ion-item (click)="_friendService.addFriend(user.$key, user.fitness_stats.name)" >
-        <ion-avatar item-left>
-          <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
-        </ion-avatar>
-        <h2>{{user.fitness_stats.name}}</h2>
-        <p>Last Active</p>
-        <div *ngIf="user.fitness_stats.last_update">
-          <p>{{user.fitness_stats.last_update | HumanizeDate}} ago</p>
-        </div>
-        <ion-spinner name="dots" *ngIf="!user"></ion-spinner>
-      </ion-item>
-    </ion-item-sliding>
-  </ion-list>
+    <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search Friend Name">
+    </ion-searchbar>
+    <ion-list padding>
+        <ion-item-sliding *ngFor="let user of usersList | userNameFilter:searchTerm">
+            <ion-item (click)="_friendService.addFriend(user.$key, user.fitness_stats.name)">
+                <ion-avatar item-left>
+                    <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
+                </ion-avatar>
+                <h2>{{user.fitness_stats.name}}</h2>
+                <p>Last Active</p>
+                <div *ngIf="user.fitness_stats.last_update">
+                    <p>{{user.fitness_stats.last_update | HumanizeDate}} ago</p>
+                </div>
+                <ion-spinner name="dots" *ngIf="!user"></ion-spinner>
+            </ion-item>
+        </ion-item-sliding>
+    </ion-list>
 
 </ion-content>

@@ -21,8 +21,6 @@ export class FriendRequestsPage implements OnInit{
               private loadingCtrl: LoadingController,
               private _friendService: FriendsService) {}
 
-  ionViewDidLoad() {
-  }
 
   ngOnInit(){
     let loader = this.loadingCtrl

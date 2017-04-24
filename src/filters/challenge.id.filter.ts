@@ -4,8 +4,9 @@ import {PipeTransform, Pipe} from "@angular/core";
 
 export class ChallengeIdFilter implements PipeTransform {
     transform(challenges, userSubbedChallenges) {
-        return challenges.filter( challenge => {
-            return userSubbedChallenges.filter( userSubChallenge => {
+        return challenges.filter(challenge => {
+            //return matching base and active challenges
+            return userSubbedChallenges.filter(userSubChallenge => {
                 return userSubChallenge.id === challenge.$key
             }).length
         });

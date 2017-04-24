@@ -1,57 +1,57 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Completed Challenge !
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Completed Challenge !
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary" showWhen="ios">Cancel</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="outer-content">
 
-  <ion-card *ngIf="!loading">
-    <img src="img/challenges/{{challenge.image_url}}"/>
-    <ion-item>
-      <ion-icon item-left name="medal"></ion-icon>
-      <h2>{{challenge.name}}</h2>
-    </ion-item>
-    <ion-item>
-      <ion-icon item-left name="flash"></ion-icon>
-      <h2>{{challenge.xp}} XP Gained</h2>
-    </ion-item>
-  </ion-card>
-  <div *ngIf="showStats">
-  <ion-card *ngFor="let participant of challenge.participants; let first = first">
-    <ion-item *ngIf="!loading">
-      <ion-avatar item-left>
-        <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
-      </ion-avatar>
-      <h2>{{participant.fitness_stats.name}}
-        <ion-icon color="golden" name="ribbon" *ngIf="first"></ion-icon>
-        <i *ngIf="participant.complete_date">
-          <ion-icon color="primary" name="checkmark-circle"></ion-icon>
-        </i></h2>
-      <p style="white-space: normal"></p>
-    </ion-item>
-    <ion-item *ngIf="!loading">
-      <ion-icon item-left name="trophy"></ion-icon>
-      <h2>{{participant.percentage}}%</h2>
-      <progress value="{{participant.percentage}}" max="100"></progress>
-    </ion-item>
-    <ion-item *ngIf="participant.complete">
-    <ion-icon item-left name="stopwatch"></ion-icon>
-    <h2>Completed in {{participant.complete_date | HumanizeDate}}</h2>
-  </ion-item>
-    <ion-item *ngIf="!participant.complete">
-      <ion-icon item-left name="clock"></ion-icon>
-      <h2>Last updated {{participant.last_update | HumanizeDate}} ago</h2>
-    </ion-item>
-  </ion-card>
-  </div>
+    <ion-card *ngIf="!loading">
+        <img src="img/challenges/{{challenge.image_url}}"/>
+        <ion-item>
+            <ion-icon item-left name="medal"></ion-icon>
+            <h2>{{challenge.name}}</h2>
+        </ion-item>
+        <ion-item>
+            <ion-icon item-left name="flash"></ion-icon>
+            <h2>{{challenge.xp}} XP Gained</h2>
+        </ion-item>
+    </ion-card>
+    <div *ngIf="showStats">
+        <ion-card *ngFor="let participant of challenge.participants; let first = first">
+            <ion-item *ngIf="!loading">
+                <ion-avatar item-left>
+                    <img src="https://ionicframework.com/dist/preview-app/www/assets/img/avatar-finn.png">
+                </ion-avatar>
+                <h2>{{participant.fitness_stats.name}}
+                    <ion-icon color="golden" name="ribbon" *ngIf="first"></ion-icon>
+                    <i *ngIf="participant.complete_date">
+                        <ion-icon color="primary" name="checkmark-circle"></ion-icon>
+                    </i></h2>
+                <p style="white-space: normal"></p>
+            </ion-item>
+            <ion-item *ngIf="!loading">
+                <ion-icon item-left name="trophy"></ion-icon>
+                <h2>{{participant.percentage}}%</h2>
+                <progress value="{{participant.percentage}}" max="100"></progress>
+            </ion-item>
+            <ion-item *ngIf="participant.complete">
+                <ion-icon item-left name="stopwatch"></ion-icon>
+                <h2>Completed in {{participant.complete_date | HumanizeDate}}</h2>
+            </ion-item>
+            <ion-item *ngIf="!participant.complete">
+                <ion-icon item-left name="clock"></ion-icon>
+                <h2>Last updated {{participant.last_update | HumanizeDate}} ago</h2>
+            </ion-item>
+        </ion-card>
+    </div>
 
 </ion-content>

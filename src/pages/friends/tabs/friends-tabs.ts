@@ -20,6 +20,7 @@ export class FriendsTabsPage implements OnInit {
     }
 
     ngOnInit() {
+        // for tab icon number
         this._friendService.getRequestLists()
             .subscribe((requests) => {
                 if (requests.length) {

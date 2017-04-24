@@ -4,12 +4,6 @@ import {ChallengeService} from "../../providers/challenge-service";
 import {FriendsService} from "../../providers/friends-service";
 import {UserService} from "../../providers/user-service";
 
-/*
- Generated class for the ChallengeList page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
     selector: 'page-challenge-list',
     templateUrl: 'challenge-list.html'
@@ -25,13 +19,11 @@ export class ChallengeListPage implements OnInit {
                 private _friendService: FriendsService,
                 private _userService: UserService,
                 public alertCtrl: AlertController,
-                private loadingCtrl : LoadingController) {
-    }
-
-    ionViewDidLoad() {
+                private loadingCtrl: LoadingController) {
     }
 
     ngOnInit() {
+        // get all available base challenges from firebase
         this._challengeService.getChallengeList()
             .subscribe((challengeList) => this.challenges = challengeList)
     }
@@ -58,6 +50,7 @@ export class ChallengeListPage implements OnInit {
                         this.selectedParticipants = data;
                         this.selectedParticipants.push(this._userService.user.uid);
                         this._challengeService.createChallenge(this.selectedParticipants, challenge);
+                        //go back to previous page
                         this.navCtrl.pop();
 
                     }

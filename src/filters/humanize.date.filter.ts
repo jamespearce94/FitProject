@@ -8,7 +8,7 @@ import * as moment from "moment";
 
 export class HumanizeDateFilter implements PipeTransform {
     transform(date) {
-        if(!date){
+        if (!date) {
             return "Pending"
         }
         let diff = moment.unix(date).diff(moment(), 'minutes');

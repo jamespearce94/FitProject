@@ -6,36 +6,40 @@ import * as moment from "moment";
 import {NotificationService} from "../providers/notification-service";
 
 export class CaloriesChallenge extends BaseChallenge {
-    public isComplete : boolean = false;
+    public isComplete: boolean = false;
 
-    constructor(challengeObj: any, type: ChallengeType, uid : any) {
+    constructor(challengeObj: any, type: ChallengeType, uid: any) {
         super(challengeObj, type, uid);
 
+        //check if complete and sort straight away
         this.setCompleteState();
         this.sortParticipants();
     }
-         sortParticipants(): void {
+
+    sortParticipants(): void {
+        // sort by progress and completion time
         this.participants.sort((participantA, participantB) => {
             const progA = participantA.progress;
             const progB = participantB.progress;
 
-            if(progA && progB >= this.completion.required) {
+
+            if (progA && progB >= this.completion.required) {
                 return (participantA.complete_date < participantB.complete_date) ? 1 : -1;
             }
-            else{
+            else {
                 return (progA > progB) ? -1 : 1;
             }
         });
     }
 
 
-    setCompleteState() : void {
-        let user = this.participants.find( participant => participant.uid === this.uid );
-
-        this.isComplete = this.checkIfComplete( user.progress );
+    setCompleteState(): void {
+        //check if challenge complete for logged in user
+        let user = this.participants.find(participant => participant.uid === this.uid);
+        this.isComplete = this.checkIfComplete(user.progress);
     }
 
-    checkIfComplete( progress : any ) : boolean {
+    checkIfComplete(progress: any): boolean {
         return progress >= this.completion.required;
     }
 
@@ -43,11 +47,15 @@ export class CaloriesChallenge extends BaseChallenge {
         return !this.isComplete;
     }
 
-    updateChallengeProgress(_healthKitService: HealthKitService,_notificationsService: NotificationService, uid: any): Promise<any> {
+    updateChallengeProgress(_healthKitService: HealthKitService, _notificationsService: NotificationService, uid: any): Promise<any> {
+        // update challenge progress from healthkit
         return _healthKitService.getChallengeMetrics(this.type, this.start_time)
             .then(metricValue => {
-                let user = this.participants.find(user =>{return user.uid == uid});
-                if(user.progress != metricValue) {
+                //healthkit callback function
+                let user = this.participants.find(user => {
+                    return user.uid == uid
+                });
+                if (user.progress != metricValue) {
                     let isComplete = this.checkIfComplete(metricValue);
                     let addXp = isComplete && !this.isComplete;
 
@@ -65,7 +73,7 @@ export class CaloriesChallenge extends BaseChallenge {
                         }
                     });
                 }
-                else{
+                else {
                     return Promise.reject('No Change');
                 }
             }).catch(err => console.log(err));

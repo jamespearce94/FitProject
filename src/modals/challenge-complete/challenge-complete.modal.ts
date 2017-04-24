@@ -20,15 +20,15 @@ export class ChallengeCompleteModal implements OnInit {
     }
 
     ngOnInit() {
-        //ToDo fix shite code
         this._userService.getUserList()
-            .subscribe( users => {
-                this.challenge.participants.forEach( participant => {
-                    participant.percentage = Math.round((participant.progress / this.challenge.completion.required)*100);
+            .subscribe(users => {
+                this.challenge.participants.forEach(participant => {
+                    participant.percentage = Math.round((participant.progress / this.challenge.completion.required) * 100);
+                    // return 100 if percentage is greater than 100
                     participant.percentage = participant.percentage >= 100 ? 100 : participant.percentage;
 
-                    let user = users.find( user => user.$key === participant.uid );
-
+                    let user = users.find(user => user.$key === participant.uid);
+                    //combine user and participant for extra data
                     Object.assign(participant, user);
                 });
 

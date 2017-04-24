@@ -17,9 +17,11 @@
 </ion-header>
 
 
-<ion-content padding >
+<ion-content padding>
     <ion-fab bottom right>
-        <button ion-fab color="dark" (click)="searchUsers()" ><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="dark" (click)="searchUsers()">
+            <ion-icon name="add"></ion-icon>
+        </button>
     </ion-fab>
     <ion-list>
         <ion-item-sliding *ngFor="let friend of friends" no-padding class="slide-in-both-ways">

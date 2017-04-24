@@ -24,6 +24,7 @@ export class CompeteTabsPage implements OnInit {
     }
 
     ngOnInit() {
+        // to display number of pending challenges on the tab icon
         this._challengeService.getChallengeList()
             .subscribe(allChallenges => {
                 this._challengeService.getActiveChallenges()

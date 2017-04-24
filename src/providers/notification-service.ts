@@ -3,12 +3,6 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {LocalNotifications} from "@ionic-native/local-notifications";
 
-/*
-  Generated class for the NotificationService provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class NotificationService {
 
@@ -17,6 +11,7 @@ export class NotificationService {
   }
 
   sendNotification(delaySeconds: number, message : string, startTime: number){
+    // Schedule notification half way through challenge
     this.localNotifications.schedule({
       text: message,
       sound: null,
